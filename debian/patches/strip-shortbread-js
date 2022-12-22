@@ -1,0 +1,33 @@
+Description: strip shortbreadv1.js from source tarball
+ shortbreadv1.js is distributed as minimized javascript with no
+ copyright or license information and no links to the original
+ source. So we remove it from the orig tarball and remove references
+ to it from the rest of the package contents.
+ .
+ The javascript in quesetion is related to interactive questions about
+ affermative cookie consent as required by GDPR and other
+ regulations. Since we are not building HTML docs at all as part of
+ this package, removing this file has no material impact on the
+ packages we build.
+Author: Noah Meyerhans <noahm@debian.org>
+Forwarded: not-needed
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+Index: python-botocore/docs/source/_templates/layout.html
+===================================================================
+--- python-botocore.orig/docs/source/_templates/layout.html
++++ python-botocore/docs/source/_templates/layout.html
+@@ -10,13 +10,6 @@
+ 
+ 
+ <div class="footer">
+-    <script type="text/javascript" src="{{ pathto('_static/shortbreadv1.js',1 ) }}"></script>
+-    <script type="text/javascript">
+-            const shortbread = AWSCShortbread({
+-                domain: ".amazonaws.com",
+-});
+-            shortbread.checkForCookieConsent();
+-    </script>
+     <a href="http://aws.amazon.com/privacy">Privacy</a> | <a href="http://aws.amazon.com/terms">Site Terms</a> | <a
+         href="#" onclick="shortbread.customizeCookies();">Cookie preferences</a> |
+     &copy; Copyright {{ copyright }} <a href="https://www.sphinx-doc.org/">Sphinx</a>.

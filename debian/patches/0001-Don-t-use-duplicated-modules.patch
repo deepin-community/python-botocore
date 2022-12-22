@@ -1,0 +1,149 @@
+From: TANIGUCHI Takaki <takaki@asis.media-as.org>
+Date: Thu, 4 Oct 2018 16:22:43 +0900
+Subject: Don't use duplicated modules
+
+---
+ botocore/compat.py                               | 4 ++--
+ botocore/endpoint.py                             | 2 +-
+ botocore/exceptions.py                           | 4 ++--
+ botocore/httpsession.py                          | 4 ++--
+ botocore/utils.py                                | 2 +-
+ tests/functional/test_six_threading.py           | 4 ++--
+ tests/integration/test_client_http.py            | 4 ++--
+ tests/integration/test_glacier.py                | 2 +-
+ tests/integration/test_s3.py                     | 2 +-
+ tests/unit/test_endpoint.py                      | 2 +-
+ tests/unit/test_http_client_exception_mapping.py | 4 ++--
+ tests/unit/test_http_session.py                  | 2 +-
+ 12 files changed, 18 insertions(+), 18 deletions(-)
+
+Index: python-botocore/botocore/compat.py
+===================================================================
+--- python-botocore.orig/botocore/compat.py
++++ python-botocore/botocore/compat.py
+@@ -22,7 +22,7 @@ import shlex
+ import os
+ from math import floor
+ 
+-from botocore.vendored import six
++import six
+ from botocore.exceptions import MD5UnavailableError
+ from dateutil.tz import tzlocal
+ from urllib3 import exceptions
+@@ -31,7 +31,7 @@ logger = logging.getLogger(__name__)
+ 
+ 
+ if six.PY3:
+-    from botocore.vendored.six.moves import http_client
++    from six.moves import http_client
+ 
+     class HTTPHeaders(http_client.HTTPMessage):
+         pass
+Index: python-botocore/botocore/endpoint.py
+===================================================================
+--- python-botocore.orig/botocore/endpoint.py
++++ python-botocore/botocore/endpoint.py
+@@ -17,7 +17,7 @@ import logging
+ import time
+ import threading
+ 
+-from botocore.vendored import six
++import six
+ 
+ from botocore.awsrequest import create_request_object
+ from botocore.exceptions import HTTPClientError
+Index: python-botocore/botocore/exceptions.py
+===================================================================
+--- python-botocore.orig/botocore/exceptions.py
++++ python-botocore/botocore/exceptions.py
+@@ -12,8 +12,8 @@
+ # ANY KIND, either express or implied. See the License for the specific
+ # language governing permissions and limitations under the License.
+ from __future__ import unicode_literals
+-from botocore.vendored import requests
+-from botocore.vendored.requests.packages import urllib3
++import requests
++from requests.packages import urllib3
+ 
+ 
+ def _exception_from_packed_args(exception_cls, args=None, kwargs=None):
+Index: python-botocore/botocore/httpsession.py
+===================================================================
+--- python-botocore.orig/botocore/httpsession.py
++++ python-botocore/botocore/httpsession.py
+@@ -21,7 +21,7 @@ except ImportError:
+     from urllib3.util.ssl_ import SSLContext
+ 
+ import botocore.awsrequest
+-from botocore.vendored.six.moves.urllib_parse import unquote
++from six.moves.urllib_parse import unquote
+ from botocore.compat import filter_ssl_warnings, urlparse
+ from botocore.exceptions import (
+     ConnectionClosedError, EndpointConnectionError, HTTPClientError,
+Index: python-botocore/botocore/utils.py
+===================================================================
+--- python-botocore.orig/botocore/utils.py
++++ python-botocore/botocore/utils.py
+@@ -35,7 +35,7 @@ from botocore.compat import (
+     six, urlparse, get_tzinfo_options, get_md5, MD5_AVAILABLE,
+     HAS_CRT
+ )
+-from botocore.vendored.six.moves.urllib.request import getproxies, proxy_bypass
++from six.moves.urllib.request import getproxies, proxy_bypass
+ from botocore.exceptions import (
+     InvalidExpressionError, ConfigNotFound, InvalidDNSNameError, ClientError,
+     MetadataRetrievalError, EndpointConnectionError, ReadTimeoutError,
+Index: python-botocore/tests/functional/test_six_threading.py
+===================================================================
+--- python-botocore.orig/tests/functional/test_six_threading.py
++++ python-botocore/tests/functional/test_six_threading.py
+@@ -7,7 +7,7 @@ import time
+ 
+ from tests import mock
+ 
+-from botocore.vendored import six
++import six
+ 
+ 
+ _original_setattr = six.moves.__class__.__setattr__
+@@ -47,7 +47,7 @@ class _ExampleThread(threading.Thread):
+ def test_six_thread_safety():
+     _reload_six()
+     with mock.patch(
+-        'botocore.vendored.six.moves.__class__.__setattr__',
++        'six.moves.__class__.__setattr__',
+         wraps=_wrapped_setattr
+     ):
+         threads = []
+Index: python-botocore/tests/integration/test_client_http.py
+===================================================================
+--- python-botocore.orig/tests/integration/test_client_http.py
++++ python-botocore/tests/integration/test_client_http.py
+@@ -8,12 +8,12 @@ from contextlib import contextmanager
+ 
+ import botocore.session
+ from botocore.config import Config
+-from botocore.vendored.six.moves import BaseHTTPServer, socketserver
++from six.moves import BaseHTTPServer, socketserver
+ from botocore.exceptions import (
+     ConnectTimeoutError, ReadTimeoutError, EndpointConnectionError,
+     ConnectionClosedError, ClientError, ProxyConnectionError
+ )
+-from botocore.vendored.requests import exceptions as requests_exceptions
++from requests import exceptions as requests_exceptions
+ 
+ 
+ class TestClientHTTPBehavior(unittest.TestCase):
+Index: python-botocore/tests/integration/test_glacier.py
+===================================================================
+--- python-botocore.orig/tests/integration/test_glacier.py
++++ python-botocore/tests/integration/test_glacier.py
+@@ -13,7 +13,7 @@
+ from tests import unittest
+ 
+ from botocore.exceptions import ClientError
+-from botocore.vendored import six
++import six
+ import botocore.session
+ 
+ 

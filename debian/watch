@@ -1,0 +1,3 @@
+version=3
+opts="repacksuffix=+repack,dversionmangle=s/\+repack//g,repack,compression=xz" \
+https://pypi.debian.net/botocore/botocore-(.*).tar.gz
