@@ -13,21 +13,24 @@ Author: Noah Meyerhans <noahm@debian.org>
 Forwarded: not-needed
 ---
 This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
-Index: python-botocore/docs/source/_templates/layout.html
+Index: python-botocore/docs/source/_templates/page.html
 ===================================================================
---- python-botocore.orig/docs/source/_templates/layout.html
-+++ python-botocore/docs/source/_templates/layout.html
-@@ -10,13 +10,6 @@
- 
- 
- <div class="footer">
--    <script type="text/javascript" src="{{ pathto('_static/shortbreadv1.js',1 ) }}"></script>
--    <script type="text/javascript">
--            const shortbread = AWSCShortbread({
--                domain: ".amazonaws.com",
--});
--            shortbread.checkForCookieConsent();
--    </script>
-     <a href="http://aws.amazon.com/privacy">Privacy</a> | <a href="http://aws.amazon.com/terms">Site Terms</a> | <a
-         href="#" onclick="shortbread.customizeCookies();">Cookie preferences</a> |
-     &copy; Copyright {{ copyright }} <a href="https://www.sphinx-doc.org/">Sphinx</a>.
+--- python-botocore.orig/docs/source/_templates/page.html
++++ python-botocore/docs/source/_templates/page.html
+@@ -176,15 +176,7 @@ furnished to do so, subject to the follo
+             {%- endif %}
+             {# start of AWS modification of Furo template #}
+             <div class="legal-info">
+-                <script type="text/javascript" src="{{ pathto('_static/shortbreadv1.js',1 ) }}"></script>
+-                <script type="text/javascript">
+-                        const shortbread = AWSCShortbread({
+-                            domain: ".amazonaws.com",
+-            });
+-                        shortbread.checkForCookieConsent();
+-                </script>
+-                <a href="http://aws.amazon.com/privacy">Privacy</a> | <a href="http://aws.amazon.com/terms">Site Terms</a> | <a
+-                    href="#" onclick="shortbread.customizeCookies();">Cookie preferences</a>
++                <a href="http://aws.amazon.com/privacy">Privacy</a> | <a href="http://aws.amazon.com/terms">Site Terms</a>
+             </div>
+             {# end of AWS modification of Furo template #}
+           </div>

@@ -1,9 +1,8 @@
 import pytest
 
-from tests import unittest
-
 from botocore import model
 from botocore.compat import OrderedDict
+from tests import unittest
 
 
 @pytest.mark.parametrize("property_name", ['api_version', 'protocol'])
@@ -24,17 +23,16 @@ class TestServiceId(unittest.TestCase):
 
 
 class TestServiceModel(unittest.TestCase):
-
     def setUp(self):
         self.model = {
-            'metadata': {'protocol': 'query',
-                         'endpointPrefix': 'endpoint-prefix',
-                         'serviceId': 'MyService'},
+            'metadata': {
+                'protocol': 'query',
+                'endpointPrefix': 'endpoint-prefix',
+                'serviceId': 'MyService',
+            },
             'documentation': 'Documentation value',
             'operations': {},
-            'shapes': {
-                'StringShape': {'type': 'string'}
-            }
+            'shapes': {'StringShape': {'type': 'string'}},
         }
         self.error_shapes = {
             'ExceptionOne': {
@@ -46,9 +44,7 @@ class TestServiceModel(unittest.TestCase):
                 'exception': True,
                 'type': 'structure',
                 'members': {},
-                'error': {
-                    'code': 'FooCode'
-                }
+                'error': {'code': 'FooCode'},
             },
         }
         self.service_model = model.ServiceModel(self.model)
@@ -59,8 +55,9 @@ class TestServiceModel(unittest.TestCase):
         self.assertEqual(self.service_model.metadata.get('protocol'), 'query')
 
     def test_service_name_can_be_overriden(self):
-        service_model = model.ServiceModel(self.model,
-                                           service_name='myservice')
+        service_model = model.ServiceModel(
+            self.model, service_name='myservice'
+        )
         self.assertEqual(service_model.service_name, 'myservice')
 
     def test_service_name_defaults_to_endpoint_prefix(self):
@@ -71,7 +68,8 @@ class TestServiceModel(unittest.TestCase):
 
     def test_hyphenize_service_id(self):
         self.assertEqual(
-            self.service_model.service_id.hyphenize(), 'myservice')
+            self.service_model.service_id.hyphenize(), 'myservice'
+        )
 
     def test_service_id_does_not_exist(self):
         service_model = {
@@ -81,14 +79,13 @@ class TestServiceModel(unittest.TestCase):
             },
             'documentation': 'Documentation value',
             'operations': {},
-            'shapes': {
-                'StringShape': {'type': 'string'}
-            }
+            'shapes': {'StringShape': {'type': 'string'}},
         }
         service_name = 'myservice'
         service_model = model.ServiceModel(service_model, service_name)
-        with self.assertRaisesRegex(model.UndefinedModelAttributeError,
-                                    service_name):
+        with self.assertRaisesRegex(
+            model.UndefinedModelAttributeError, service_name
+        ):
             service_model.service_id
 
     def test_operation_does_not_exist(self):
@@ -99,15 +96,17 @@ class TestServiceModel(unittest.TestCase):
         self.assertEqual(self.service_model.signing_name, 'endpoint-prefix')
 
     def test_documentation_exposed_as_property(self):
-        self.assertEqual(self.service_model.documentation,
-                         'Documentation value')
+        self.assertEqual(
+            self.service_model.documentation, 'Documentation value'
+        )
 
     def test_shape_names(self):
         self.assertEqual(self.service_model.shape_names, ['StringShape'])
 
     def test_repr_has_service_name(self):
-        self.assertEqual(repr(self.service_model),
-                         'ServiceModel(endpoint-prefix)')
+        self.assertEqual(
+            repr(self.service_model), 'ServiceModel(endpoint-prefix)'
+        )
 
     def test_shape_for_error_code(self):
         self.model['shapes'].update(self.error_shapes)
@@ -126,6 +125,43 @@ class TestServiceModel(unittest.TestCase):
         self.assertIn('ExceptionOne', error_shape_names)
         self.assertIn('ExceptionTwo', error_shape_names)
 
+    def test_client_context_params(self):
+        service_model = model.ServiceModel(
+            {
+                'metadata': {
+                    'protocol': 'query',
+                    'endpointPrefix': 'endpoint-prefix',
+                    'serviceId': 'MyServiceWithClientContextParams',
+                },
+                'documentation': 'Documentation value',
+                'operations': {},
+                'shapes': {},
+                'clientContextParams': {
+                    'stringClientContextParam': {
+                        'type': 'string',
+                        'documentation': 'str-valued',
+                    },
+                    'booleanClientContextParam': {
+                        'type': 'boolean',
+                        'documentation': 'bool-valued',
+                    },
+                },
+            }
+        )
+        self.assertEqual(len(service_model.client_context_parameters), 2)
+        client_ctx_param1 = service_model.client_context_parameters[0]
+        client_ctx_param2 = service_model.client_context_parameters[1]
+        self.assertEqual(client_ctx_param1.name, 'stringClientContextParam')
+        self.assertEqual(client_ctx_param1.type, 'string')
+        self.assertEqual(client_ctx_param1.documentation, 'str-valued')
+        self.assertEqual(client_ctx_param2.name, 'booleanClientContextParam')
+
+    def test_client_context_params_absent(self):
+        self.assertIsInstance(
+            self.service_model.client_context_parameters, list
+        )
+        self.assertEqual(len(self.service_model.client_context_parameters), 0)
+
 
 class TestOperationModelFromService(unittest.TestCase):
     def setUp(self):
@@ -139,15 +175,13 @@ class TestOperationModelFromService(unittest.TestCase):
                         'requestUri': '/',
                     },
                     'name': 'OperationName',
-                    'input': {
-                        'shape': 'OperationNameRequest'
-                    },
+                    'input': {'shape': 'OperationNameRequest'},
                     'output': {
                         'shape': 'OperationNameResponse',
                     },
                     'errors': [{'shape': 'NoSuchResourceException'}],
                     'documentation': 'Docs for OperationName',
-                    'authtype': 'v4'
+                    'authtype': 'v4',
                 },
                 'OperationTwo': {
                     'http': {
@@ -155,9 +189,7 @@ class TestOperationModelFromService(unittest.TestCase):
                         'requestUri': '/',
                     },
                     'name': 'OperationTwo',
-                    'input': {
-                        'shape': 'OperationNameRequest'
-                    },
+                    'input': {'shape': 'OperationNameRequest'},
                     'output': {
                         'shape': 'OperationNameResponse',
                     },
@@ -170,14 +202,13 @@ class TestOperationModelFromService(unittest.TestCase):
                         'requestUri': '/',
                     },
                     'name': 'PayloadOperation',
-                    'input': {
-                        'shape': 'PayloadOperationRequest'
-                    },
+                    'input': {'shape': 'PayloadOperationRequest'},
                     'output': {
                         'shape': 'PayloadOperationResponse',
                     },
                     'errors': [{'shape': 'NoSuchResourceException'}],
                     'documentation': 'Docs for PayloadOperation',
+                    'requestcompression': {'encodings': ['gzip']},
                 },
                 'NoBodyOperation': {
                     'http': {
@@ -185,15 +216,32 @@ class TestOperationModelFromService(unittest.TestCase):
                         'requestUri': '/',
                     },
                     'name': 'NoBodyOperation',
-                    'input': {
-                        'shape': 'NoBodyOperationRequest'
-                    },
+                    'input': {'shape': 'NoBodyOperationRequest'},
                     'output': {
                         'shape': 'OperationNameResponse',
                     },
                     'errors': [{'shape': 'NoSuchResourceException'}],
                     'documentation': 'Docs for NoBodyOperation',
-                }
+                },
+                'ContextParamOperation': {
+                    'http': {
+                        'method': 'POST',
+                        'requestUri': '/',
+                    },
+                    'name': 'ContextParamOperation',
+                    'input': {'shape': 'ContextParamOperationRequest'},
+                    'output': {'shape': 'OperationNameResponse'},
+                    'errors': [{'shape': 'NoSuchResourceException'}],
+                    'documentation': 'Docs for ContextParamOperation',
+                    'staticContextParams': {
+                        'stringStaticContextParam': {
+                            'value': 'Static Context Param Value',
+                        },
+                        'booleanStaticContextParam': {
+                            'value': True,
+                        },
+                    },
+                },
             },
             'shapes': {
                 'OperationNameRequest': {
@@ -201,7 +249,7 @@ class TestOperationModelFromService(unittest.TestCase):
                     'members': {
                         'Arg1': {'shape': 'stringType'},
                         'Arg2': {'shape': 'stringType'},
-                    }
+                    },
                 },
                 'OperationNameResponse': {
                     'type': 'structure',
@@ -209,7 +257,7 @@ class TestOperationModelFromService(unittest.TestCase):
                         'String': {
                             'shape': 'stringType',
                         }
-                    }
+                    },
                 },
                 'PayloadOperationRequest': {
                     'type': 'structure',
@@ -217,7 +265,7 @@ class TestOperationModelFromService(unittest.TestCase):
                         'Arg1': {'shape': 'TestConfig'},
                         'Arg2': {'shape': 'stringType'},
                     },
-                    'payload': 'Arg1'
+                    'payload': 'Arg1',
                 },
                 'PayloadOperationResponse': {
                     'type': 'structure',
@@ -226,7 +274,7 @@ class TestOperationModelFromService(unittest.TestCase):
                             'shape': 'stringType',
                         }
                     },
-                    'payload': 'String'
+                    'payload': 'String',
                 },
                 'NoBodyOperationRequest': {
                     'type': 'structure',
@@ -234,33 +282,42 @@ class TestOperationModelFromService(unittest.TestCase):
                         'data': {
                             'location': 'header',
                             'locationName': 'x-amz-data',
-                            'shape': 'stringType'
+                            'shape': 'stringType',
                         }
-                    }
+                    },
+                },
+                'ContextParamOperationRequest': {
+                    'type': 'structure',
+                    'members': {
+                        'ContextParamArg': {
+                            'shape': 'stringType',
+                            'contextParam': {
+                                'name': 'contextParamName',
+                            },
+                        }
+                    },
+                    'payload': 'ContextParamArg',
                 },
                 'NoSuchResourceException': {
                     'type': 'structure',
-                    'members': {}
+                    'members': {},
                 },
                 'stringType': {
                     'type': 'string',
                 },
                 'TestConfig': {
                     'type': 'structure',
-                    'members': {
-                        'timeout': {
-                            'shape': 'stringType'
-                        }
-                    }
+                    'members': {'timeout': {'shape': 'stringType'}},
                 },
-            }
+            },
         }
         self.service_model = model.ServiceModel(self.model)
 
     def test_wire_name_always_matches_model(self):
         service_model = model.ServiceModel(self.model)
         operation = model.OperationModel(
-            self.model['operations']['OperationName'], service_model, 'Foo')
+            self.model['operations']['OperationName'], service_model, 'Foo'
+        )
         self.assertEqual(operation.name, 'Foo')
         self.assertEqual(operation.wire_name, 'OperationName')
 
@@ -272,7 +329,8 @@ class TestOperationModelFromService(unittest.TestCase):
     def test_name_and_wire_name_defaults_to_same_value(self):
         service_model = model.ServiceModel(self.model)
         operation = model.OperationModel(
-            self.model['operations']['OperationName'], service_model)
+            self.model['operations']['OperationName'], service_model
+        )
         self.assertEqual(operation.name, 'OperationName')
         self.assertEqual(operation.wire_name, 'OperationName')
 
@@ -282,8 +340,9 @@ class TestOperationModelFromService(unittest.TestCase):
         self.assertEqual(operation.name, 'OperationName')
 
     def test_name_from_service_model_when_differs_from_name(self):
-        self.model['operations']['Foo'] = \
-            self.model['operations']['OperationName']
+        self.model['operations']['Foo'] = self.model['operations'][
+            'OperationName'
+        ]
         service_model = model.ServiceModel(self.model)
         operation = service_model.operation_model('Foo')
         self.assertEqual(operation.name, 'Foo')
@@ -310,8 +369,7 @@ class TestOperationModelFromService(unittest.TestCase):
         operation = service_model.operation_model('OperationName')
         # This is an identity comparison because we don't implement
         # __eq__, so we may need to change this in the future.
-        self.assertEqual(
-            operation.service_model, service_model)
+        self.assertEqual(operation.service_model, service_model)
 
     def test_operation_output_model(self):
         service_model = model.ServiceModel(self.model)
@@ -335,7 +393,8 @@ class TestOperationModelFromService(unittest.TestCase):
         # OperationName only has a NoSuchResourceException
         self.assertEqual(len(operation.error_shapes), 1)
         self.assertEqual(
-            operation.error_shapes[0].name, 'NoSuchResourceException')
+            operation.error_shapes[0].name, 'NoSuchResourceException'
+        )
 
     def test_has_auth_type(self):
         operation = self.service_model.operation_model('OperationName')
@@ -406,10 +465,80 @@ class TestOperationModelFromService(unittest.TestCase):
         operation_name = self.service_model.operation_model('OperationName')
         self.assertIsNone(operation_name.endpoint_discovery)
 
+    def test_http_checksum_absent(self):
+        operation_name = self.service_model.operation_model('OperationName')
+        self.assertEqual(operation_name.http_checksum, {})
+
+    def test_http_checksum_present(self):
+        operation = self.model['operations']['OperationName']
+        operation['httpChecksum'] = {
+            "requestChecksumRequired": True,
+            "requestAlgorithmMember": "ChecksumAlgorithm",
+            "requestValidationModeMember": "ChecksumMode",
+            "responseAlgorithms": ["crc32", "crc32c", "sha256", "sha1"],
+        }
+        service_model = model.ServiceModel(self.model)
+        operation_model = service_model.operation_model('OperationName')
+        http_checksum = operation_model.http_checksum
+        self.assertEqual(
+            http_checksum["requestChecksumRequired"],
+            True,
+        )
+        self.assertEqual(
+            http_checksum["requestAlgorithmMember"],
+            "ChecksumAlgorithm",
+        )
+        self.assertEqual(
+            http_checksum["requestValidationModeMember"],
+            "ChecksumMode",
+        )
+        self.assertEqual(
+            http_checksum["responseAlgorithms"],
+            ["crc32", "crc32c", "sha256", "sha1"],
+        )
+
+    def test_context_parameter_present(self):
+        service_model = model.ServiceModel(self.model)
+        operation = service_model.operation_model('ContextParamOperation')
+        self.assertEqual(len(operation.context_parameters), 1)
+        context_param = operation.context_parameters[0]
+        self.assertEqual(context_param.name, 'contextParamName')
+        self.assertEqual(context_param.member_name, 'ContextParamArg')
+
+    def test_context_parameter_absent(self):
+        service_model = model.ServiceModel(self.model)
+        operation = service_model.operation_model('OperationTwo')
+        self.assertIsInstance(operation.context_parameters, list)
+        self.assertEqual(len(operation.context_parameters), 0)
+
+    def test_static_context_parameter_present(self):
+        service_model = model.ServiceModel(self.model)
+        operation = service_model.operation_model('ContextParamOperation')
+        self.assertEqual(len(operation.static_context_parameters), 2)
+        static_ctx_param1 = operation.static_context_parameters[0]
+        static_ctx_param2 = operation.static_context_parameters[1]
+        self.assertEqual(static_ctx_param1.name, 'stringStaticContextParam')
+        self.assertEqual(static_ctx_param1.value, 'Static Context Param Value')
+        self.assertEqual(static_ctx_param2.name, 'booleanStaticContextParam')
+        self.assertEqual(static_ctx_param2.value, True)
+
+    def test_static_context_parameter_absent(self):
+        service_model = model.ServiceModel(self.model)
+        operation = service_model.operation_model('OperationTwo')
+        self.assertIsInstance(operation.static_context_parameters, list)
+        self.assertEqual(len(operation.static_context_parameters), 0)
+
+    def test_request_compression(self):
+        service_model = model.ServiceModel(self.model)
+        operation = service_model.operation_model('PayloadOperation')
+        self.assertEqual(
+            operation.request_compression, {'encodings': ['gzip']}
+        )
+
 
 class TestOperationModelEventStreamTypes(unittest.TestCase):
     def setUp(self):
-        super(TestOperationModelEventStreamTypes, self).setUp()
+        super().setUp()
         self.model = {
             'metadata': {'protocol': 'rest-xml', 'endpointPrefix': 'foo'},
             'documentation': '',
@@ -427,25 +556,23 @@ class TestOperationModelEventStreamTypes(unittest.TestCase):
             'shapes': {
                 'NormalStructure': {
                     'type': 'structure',
-                    'members': {
-                        'Input': {'shape': 'StringType'}
-                    }
+                    'members': {'Input': {'shape': 'StringType'}},
                 },
                 'OperationRequest': {
                     'type': 'structure',
                     'members': {
                         'String': {'shape': 'StringType'},
-                        "Body": {'shape': 'EventStreamStructure'}
+                        "Body": {'shape': 'EventStreamStructure'},
                     },
-                    'payload': 'Body'
+                    'payload': 'Body',
                 },
                 'OperationResponse': {
                     'type': 'structure',
                     'members': {
                         'String': {'shape': 'StringType'},
-                        "Body": {'shape': 'EventStreamStructure'}
+                        "Body": {'shape': 'EventStreamStructure'},
                     },
-                    'payload': 'Body'
+                    'payload': 'Body',
                 },
                 'StringType': {'type': 'string'},
                 'BlobType': {'type': 'blob'},
@@ -454,31 +581,23 @@ class TestOperationModelEventStreamTypes(unittest.TestCase):
                     'type': 'structure',
                     'members': {
                         'EventA': {'shape': 'EventAStructure'},
-                        'EventB': {'shape': 'EventBStructure'}
-                    }
+                        'EventB': {'shape': 'EventBStructure'},
+                    },
                 },
                 'EventAStructure': {
                     'event': True,
                     'type': 'structure',
                     'members': {
-                        'Payload': {
-                            'shape': 'BlobType',
-                            'eventpayload': True
-                        },
-                        'Header': {
-                            'shape': 'StringType',
-                            'eventheader': True
-                        }
-                    }
+                        'Payload': {'shape': 'BlobType', 'eventpayload': True},
+                        'Header': {'shape': 'StringType', 'eventheader': True},
+                    },
                 },
                 'EventBStructure': {
                     'event': True,
                     'type': 'structure',
-                    'members': {
-                        'Records': {'shape': 'StringType'}
-                    }
-                }
-            }
+                    'members': {'Records': {'shape': 'StringType'}},
+                },
+            },
         }
 
     def update_operation(self, **kwargs):
@@ -524,7 +643,7 @@ class TestOperationModelEventStreamTypes(unittest.TestCase):
 
 class TestOperationModelStreamingTypes(unittest.TestCase):
     def setUp(self):
-        super(TestOperationModelStreamingTypes, self).setUp()
+        super().setUp()
         self.model = {
             'metadata': {'protocol': 'query', 'endpointPrefix': 'foo'},
             'documentation': '',
@@ -548,9 +667,9 @@ class TestOperationModelStreamingTypes(unittest.TestCase):
                         },
                         "Body": {
                             'shape': 'blobType',
-                        }
+                        },
                     },
-                    'payload': 'Body'
+                    'payload': 'Body',
                 },
                 'OperationResponse': {
                     'type': 'structure',
@@ -560,17 +679,15 @@ class TestOperationModelStreamingTypes(unittest.TestCase):
                         },
                         "Body": {
                             'shape': 'blobType',
-                        }
+                        },
                     },
-                    'payload': 'Body'
+                    'payload': 'Body',
                 },
                 'stringType': {
                     'type': 'string',
                 },
-                'blobType': {
-                    'type': 'blob'
-                }
-            }
+                'blobType': {'type': 'blob'},
+            },
         }
 
     def remove_payload(self, type):
@@ -609,16 +726,20 @@ class TestDeepMerge(unittest.TestCase):
             'SetQueueAttributes': {
                 'type': 'structure',
                 'members': {
-                    'MapExample': {'shape': 'StrToStrMap',
-                                   'locationName': 'Attribute'},
-                }
+                    'MapExample': {
+                        'shape': 'StrToStrMap',
+                        'locationName': 'Attribute',
+                    },
+                },
             },
             'SetQueueAttributes2': {
                 'type': 'structure',
                 'members': {
-                    'MapExample': {'shape': 'StrToStrMap',
-                                   'locationName': 'Attribute2'},
-                }
+                    'MapExample': {
+                        'shape': 'StrToStrMap',
+                        'locationName': 'Attribute2',
+                    },
+                },
             },
             'StrToStrMap': {
                 'type': 'map',
@@ -627,7 +748,7 @@ class TestDeepMerge(unittest.TestCase):
                 'flattened': True,
                 'name': 'NotAttribute',
             },
-            'StringType': {'type': 'string'}
+            'StringType': {'type': 'string'},
         }
         self.shape_resolver = model.ShapeResolver(self.shapes)
 
@@ -644,7 +765,7 @@ class TestDeepMerge(unittest.TestCase):
                 'name': 'Attribute',
                 # From the definition.
                 'flattened': True,
-            }
+            },
         )
         # Ensure we don't merge/mutate the original dicts.
         self.assertEqual(map_merged.key.serialization['name'], 'Name')
@@ -669,11 +790,9 @@ class TestShapeResolver(unittest.TestCase):
                 'members': {
                     'Bar': {'shape': 'StringType'},
                     'Baz': {'shape': 'StringType'},
-                }
+                },
             },
-            "StringType": {
-                "type": "string"
-            }
+            "StringType": {"type": "string"},
         }
         resolver = model.ShapeResolver(shape_map)
         shape = resolver.get_shape_by_name('Foo')
@@ -687,11 +806,9 @@ class TestShapeResolver(unittest.TestCase):
                 'members': {
                     'Bar': {'shape': 'StringType'},
                     'Baz': {'shape': 'StringType'},
-                }
+                },
             },
-            "StringType": {
-                "type": "string"
-            }
+            "StringType": {"type": "string"},
         }
         resolver = model.ShapeResolver(shape_map)
         shape = resolver.resolve_shape_ref({'shape': 'StringType'})
@@ -705,15 +822,14 @@ class TestShapeResolver(unittest.TestCase):
                 'members': {
                     'Bar': {'shape': 'StringType'},
                     'Baz': {'shape': 'StringType', 'locationName': 'other'},
-                }
+                },
             },
-            "StringType": {
-                "type": "string"
-            }
+            "StringType": {"type": "string"},
         }
         resolver = model.ShapeResolver(shape_map)
-        shape = resolver.resolve_shape_ref({'shape': 'StringType',
-                                            'locationName': 'other'})
+        shape = resolver.resolve_shape_ref(
+            {'shape': 'StringType', 'locationName': 'other'}
+        )
         self.assertEqual(shape.serialization['name'], 'other')
         self.assertEqual(shape.name, 'StringType')
 
@@ -723,15 +839,14 @@ class TestShapeResolver(unittest.TestCase):
                 'type': 'structure',
                 'members': {
                     'Baz': {'shape': 'StringType', 'locationName': 'other'},
-                }
+                },
             },
-            "StringType": {
-                "type": "string"
-            }
+            "StringType": {"type": "string"},
         }
         resolver = model.ShapeResolver(shape_map)
-        shape = resolver.resolve_shape_ref({'shape': 'StringType',
-                                            'locationName': 'other'})
+        shape = resolver.resolve_shape_ref(
+            {'shape': 'StringType', 'locationName': 'other'}
+        )
         self.assertEqual(shape.serialization['name'], 'other')
         # serialization is computed on demand, and a cache is kept.
         # This is just verifying that trying to access serialization again
@@ -743,15 +858,16 @@ class TestShapeResolver(unittest.TestCase):
         shape_map = {
             "StringType": {
                 "type": "string",
-                "documentation": "Original documentation"
+                "documentation": "Original documentation",
             }
         }
         resolver = model.ShapeResolver(shape_map)
         shape = resolver.get_shape_by_name('StringType')
         self.assertEqual(shape.documentation, 'Original documentation')
 
-        shape = resolver.resolve_shape_ref({'shape': 'StringType',
-                                            'documentation': 'override'})
+        shape = resolver.resolve_shape_ref(
+            {'shape': 'StringType', 'documentation': 'override'}
+        )
         self.assertEqual(shape.documentation, 'override')
 
     def test_shape_type_structure(self):
@@ -761,18 +877,19 @@ class TestShapeResolver(unittest.TestCase):
                 'members': {
                     'OldPassword': {'shape': 'passwordType'},
                     'NewPassword': {'shape': 'passwordType'},
-                }
+                },
             },
             'passwordType': {
                 "type": "string",
-            }
+            },
         }
         resolver = model.ShapeResolver(shapes)
         shape = resolver.get_shape_by_name('ChangePasswordRequest')
         self.assertEqual(shape.type_name, 'structure')
         self.assertEqual(shape.name, 'ChangePasswordRequest')
-        self.assertEqual(list(sorted(shape.members)),
-                         ['NewPassword', 'OldPassword'])
+        self.assertEqual(
+            list(sorted(shape.members)), ['NewPassword', 'OldPassword']
+        )
         self.assertEqual(shape.members['OldPassword'].name, 'passwordType')
         self.assertEqual(shape.members['OldPassword'].type_name, 'string')
         self.assertEqual(shape.error_code, None)
@@ -782,7 +899,7 @@ class TestShapeResolver(unittest.TestCase):
             'FooException': {
                 'exception': True,
                 'type': 'structure',
-                'members': {}
+                'members': {},
             }
         }
         # Test without explicit error code
@@ -805,22 +922,25 @@ class TestShapeResolver(unittest.TestCase):
                 'members': {
                     'OldPassword': {'shape': 'passwordType'},
                     'NewPassword': {'shape': 'passwordType'},
-                }
+                },
             },
             'passwordType': {
                 "type": "string",
                 "min": 1,
                 "max": 128,
-                "sensitive": True
-            }
+                "pattern": ".*",
+                "sensitive": True,
+            },
         }
         resolver = model.ShapeResolver(shapes)
         shape = resolver.get_shape_by_name('ChangePasswordRequest')
-        self.assertEqual(shape.metadata['required'],
-                         ['OldPassword', 'NewPassword'])
+        self.assertEqual(
+            shape.metadata['required'], ['OldPassword', 'NewPassword']
+        )
         member = shape.members['OldPassword']
         self.assertEqual(member.metadata['min'], 1)
         self.assertEqual(member.metadata['max'], 128)
+        self.assertEqual(member.metadata['pattern'], '.*')
         self.assertEqual(member.metadata['sensitive'], True)
 
     def test_error_shape_metadata(self):
@@ -833,14 +953,14 @@ class TestShapeResolver(unittest.TestCase):
                     }
                 },
                 'exception': True,
-                'retryable': {'throttling': True}
+                'retryable': {'throttling': True},
             }
         }
         resolver = model.ShapeResolver(shapes)
         shape = resolver.get_shape_by_name('ResourceNotFoundException')
         self.assertEqual(
             shape.metadata,
-            {'exception': True, 'retryable': {'throttling': True}}
+            {'exception': True, 'retryable': {'throttling': True}},
         )
 
     def test_shape_list(self):
@@ -851,13 +971,9 @@ class TestShapeResolver(unittest.TestCase):
             },
             'MFADevice': {
                 'type': 'structure',
-                'members': {
-                    'UserName': {'shape': 'userNameType'}
-                }
+                'members': {'UserName': {'shape': 'userNameType'}},
             },
-            'userNameType': {
-                'type': 'string'
-            }
+            'userNameType': {'type': 'string'},
         }
         resolver = model.ShapeResolver(shapes)
         shape = resolver.get_shape_by_name('mfaDeviceListType')
@@ -871,11 +987,7 @@ class TestShapeResolver(unittest.TestCase):
             resolver.get_shape_by_name('NoExistShape')
 
     def test_missing_type_key(self):
-        shapes = {
-            'UnknownType': {
-                'NotTheTypeKey': 'someUnknownType'
-            }
-        }
+        shapes = {'UnknownType': {'NotTheTypeKey': 'someUnknownType'}}
         resolver = model.ShapeResolver(shapes)
         with self.assertRaises(model.InvalidShapeError):
             resolver.get_shape_by_name('UnknownType')
@@ -889,7 +1001,7 @@ class TestShapeResolver(unittest.TestCase):
                 'members': {
                     'A': {'type': 'string'},
                     'B': {'type': 'string'},
-                }
+                },
             }
         }
         resolver = model.ShapeResolver(shapes)
@@ -906,18 +1018,20 @@ class TestShapeResolver(unittest.TestCase):
             }
         }
         resolver = model.ShapeResolver(shapes)
-        self.assertIn('StringType',
-                      repr(resolver.get_shape_by_name('StringType')))
+        self.assertIn(
+            'StringType', repr(resolver.get_shape_by_name('StringType'))
+        )
 
 
 class TestBuilders(unittest.TestCase):
-
     def test_structure_shape_builder_with_scalar_types(self):
         b = model.DenormalizedStructureBuilder()
-        shape = b.with_members({
-            'A': {'type': 'string'},
-            'B': {'type': 'integer'},
-        }).build_model()
+        shape = b.with_members(
+            {
+                'A': {'type': 'string'},
+                'B': {'type': 'integer'},
+            }
+        ).build_model()
         self.assertIsInstance(shape, model.StructureShape)
         self.assertEqual(sorted(list(shape.members)), ['A', 'B'])
         self.assertEqual(shape.members['A'].type_name, 'string')
@@ -925,14 +1039,16 @@ class TestBuilders(unittest.TestCase):
 
     def test_structure_shape_with_structure_type(self):
         b = model.DenormalizedStructureBuilder()
-        shape = b.with_members({
-            'A': {
-                'type': 'structure',
-                'members': {
-                    'A-1': {'type': 'string'},
-                }
-            },
-        }).build_model()
+        shape = b.with_members(
+            {
+                'A': {
+                    'type': 'structure',
+                    'members': {
+                        'A-1': {'type': 'string'},
+                    },
+                },
+            }
+        ).build_model()
         self.assertIsInstance(shape, model.StructureShape)
         self.assertEqual(list(shape.members), ['A'])
         self.assertEqual(shape.members['A'].type_name, 'structure')
@@ -940,26 +1056,25 @@ class TestBuilders(unittest.TestCase):
 
     def test_structure_shape_with_list(self):
         b = model.DenormalizedStructureBuilder()
-        shape = b.with_members({
-            'A': {
-                'type': 'list',
-                'member': {
-                    'type': 'string'
-                }
-            },
-        }).build_model()
+        shape = b.with_members(
+            {
+                'A': {'type': 'list', 'member': {'type': 'string'}},
+            }
+        ).build_model()
         self.assertIsInstance(shape.members['A'], model.ListShape)
         self.assertEqual(shape.members['A'].member.type_name, 'string')
 
     def test_structure_shape_with_map_type(self):
         b = model.DenormalizedStructureBuilder()
-        shape = b.with_members({
-            'A': {
-                'type': 'map',
-                'key': {'type': 'string'},
-                'value': {'type': 'string'},
+        shape = b.with_members(
+            {
+                'A': {
+                    'type': 'map',
+                    'key': {'type': 'string'},
+                    'value': {'type': 'string'},
+                }
             }
-        }).build_model()
+        ).build_model()
         self.assertIsInstance(shape.members['A'], model.MapShape)
         map_shape = shape.members['A']
         self.assertEqual(map_shape.key.type_name, 'string')
@@ -967,33 +1082,38 @@ class TestBuilders(unittest.TestCase):
 
     def test_nested_structure(self):
         b = model.DenormalizedStructureBuilder()
-        shape = b.with_members({
-            'A': {
-                'type': 'structure',
-                'members': {
-                    'B': {
-                        'type': 'structure',
-                        'members': {
-                            'C': {
-                                'type': 'string',
-                            }
+        shape = b.with_members(
+            {
+                'A': {
+                    'type': 'structure',
+                    'members': {
+                        'B': {
+                            'type': 'structure',
+                            'members': {
+                                'C': {
+                                    'type': 'string',
+                                }
+                            },
                         }
-                    }
+                    },
                 }
             }
-        }).build_model()
+        ).build_model()
         self.assertEqual(
-            shape.members['A'].members['B'].members['C'].type_name, 'string')
+            shape.members['A'].members['B'].members['C'].type_name, 'string'
+        )
 
     def test_enum_values_on_string_used(self):
         b = model.DenormalizedStructureBuilder()
         enum_values = ['foo', 'bar', 'baz']
-        shape = b.with_members({
-            'A': {
-                'type': 'string',
-                'enum': enum_values,
-            },
-        }).build_model()
+        shape = b.with_members(
+            {
+                'A': {
+                    'type': 'string',
+                    'enum': enum_values,
+                },
+            }
+        ).build_model()
         self.assertIsInstance(shape, model.StructureShape)
         string_shape = shape.members['A']
         self.assertIsInstance(string_shape, model.StringShape)
@@ -1002,70 +1122,76 @@ class TestBuilders(unittest.TestCase):
 
     def test_documentation_on_shape_used(self):
         b = model.DenormalizedStructureBuilder()
-        shape = b.with_members({
-            'A': {
-                'type': 'string',
-                'documentation': 'MyDocs',
-            },
-        }).build_model()
-        self.assertEqual(shape.members['A'].documentation,
-                         'MyDocs')
+        shape = b.with_members(
+            {
+                'A': {
+                    'type': 'string',
+                    'documentation': 'MyDocs',
+                },
+            }
+        ).build_model()
+        self.assertEqual(shape.members['A'].documentation, 'MyDocs')
 
     def test_min_max_used_in_metadata(self):
         b = model.DenormalizedStructureBuilder()
-        shape = b.with_members({
-            'A': {
-                'type': 'string',
-                'documentation': 'MyDocs',
-                'min': 2,
-                'max': 3,
-            },
-        }).build_model()
+        shape = b.with_members(
+            {
+                'A': {
+                    'type': 'string',
+                    'documentation': 'MyDocs',
+                    'min': 2,
+                    'max': 3,
+                },
+            }
+        ).build_model()
         metadata = shape.members['A'].metadata
         self.assertEqual(metadata.get('min'), 2)
         self.assertEqual(metadata.get('max'), 3)
 
     def test_use_shape_name_when_provided(self):
         b = model.DenormalizedStructureBuilder()
-        shape = b.with_members({
-            'A': {
-                'type': 'string',
-                'shape_name': 'MyStringShape',
-            },
-        }).build_model()
+        shape = b.with_members(
+            {
+                'A': {
+                    'type': 'string',
+                    'shape_name': 'MyStringShape',
+                },
+            }
+        ).build_model()
         self.assertEqual(shape.members['A'].name, 'MyStringShape')
 
     def test_unknown_shape_type(self):
         b = model.DenormalizedStructureBuilder()
         with self.assertRaises(model.InvalidShapeError):
-            b.with_members({
-                'A': {
-                    'type': 'brand-new-shape-type',
-                },
-            }).build_model()
+            b.with_members(
+                {
+                    'A': {
+                        'type': 'brand-new-shape-type',
+                    },
+                }
+            ).build_model()
 
     def test_ordered_shape_builder(self):
         b = model.DenormalizedStructureBuilder()
-        shape = b.with_members(OrderedDict(
-            [
-                ('A', {
-                    'type': 'string'
-                }),
-                ('B', {
-                    'type': 'structure',
-                    'members': OrderedDict(
-                        [
-                            ('C', {
-                                'type': 'string'
-                            }),
-                            ('D', {
-                                'type': 'string'
-                            })
-                        ]
-                    )
-                })
-            ]
-        )).build_model()
+        shape = b.with_members(
+            OrderedDict(
+                [
+                    ('A', {'type': 'string'}),
+                    (
+                        'B',
+                        {
+                            'type': 'structure',
+                            'members': OrderedDict(
+                                [
+                                    ('C', {'type': 'string'}),
+                                    ('D', {'type': 'string'}),
+                                ]
+                            ),
+                        },
+                    ),
+                ]
+            )
+        ).build_model()
 
         # Members should be in order
         self.assertEqual(['A', 'B'], list(shape.members.keys()))

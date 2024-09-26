@@ -13,6 +13,43 @@
     "uid":"networkmanager-2019-07-05"
   },
   "operations":{
+    "AcceptAttachment":{
+      "name":"AcceptAttachment",
+      "http":{
+        "method":"POST",
+        "requestUri":"/attachments/{attachmentId}/accept"
+      },
+      "input":{"shape":"AcceptAttachmentRequest"},
+      "output":{"shape":"AcceptAttachmentResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ConflictException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Accepts a core network attachment request. </p> <p>Once the attachment request is accepted by a core network owner, the attachment is created and connected to a core network.</p>"
+    },
+    "AssociateConnectPeer":{
+      "name":"AssociateConnectPeer",
+      "http":{
+        "method":"POST",
+        "requestUri":"/global-networks/{globalNetworkId}/connect-peer-associations"
+      },
+      "input":{"shape":"AssociateConnectPeerRequest"},
+      "output":{"shape":"AssociateConnectPeerResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"ServiceQuotaExceededException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ConflictException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Associates a core network Connect peer with a device and optionally, with a link. </p> <p>If you specify a link, it must be associated with the specified device. You can only associate core network Connect peers that have been created on a core network Connect attachment on a core network. </p>"
+    },
     "AssociateCustomerGateway":{
       "name":"AssociateCustomerGateway",
       "http":{
@@ -30,7 +67,7 @@
         {"shape":"ThrottlingException"},
         {"shape":"InternalServerException"}
       ],
-      "documentation":"<p>Associates a customer gateway with a device and optionally, with a link. If you specify a link, it must be associated with the specified device. </p> <p>You can only associate customer gateways that are connected to a VPN attachment on a transit gateway. The transit gateway must be registered in your global network. When you register a transit gateway, customer gateways that are connected to the transit gateway are automatically included in the global network. To list customer gateways that are connected to a transit gateway, use the <a href=\"https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeVpnConnections.html\">DescribeVpnConnections</a> EC2 API and filter by <code>transit-gateway-id</code>.</p> <p>You cannot associate a customer gateway with more than one device and link. </p>"
+      "documentation":"<p>Associates a customer gateway with a device and optionally, with a link. If you specify a link, it must be associated with the specified device. </p> <p>You can only associate customer gateways that are connected to a VPN attachment on a transit gateway or core network registered in your global network. When you register a transit gateway or core network, customer gateways that are connected to the transit gateway are automatically included in the global network. To list customer gateways that are connected to a transit gateway, use the <a href=\"https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeVpnConnections.html\">DescribeVpnConnections</a> EC2 API and filter by <code>transit-gateway-id</code>.</p> <p>You cannot associate a customer gateway with more than one device and link. </p>"
     },
     "AssociateLink":{
       "name":"AssociateLink",
@@ -70,6 +107,42 @@
       ],
       "documentation":"<p>Associates a transit gateway Connect peer with a device, and optionally, with a link. If you specify a link, it must be associated with the specified device. </p> <p>You can only associate transit gateway Connect peers that have been created on a transit gateway that's registered in your global network.</p> <p>You cannot associate a transit gateway Connect peer with more than one device and link. </p>"
     },
+    "CreateConnectAttachment":{
+      "name":"CreateConnectAttachment",
+      "http":{
+        "method":"POST",
+        "requestUri":"/connect-attachments"
+      },
+      "input":{"shape":"CreateConnectAttachmentRequest"},
+      "output":{"shape":"CreateConnectAttachmentResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ConflictException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Creates a core network Connect attachment from a specified core network attachment. </p> <p>A core network Connect attachment is a GRE-based tunnel attachment that you can use to establish a connection between a core network and an appliance. A core network Connect attachment uses an existing VPC attachment as the underlying transport mechanism.</p>"
+    },
+    "CreateConnectPeer":{
+      "name":"CreateConnectPeer",
+      "http":{
+        "method":"POST",
+        "requestUri":"/connect-peers"
+      },
+      "input":{"shape":"CreateConnectPeerRequest"},
+      "output":{"shape":"CreateConnectPeerResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ConflictException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Creates a core network Connect peer for a specified core network connect attachment between a core network and an appliance. The peer address and transit gateway address must be the same IP address family (IPv4 or IPv6).</p>"
+    },
     "CreateConnection":{
       "name":"CreateConnection",
       "http":{
@@ -87,6 +160,25 @@
         {"shape":"InternalServerException"}
       ],
       "documentation":"<p>Creates a connection between two devices. The devices can be a physical or virtual appliance that connects to a third-party appliance in a VPC, or a physical appliance that connects to another physical appliance in an on-premises network.</p>"
+    },
+    "CreateCoreNetwork":{
+      "name":"CreateCoreNetwork",
+      "http":{
+        "method":"POST",
+        "requestUri":"/core-networks"
+      },
+      "input":{"shape":"CreateCoreNetworkRequest"},
+      "output":{"shape":"CreateCoreNetworkResponse"},
+      "errors":[
+        {"shape":"CoreNetworkPolicyException"},
+        {"shape":"ValidationException"},
+        {"shape":"ServiceQuotaExceededException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ConflictException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Creates a core network as part of your global network, and optionally, with a core network policy.</p>"
     },
     "CreateDevice":{
       "name":"CreateDevice",
@@ -163,6 +255,114 @@
       ],
       "documentation":"<p>Creates a new site in a global network.</p>"
     },
+    "CreateSiteToSiteVpnAttachment":{
+      "name":"CreateSiteToSiteVpnAttachment",
+      "http":{
+        "method":"POST",
+        "requestUri":"/site-to-site-vpn-attachments"
+      },
+      "input":{"shape":"CreateSiteToSiteVpnAttachmentRequest"},
+      "output":{"shape":"CreateSiteToSiteVpnAttachmentResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ConflictException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Creates an Amazon Web Services site-to-site VPN attachment on an edge location of a core network.</p>"
+    },
+    "CreateTransitGatewayPeering":{
+      "name":"CreateTransitGatewayPeering",
+      "http":{
+        "method":"POST",
+        "requestUri":"/transit-gateway-peerings"
+      },
+      "input":{"shape":"CreateTransitGatewayPeeringRequest"},
+      "output":{"shape":"CreateTransitGatewayPeeringResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ConflictException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Creates a transit gateway peering connection.</p>"
+    },
+    "CreateTransitGatewayRouteTableAttachment":{
+      "name":"CreateTransitGatewayRouteTableAttachment",
+      "http":{
+        "method":"POST",
+        "requestUri":"/transit-gateway-route-table-attachments"
+      },
+      "input":{"shape":"CreateTransitGatewayRouteTableAttachmentRequest"},
+      "output":{"shape":"CreateTransitGatewayRouteTableAttachmentResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ConflictException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Creates a transit gateway route table attachment.</p>"
+    },
+    "CreateVpcAttachment":{
+      "name":"CreateVpcAttachment",
+      "http":{
+        "method":"POST",
+        "requestUri":"/vpc-attachments"
+      },
+      "input":{"shape":"CreateVpcAttachmentRequest"},
+      "output":{"shape":"CreateVpcAttachmentResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ConflictException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Creates a VPC attachment on an edge location of a core network.</p>"
+    },
+    "DeleteAttachment":{
+      "name":"DeleteAttachment",
+      "http":{
+        "method":"DELETE",
+        "requestUri":"/attachments/{attachmentId}"
+      },
+      "input":{"shape":"DeleteAttachmentRequest"},
+      "output":{"shape":"DeleteAttachmentResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ConflictException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Deletes an attachment. Supports all attachment types.</p>"
+    },
+    "DeleteConnectPeer":{
+      "name":"DeleteConnectPeer",
+      "http":{
+        "method":"DELETE",
+        "requestUri":"/connect-peers/{connectPeerId}"
+      },
+      "input":{"shape":"DeleteConnectPeerRequest"},
+      "output":{"shape":"DeleteConnectPeerResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ConflictException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Deletes a Connect peer.</p>"
+    },
     "DeleteConnection":{
       "name":"DeleteConnection",
       "http":{
@@ -180,6 +380,42 @@
         {"shape":"InternalServerException"}
       ],
       "documentation":"<p>Deletes the specified connection in your global network.</p>"
+    },
+    "DeleteCoreNetwork":{
+      "name":"DeleteCoreNetwork",
+      "http":{
+        "method":"DELETE",
+        "requestUri":"/core-networks/{coreNetworkId}"
+      },
+      "input":{"shape":"DeleteCoreNetworkRequest"},
+      "output":{"shape":"DeleteCoreNetworkResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ConflictException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Deletes a core network along with all core network policies. This can only be done if there are no attachments on a core network.</p>"
+    },
+    "DeleteCoreNetworkPolicyVersion":{
+      "name":"DeleteCoreNetworkPolicyVersion",
+      "http":{
+        "method":"DELETE",
+        "requestUri":"/core-networks/{coreNetworkId}/core-network-policy-versions/{policyVersionId}"
+      },
+      "input":{"shape":"DeleteCoreNetworkPolicyVersionRequest"},
+      "output":{"shape":"DeleteCoreNetworkPolicyVersionResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"},
+        {"shape":"ConflictException"}
+      ],
+      "documentation":"<p>Deletes a policy version from a core network. You can't delete the current LIVE policy.</p>"
     },
     "DeleteDevice":{
       "name":"DeleteDevice",
@@ -215,7 +451,7 @@
         {"shape":"ThrottlingException"},
         {"shape":"InternalServerException"}
       ],
-      "documentation":"<p>Deletes an existing global network. You must first delete all global network objects (devices, links, and sites) and deregister all transit gateways.</p>"
+      "documentation":"<p>Deletes an existing global network. You must first delete all global network objects (devices, links, and sites), deregister all transit gateways, and delete any core networks.</p>"
     },
     "DeleteLink":{
       "name":"DeleteLink",
@@ -234,6 +470,41 @@
         {"shape":"InternalServerException"}
       ],
       "documentation":"<p>Deletes an existing link. You must first disassociate the link from any devices and customer gateways.</p>"
+    },
+    "DeletePeering":{
+      "name":"DeletePeering",
+      "http":{
+        "method":"DELETE",
+        "requestUri":"/peerings/{peeringId}"
+      },
+      "input":{"shape":"DeletePeeringRequest"},
+      "output":{"shape":"DeletePeeringResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ConflictException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Deletes an existing peering connection.</p>"
+    },
+    "DeleteResourcePolicy":{
+      "name":"DeleteResourcePolicy",
+      "http":{
+        "method":"DELETE",
+        "requestUri":"/resource-policy/{resourceArn}"
+      },
+      "input":{"shape":"DeleteResourcePolicyRequest"},
+      "output":{"shape":"DeleteResourcePolicyResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ConflictException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Deletes a resource policy for the specified resource. This revokes the access of the principals specified in the resource policy.</p>"
     },
     "DeleteSite":{
       "name":"DeleteSite",
@@ -287,6 +558,24 @@
         {"shape":"InternalServerException"}
       ],
       "documentation":"<p>Describes one or more global networks. By default, all global networks are described. To describe the objects in your global network, you must use the appropriate <code>Get*</code> action. For example, to list the transit gateways in your global network, use <a>GetTransitGatewayRegistrations</a>.</p>"
+    },
+    "DisassociateConnectPeer":{
+      "name":"DisassociateConnectPeer",
+      "http":{
+        "method":"DELETE",
+        "requestUri":"/global-networks/{globalNetworkId}/connect-peer-associations/{connectPeerId}"
+      },
+      "input":{"shape":"DisassociateConnectPeerRequest"},
+      "output":{"shape":"DisassociateConnectPeerResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ConflictException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Disassociates a core network Connect peer from a device and a link. </p>"
     },
     "DisassociateCustomerGateway":{
       "name":"DisassociateCustomerGateway",
@@ -342,6 +631,76 @@
       ],
       "documentation":"<p>Disassociates a transit gateway Connect peer from a device and link.</p>"
     },
+    "ExecuteCoreNetworkChangeSet":{
+      "name":"ExecuteCoreNetworkChangeSet",
+      "http":{
+        "method":"POST",
+        "requestUri":"/core-networks/{coreNetworkId}/core-network-change-sets/{policyVersionId}/execute"
+      },
+      "input":{"shape":"ExecuteCoreNetworkChangeSetRequest"},
+      "output":{"shape":"ExecuteCoreNetworkChangeSetResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"},
+        {"shape":"ConflictException"}
+      ],
+      "documentation":"<p>Executes a change set on your core network. Deploys changes globally based on the policy submitted..</p>"
+    },
+    "GetConnectAttachment":{
+      "name":"GetConnectAttachment",
+      "http":{
+        "method":"GET",
+        "requestUri":"/connect-attachments/{attachmentId}"
+      },
+      "input":{"shape":"GetConnectAttachmentRequest"},
+      "output":{"shape":"GetConnectAttachmentResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Returns information about a core network Connect attachment.</p>"
+    },
+    "GetConnectPeer":{
+      "name":"GetConnectPeer",
+      "http":{
+        "method":"GET",
+        "requestUri":"/connect-peers/{connectPeerId}"
+      },
+      "input":{"shape":"GetConnectPeerRequest"},
+      "output":{"shape":"GetConnectPeerResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Returns information about a core network Connect peer.</p>"
+    },
+    "GetConnectPeerAssociations":{
+      "name":"GetConnectPeerAssociations",
+      "http":{
+        "method":"GET",
+        "requestUri":"/global-networks/{globalNetworkId}/connect-peer-associations"
+      },
+      "input":{"shape":"GetConnectPeerAssociationsRequest"},
+      "output":{"shape":"GetConnectPeerAssociationsResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ConflictException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Returns information about a core network Connect peer associations.</p>"
+    },
     "GetConnections":{
       "name":"GetConnections",
       "http":{
@@ -358,6 +717,74 @@
         {"shape":"InternalServerException"}
       ],
       "documentation":"<p>Gets information about one or more of your connections in a global network.</p>"
+    },
+    "GetCoreNetwork":{
+      "name":"GetCoreNetwork",
+      "http":{
+        "method":"GET",
+        "requestUri":"/core-networks/{coreNetworkId}"
+      },
+      "input":{"shape":"GetCoreNetworkRequest"},
+      "output":{"shape":"GetCoreNetworkResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Returns information about the LIVE policy for a core network.</p>"
+    },
+    "GetCoreNetworkChangeEvents":{
+      "name":"GetCoreNetworkChangeEvents",
+      "http":{
+        "method":"GET",
+        "requestUri":"/core-networks/{coreNetworkId}/core-network-change-events/{policyVersionId}"
+      },
+      "input":{"shape":"GetCoreNetworkChangeEventsRequest"},
+      "output":{"shape":"GetCoreNetworkChangeEventsResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Returns information about a core network change event.</p>"
+    },
+    "GetCoreNetworkChangeSet":{
+      "name":"GetCoreNetworkChangeSet",
+      "http":{
+        "method":"GET",
+        "requestUri":"/core-networks/{coreNetworkId}/core-network-change-sets/{policyVersionId}"
+      },
+      "input":{"shape":"GetCoreNetworkChangeSetRequest"},
+      "output":{"shape":"GetCoreNetworkChangeSetResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Returns a change set between the LIVE core network policy and a submitted policy.</p>"
+    },
+    "GetCoreNetworkPolicy":{
+      "name":"GetCoreNetworkPolicy",
+      "http":{
+        "method":"GET",
+        "requestUri":"/core-networks/{coreNetworkId}/core-network-policy"
+      },
+      "input":{"shape":"GetCoreNetworkPolicyRequest"},
+      "output":{"shape":"GetCoreNetworkPolicyResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Returns details about a core network policy. You can get details about your current live policy or any previous policy version.</p>"
     },
     "GetCustomerGatewayAssociations":{
       "name":"GetCustomerGatewayAssociations",
@@ -512,6 +939,22 @@
       ],
       "documentation":"<p>Gets the network telemetry of the specified global network.</p>"
     },
+    "GetResourcePolicy":{
+      "name":"GetResourcePolicy",
+      "http":{
+        "method":"GET",
+        "requestUri":"/resource-policy/{resourceArn}"
+      },
+      "input":{"shape":"GetResourcePolicyRequest"},
+      "output":{"shape":"GetResourcePolicyResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Returns information about a resource policy.</p>"
+    },
     "GetRouteAnalysis":{
       "name":"GetRouteAnalysis",
       "http":{
@@ -528,6 +971,23 @@
         {"shape":"InternalServerException"}
       ],
       "documentation":"<p>Gets information about the specified route analysis.</p>"
+    },
+    "GetSiteToSiteVpnAttachment":{
+      "name":"GetSiteToSiteVpnAttachment",
+      "http":{
+        "method":"GET",
+        "requestUri":"/site-to-site-vpn-attachments/{attachmentId}"
+      },
+      "input":{"shape":"GetSiteToSiteVpnAttachmentRequest"},
+      "output":{"shape":"GetSiteToSiteVpnAttachmentResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Returns information about a site-to-site VPN attachment.</p>"
     },
     "GetSites":{
       "name":"GetSites",
@@ -564,6 +1024,23 @@
       ],
       "documentation":"<p>Gets information about one or more of your transit gateway Connect peer associations in a global network.</p>"
     },
+    "GetTransitGatewayPeering":{
+      "name":"GetTransitGatewayPeering",
+      "http":{
+        "method":"GET",
+        "requestUri":"/transit-gateway-peerings/{peeringId}"
+      },
+      "input":{"shape":"GetTransitGatewayPeeringRequest"},
+      "output":{"shape":"GetTransitGatewayPeeringResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Returns information about a transit gateway peer.</p>"
+    },
     "GetTransitGatewayRegistrations":{
       "name":"GetTransitGatewayRegistrations",
       "http":{
@@ -580,6 +1057,131 @@
         {"shape":"InternalServerException"}
       ],
       "documentation":"<p>Gets information about the transit gateway registrations in a specified global network.</p>"
+    },
+    "GetTransitGatewayRouteTableAttachment":{
+      "name":"GetTransitGatewayRouteTableAttachment",
+      "http":{
+        "method":"GET",
+        "requestUri":"/transit-gateway-route-table-attachments/{attachmentId}"
+      },
+      "input":{"shape":"GetTransitGatewayRouteTableAttachmentRequest"},
+      "output":{"shape":"GetTransitGatewayRouteTableAttachmentResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Returns information about a transit gateway route table attachment.</p>"
+    },
+    "GetVpcAttachment":{
+      "name":"GetVpcAttachment",
+      "http":{
+        "method":"GET",
+        "requestUri":"/vpc-attachments/{attachmentId}"
+      },
+      "input":{"shape":"GetVpcAttachmentRequest"},
+      "output":{"shape":"GetVpcAttachmentResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Returns information about a VPC attachment.</p>"
+    },
+    "ListAttachments":{
+      "name":"ListAttachments",
+      "http":{
+        "method":"GET",
+        "requestUri":"/attachments"
+      },
+      "input":{"shape":"ListAttachmentsRequest"},
+      "output":{"shape":"ListAttachmentsResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Returns a list of core network attachments.</p>"
+    },
+    "ListConnectPeers":{
+      "name":"ListConnectPeers",
+      "http":{
+        "method":"GET",
+        "requestUri":"/connect-peers"
+      },
+      "input":{"shape":"ListConnectPeersRequest"},
+      "output":{"shape":"ListConnectPeersResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Returns a list of core network Connect peers.</p>"
+    },
+    "ListCoreNetworkPolicyVersions":{
+      "name":"ListCoreNetworkPolicyVersions",
+      "http":{
+        "method":"GET",
+        "requestUri":"/core-networks/{coreNetworkId}/core-network-policy-versions"
+      },
+      "input":{"shape":"ListCoreNetworkPolicyVersionsRequest"},
+      "output":{"shape":"ListCoreNetworkPolicyVersionsResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Returns a list of core network policy versions.</p>"
+    },
+    "ListCoreNetworks":{
+      "name":"ListCoreNetworks",
+      "http":{
+        "method":"GET",
+        "requestUri":"/core-networks"
+      },
+      "input":{"shape":"ListCoreNetworksRequest"},
+      "output":{"shape":"ListCoreNetworksResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Returns a list of owned and shared core networks.</p>"
+    },
+    "ListOrganizationServiceAccessStatus":{
+      "name":"ListOrganizationServiceAccessStatus",
+      "http":{
+        "method":"GET",
+        "requestUri":"/organizations/service-access"
+      },
+      "input":{"shape":"ListOrganizationServiceAccessStatusRequest"},
+      "output":{"shape":"ListOrganizationServiceAccessStatusResponse"},
+      "documentation":"<p>Gets the status of the Service Linked Role (SLR) deployment for the accounts in a given Amazon Web Services Organization.</p>"
+    },
+    "ListPeerings":{
+      "name":"ListPeerings",
+      "http":{
+        "method":"GET",
+        "requestUri":"/peerings"
+      },
+      "input":{"shape":"ListPeeringsRequest"},
+      "output":{"shape":"ListPeeringsResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Lists the peerings for a core network.</p>"
     },
     "ListTagsForResource":{
       "name":"ListTagsForResource",
@@ -598,6 +1200,43 @@
       ],
       "documentation":"<p>Lists the tags for a specified resource.</p>"
     },
+    "PutCoreNetworkPolicy":{
+      "name":"PutCoreNetworkPolicy",
+      "http":{
+        "method":"POST",
+        "requestUri":"/core-networks/{coreNetworkId}/core-network-policy"
+      },
+      "input":{"shape":"PutCoreNetworkPolicyRequest"},
+      "output":{"shape":"PutCoreNetworkPolicyResponse"},
+      "errors":[
+        {"shape":"CoreNetworkPolicyException"},
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"},
+        {"shape":"ConflictException"}
+      ],
+      "documentation":"<p>Creates a new, immutable version of a core network policy. A subsequent change set is created showing the differences between the LIVE policy and the submitted policy.</p>"
+    },
+    "PutResourcePolicy":{
+      "name":"PutResourcePolicy",
+      "http":{
+        "method":"POST",
+        "requestUri":"/resource-policy/{resourceArn}"
+      },
+      "input":{"shape":"PutResourcePolicyRequest"},
+      "output":{"shape":"PutResourcePolicyResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"ServiceQuotaExceededException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ConflictException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Creates or updates a resource policy.</p>"
+    },
     "RegisterTransitGateway":{
       "name":"RegisterTransitGateway",
       "http":{
@@ -614,7 +1253,61 @@
         {"shape":"ThrottlingException"},
         {"shape":"InternalServerException"}
       ],
-      "documentation":"<p>Registers a transit gateway in your global network. The transit gateway can be in any Amazon Web Services Region, but it must be owned by the same Amazon Web Services account that owns the global network. You cannot register a transit gateway in more than one global network.</p>"
+      "documentation":"<p>Registers a transit gateway in your global network. Not all Regions support transit gateways for global networks. For a list of the supported Regions, see <a href=\"https://docs.aws.amazon.com/network-manager/latest/tgwnm/what-are-global-networks.html#nm-available-regions\">Region Availability</a> in the <i>Amazon Web Services Transit Gateways for Global Networks User Guide</i>. The transit gateway can be in any of the supported Amazon Web Services Regions, but it must be owned by the same Amazon Web Services account that owns the global network. You cannot register a transit gateway in more than one global network.</p>"
+    },
+    "RejectAttachment":{
+      "name":"RejectAttachment",
+      "http":{
+        "method":"POST",
+        "requestUri":"/attachments/{attachmentId}/reject"
+      },
+      "input":{"shape":"RejectAttachmentRequest"},
+      "output":{"shape":"RejectAttachmentResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ConflictException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Rejects a core network attachment request.</p>"
+    },
+    "RestoreCoreNetworkPolicyVersion":{
+      "name":"RestoreCoreNetworkPolicyVersion",
+      "http":{
+        "method":"POST",
+        "requestUri":"/core-networks/{coreNetworkId}/core-network-policy-versions/{policyVersionId}/restore"
+      },
+      "input":{"shape":"RestoreCoreNetworkPolicyVersionRequest"},
+      "output":{"shape":"RestoreCoreNetworkPolicyVersionResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"},
+        {"shape":"ConflictException"}
+      ],
+      "documentation":"<p>Restores a previous policy version as a new, immutable version of a core network policy. A subsequent change set is created showing the differences between the LIVE policy and restored policy.</p>"
+    },
+    "StartOrganizationServiceAccessUpdate":{
+      "name":"StartOrganizationServiceAccessUpdate",
+      "http":{
+        "method":"POST",
+        "requestUri":"/organizations/service-access"
+      },
+      "input":{"shape":"StartOrganizationServiceAccessUpdateRequest"},
+      "output":{"shape":"StartOrganizationServiceAccessUpdateResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"ServiceQuotaExceededException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ConflictException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Enables the Network Manager service for an Amazon Web Services Organization. This can only be called by a management account within the organization. </p>"
     },
     "StartRouteAnalysis":{
       "name":"StartRouteAnalysis",
@@ -688,6 +1381,24 @@
         {"shape":"InternalServerException"}
       ],
       "documentation":"<p>Updates the information for an existing connection. To remove information for any of the parameters, specify an empty string.</p>"
+    },
+    "UpdateCoreNetwork":{
+      "name":"UpdateCoreNetwork",
+      "http":{
+        "method":"PATCH",
+        "requestUri":"/core-networks/{coreNetworkId}"
+      },
+      "input":{"shape":"UpdateCoreNetworkRequest"},
+      "output":{"shape":"UpdateCoreNetworkResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ConflictException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Updates the description of a core network.</p>"
     },
     "UpdateDevice":{
       "name":"UpdateDevice",
@@ -779,32 +1490,142 @@
         {"shape":"InternalServerException"}
       ],
       "documentation":"<p>Updates the information for an existing site. To remove information for any of the parameters, specify an empty string.</p>"
+    },
+    "UpdateVpcAttachment":{
+      "name":"UpdateVpcAttachment",
+      "http":{
+        "method":"PATCH",
+        "requestUri":"/vpc-attachments/{attachmentId}"
+      },
+      "input":{"shape":"UpdateVpcAttachmentRequest"},
+      "output":{"shape":"UpdateVpcAttachmentResponse"},
+      "errors":[
+        {"shape":"ValidationException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ConflictException"},
+        {"shape":"ThrottlingException"},
+        {"shape":"InternalServerException"}
+      ],
+      "documentation":"<p>Updates a VPC attachment.</p>"
     }
   },
   "shapes":{
+    "AWSAccountId":{
+      "type":"string",
+      "max":12,
+      "min":12,
+      "pattern":"[\\s\\S]*"
+    },
     "AWSLocation":{
       "type":"structure",
       "members":{
         "Zone":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The Zone that the device is located in. Specify the ID of an Availability Zone, Local Zone, Wavelength Zone, or an Outpost.</p>"
         },
         "SubnetArn":{
-          "shape":"String",
+          "shape":"SubnetArn",
           "documentation":"<p>The Amazon Resource Name (ARN) of the subnet that the device is located in.</p>"
         }
       },
       "documentation":"<p>Specifies a location in Amazon Web Services.</p>"
     },
+    "AcceptAttachmentRequest":{
+      "type":"structure",
+      "required":["AttachmentId"],
+      "members":{
+        "AttachmentId":{
+          "shape":"AttachmentId",
+          "documentation":"<p>The ID of the attachment. </p>",
+          "location":"uri",
+          "locationName":"attachmentId"
+        }
+      }
+    },
+    "AcceptAttachmentResponse":{
+      "type":"structure",
+      "members":{
+        "Attachment":{
+          "shape":"Attachment",
+          "documentation":"<p>The response to the attachment request. </p>"
+        }
+      }
+    },
     "AccessDeniedException":{
       "type":"structure",
       "required":["Message"],
       "members":{
-        "Message":{"shape":"String"}
+        "Message":{"shape":"ServerSideString"}
       },
       "documentation":"<p>You do not have sufficient access to perform this action.</p>",
       "error":{"httpStatusCode":403},
       "exception":true
+    },
+    "AccountId":{
+      "type":"string",
+      "max":50,
+      "min":0
+    },
+    "AccountStatus":{
+      "type":"structure",
+      "members":{
+        "AccountId":{
+          "shape":"AccountId",
+          "documentation":"<p>The ID of an account within the Amazon Web Services Organization.</p>"
+        },
+        "SLRDeploymentStatus":{
+          "shape":"SLRDeploymentStatus",
+          "documentation":"<p>The status of SLR deployment for the account.</p>"
+        }
+      },
+      "documentation":"<p>Describes the current status of an account within an Amazon Web Services Organization, including service-linked roles (SLRs).</p>"
+    },
+    "AccountStatusList":{
+      "type":"list",
+      "member":{"shape":"AccountStatus"}
+    },
+    "Action":{
+      "type":"string",
+      "max":50,
+      "min":0
+    },
+    "AssociateConnectPeerRequest":{
+      "type":"structure",
+      "required":[
+        "GlobalNetworkId",
+        "ConnectPeerId",
+        "DeviceId"
+      ],
+      "members":{
+        "GlobalNetworkId":{
+          "shape":"GlobalNetworkId",
+          "documentation":"<p>The ID of your global network.</p>",
+          "location":"uri",
+          "locationName":"globalNetworkId"
+        },
+        "ConnectPeerId":{
+          "shape":"ConnectPeerId",
+          "documentation":"<p>The ID of the Connect peer.</p>"
+        },
+        "DeviceId":{
+          "shape":"DeviceId",
+          "documentation":"<p>The ID of the device.</p>"
+        },
+        "LinkId":{
+          "shape":"LinkId",
+          "documentation":"<p>The ID of the link.</p>"
+        }
+      }
+    },
+    "AssociateConnectPeerResponse":{
+      "type":"structure",
+      "members":{
+        "ConnectPeerAssociation":{
+          "shape":"ConnectPeerAssociation",
+          "documentation":"<p>The response to the Connect peer request.</p>"
+        }
+      }
     },
     "AssociateCustomerGatewayRequest":{
       "type":"structure",
@@ -815,21 +1636,21 @@
       ],
       "members":{
         "CustomerGatewayArn":{
-          "shape":"String",
+          "shape":"CustomerGatewayArn",
           "documentation":"<p>The Amazon Resource Name (ARN) of the customer gateway.</p>"
         },
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "DeviceId":{
-          "shape":"String",
+          "shape":"DeviceId",
           "documentation":"<p>The ID of the device.</p>"
         },
         "LinkId":{
-          "shape":"String",
+          "shape":"LinkId",
           "documentation":"<p>The ID of the link.</p>"
         }
       }
@@ -852,17 +1673,17 @@
       ],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "DeviceId":{
-          "shape":"String",
+          "shape":"DeviceId",
           "documentation":"<p>The ID of the device.</p>"
         },
         "LinkId":{
-          "shape":"String",
+          "shape":"LinkId",
           "documentation":"<p>The ID of the link.</p>"
         }
       }
@@ -885,21 +1706,21 @@
       ],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "TransitGatewayConnectPeerArn":{
-          "shape":"String",
+          "shape":"TransitGatewayConnectPeerArn",
           "documentation":"<p>The Amazon Resource Name (ARN) of the Connect peer.</p>"
         },
         "DeviceId":{
-          "shape":"String",
+          "shape":"DeviceId",
           "documentation":"<p>The ID of the device.</p>"
         },
         "LinkId":{
-          "shape":"String",
+          "shape":"LinkId",
           "documentation":"<p>The ID of the link.</p>"
         }
       }
@@ -912,6 +1733,101 @@
           "documentation":"<p>The transit gateway Connect peer association.</p>"
         }
       }
+    },
+    "Attachment":{
+      "type":"structure",
+      "members":{
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network.</p>"
+        },
+        "CoreNetworkArn":{
+          "shape":"CoreNetworkArn",
+          "documentation":"<p>The ARN of a core network.</p>"
+        },
+        "AttachmentId":{
+          "shape":"AttachmentId",
+          "documentation":"<p>The ID of the attachment.</p>"
+        },
+        "OwnerAccountId":{
+          "shape":"AWSAccountId",
+          "documentation":"<p>The ID of the attachment account owner.</p>"
+        },
+        "AttachmentType":{
+          "shape":"AttachmentType",
+          "documentation":"<p>The type of attachment.</p>"
+        },
+        "State":{
+          "shape":"AttachmentState",
+          "documentation":"<p>The state of the attachment.</p>"
+        },
+        "EdgeLocation":{
+          "shape":"ExternalRegionCode",
+          "documentation":"<p>The Region where the edge is located.</p>"
+        },
+        "ResourceArn":{
+          "shape":"ResourceArn",
+          "documentation":"<p>The attachment resource ARN.</p>"
+        },
+        "AttachmentPolicyRuleNumber":{
+          "shape":"Integer",
+          "documentation":"<p>The policy rule number associated with the attachment.</p>"
+        },
+        "SegmentName":{
+          "shape":"ConstrainedString",
+          "documentation":"<p>The name of the segment attachment.</p>"
+        },
+        "Tags":{
+          "shape":"TagList",
+          "documentation":"<p>The tags associated with the attachment.</p>"
+        },
+        "ProposedSegmentChange":{
+          "shape":"ProposedSegmentChange",
+          "documentation":"<p>The attachment to move from one segment to another.</p>"
+        },
+        "CreatedAt":{
+          "shape":"DateTime",
+          "documentation":"<p>The timestamp when the attachment was created.</p>"
+        },
+        "UpdatedAt":{
+          "shape":"DateTime",
+          "documentation":"<p>The timestamp when the attachment was last updated.</p>"
+        }
+      },
+      "documentation":"<p>Describes a core network attachment.</p>"
+    },
+    "AttachmentId":{
+      "type":"string",
+      "max":50,
+      "min":0,
+      "pattern":"^attachment-([0-9a-f]{8,17})$"
+    },
+    "AttachmentList":{
+      "type":"list",
+      "member":{"shape":"Attachment"}
+    },
+    "AttachmentState":{
+      "type":"string",
+      "enum":[
+        "REJECTED",
+        "PENDING_ATTACHMENT_ACCEPTANCE",
+        "CREATING",
+        "FAILED",
+        "AVAILABLE",
+        "UPDATING",
+        "PENDING_NETWORK_UPDATE",
+        "PENDING_TAG_ACCEPTANCE",
+        "DELETING"
+      ]
+    },
+    "AttachmentType":{
+      "type":"string",
+      "enum":[
+        "CONNECT",
+        "SITE_TO_SITE_VPN",
+        "VPC",
+        "TRANSIT_GATEWAY_ROUTE_TABLE"
+      ]
     },
     "Bandwidth":{
       "type":"structure",
@@ -927,7 +1843,65 @@
       },
       "documentation":"<p>Describes bandwidth information.</p>"
     },
+    "BgpOptions":{
+      "type":"structure",
+      "members":{
+        "PeerAsn":{
+          "shape":"Long",
+          "documentation":"<p>The Peer ASN of the BGP.</p>"
+        }
+      },
+      "documentation":"<p>Describes the BGP options.</p>"
+    },
     "Boolean":{"type":"boolean"},
+    "ChangeAction":{
+      "type":"string",
+      "enum":[
+        "ADD",
+        "MODIFY",
+        "REMOVE"
+      ]
+    },
+    "ChangeSetState":{
+      "type":"string",
+      "enum":[
+        "PENDING_GENERATION",
+        "FAILED_GENERATION",
+        "READY_TO_EXECUTE",
+        "EXECUTING",
+        "EXECUTION_SUCCEEDED",
+        "OUT_OF_DATE"
+      ]
+    },
+    "ChangeStatus":{
+      "type":"string",
+      "enum":[
+        "NOT_STARTED",
+        "IN_PROGRESS",
+        "COMPLETE",
+        "FAILED"
+      ]
+    },
+    "ChangeType":{
+      "type":"string",
+      "enum":[
+        "CORE_NETWORK_SEGMENT",
+        "CORE_NETWORK_EDGE",
+        "ATTACHMENT_MAPPING",
+        "ATTACHMENT_ROUTE_PROPAGATION",
+        "ATTACHMENT_ROUTE_STATIC",
+        "CORE_NETWORK_CONFIGURATION",
+        "SEGMENTS_CONFIGURATION",
+        "SEGMENT_ACTIONS_CONFIGURATION",
+        "ATTACHMENT_POLICIES_CONFIGURATION"
+      ]
+    },
+    "ClientToken":{
+      "type":"string",
+      "max":256,
+      "min":0,
+      "pattern":"[\\s\\S]*"
+    },
     "ConflictException":{
       "type":"structure",
       "required":[
@@ -936,13 +1910,13 @@
         "ResourceType"
       ],
       "members":{
-        "Message":{"shape":"String"},
+        "Message":{"shape":"ServerSideString"},
         "ResourceId":{
-          "shape":"String",
+          "shape":"ServerSideString",
           "documentation":"<p>The ID of the resource.</p>"
         },
         "ResourceType":{
-          "shape":"String",
+          "shape":"ServerSideString",
           "documentation":"<p>The resource type.</p>"
         }
       },
@@ -950,39 +1924,261 @@
       "error":{"httpStatusCode":409},
       "exception":true
     },
+    "ConnectAttachment":{
+      "type":"structure",
+      "members":{
+        "Attachment":{
+          "shape":"Attachment",
+          "documentation":"<p>The attachment details.</p>"
+        },
+        "TransportAttachmentId":{
+          "shape":"AttachmentId",
+          "documentation":"<p>The ID of the transport attachment.</p>"
+        },
+        "Options":{
+          "shape":"ConnectAttachmentOptions",
+          "documentation":"<p>Options for connecting an attachment.</p>"
+        }
+      },
+      "documentation":"<p>Describes a core network Connect attachment.</p>"
+    },
+    "ConnectAttachmentOptions":{
+      "type":"structure",
+      "members":{
+        "Protocol":{
+          "shape":"TunnelProtocol",
+          "documentation":"<p>The protocol used for the attachment connection.</p>"
+        }
+      },
+      "documentation":"<p>Describes a core network Connect attachment options.</p>"
+    },
+    "ConnectPeer":{
+      "type":"structure",
+      "members":{
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network.</p>"
+        },
+        "ConnectAttachmentId":{
+          "shape":"AttachmentId",
+          "documentation":"<p>The ID of the attachment to connect.</p>"
+        },
+        "ConnectPeerId":{
+          "shape":"ConnectPeerId",
+          "documentation":"<p>The ID of the Connect peer.</p>"
+        },
+        "EdgeLocation":{
+          "shape":"ExternalRegionCode",
+          "documentation":"<p>The Connect peer Regions where edges are located.</p>"
+        },
+        "State":{
+          "shape":"ConnectPeerState",
+          "documentation":"<p>The state of the Connect peer.</p>"
+        },
+        "CreatedAt":{
+          "shape":"DateTime",
+          "documentation":"<p>The timestamp when the Connect peer was created.</p>"
+        },
+        "Configuration":{
+          "shape":"ConnectPeerConfiguration",
+          "documentation":"<p>The configuration of the Connect peer.</p>"
+        },
+        "Tags":{
+          "shape":"TagList",
+          "documentation":"<p>The list of key-value tags associated with the Connect peer.</p>"
+        },
+        "SubnetArn":{
+          "shape":"SubnetArn",
+          "documentation":"<p>The subnet ARN for the Connect peer.</p>"
+        }
+      },
+      "documentation":"<p>Describes a core network Connect peer.</p>"
+    },
+    "ConnectPeerAssociation":{
+      "type":"structure",
+      "members":{
+        "ConnectPeerId":{
+          "shape":"ConnectPeerId",
+          "documentation":"<p>The ID of the Connect peer.</p>"
+        },
+        "GlobalNetworkId":{
+          "shape":"GlobalNetworkId",
+          "documentation":"<p>The ID of the global network.</p>"
+        },
+        "DeviceId":{
+          "shape":"DeviceId",
+          "documentation":"<p>The ID of the device to connect to.</p>"
+        },
+        "LinkId":{
+          "shape":"LinkId",
+          "documentation":"<p>The ID of the link.</p>"
+        },
+        "State":{
+          "shape":"ConnectPeerAssociationState",
+          "documentation":"<p>The state of the Connect peer association.</p>"
+        }
+      },
+      "documentation":"<p>Describes a core network Connect peer association.</p>"
+    },
+    "ConnectPeerAssociationList":{
+      "type":"list",
+      "member":{"shape":"ConnectPeerAssociation"}
+    },
+    "ConnectPeerAssociationState":{
+      "type":"string",
+      "enum":[
+        "PENDING",
+        "AVAILABLE",
+        "DELETING",
+        "DELETED"
+      ]
+    },
+    "ConnectPeerBgpConfiguration":{
+      "type":"structure",
+      "members":{
+        "CoreNetworkAsn":{
+          "shape":"Long",
+          "documentation":"<p>The ASN of the Coret Network.</p>"
+        },
+        "PeerAsn":{
+          "shape":"Long",
+          "documentation":"<p>The ASN of the Connect peer.</p>"
+        },
+        "CoreNetworkAddress":{
+          "shape":"IPAddress",
+          "documentation":"<p>The address of a core network.</p>"
+        },
+        "PeerAddress":{
+          "shape":"IPAddress",
+          "documentation":"<p>The address of a core network Connect peer.</p>"
+        }
+      },
+      "documentation":"<p>Describes a core network BGP configuration.</p>"
+    },
+    "ConnectPeerBgpConfigurationList":{
+      "type":"list",
+      "member":{"shape":"ConnectPeerBgpConfiguration"}
+    },
+    "ConnectPeerConfiguration":{
+      "type":"structure",
+      "members":{
+        "CoreNetworkAddress":{
+          "shape":"IPAddress",
+          "documentation":"<p>The IP address of a core network.</p>"
+        },
+        "PeerAddress":{
+          "shape":"IPAddress",
+          "documentation":"<p>The IP address of the Connect peer.</p>"
+        },
+        "InsideCidrBlocks":{
+          "shape":"ConstrainedStringList",
+          "documentation":"<p>The inside IP addresses used for a Connect peer configuration.</p>"
+        },
+        "Protocol":{
+          "shape":"TunnelProtocol",
+          "documentation":"<p>The protocol used for a Connect peer configuration.</p>"
+        },
+        "BgpConfigurations":{
+          "shape":"ConnectPeerBgpConfigurationList",
+          "documentation":"<p>The Connect peer BGP configurations.</p>"
+        }
+      },
+      "documentation":"<p>Describes a core network Connect peer configuration.</p>"
+    },
+    "ConnectPeerId":{
+      "type":"string",
+      "max":50,
+      "min":0,
+      "pattern":"^connect-peer-([0-9a-f]{8,17})$"
+    },
+    "ConnectPeerIdList":{
+      "type":"list",
+      "member":{"shape":"ConnectPeerId"}
+    },
+    "ConnectPeerState":{
+      "type":"string",
+      "enum":[
+        "CREATING",
+        "FAILED",
+        "AVAILABLE",
+        "DELETING"
+      ]
+    },
+    "ConnectPeerSummary":{
+      "type":"structure",
+      "members":{
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network.</p>"
+        },
+        "ConnectAttachmentId":{
+          "shape":"AttachmentId",
+          "documentation":"<p>The ID of a Connect peer attachment.</p>"
+        },
+        "ConnectPeerId":{
+          "shape":"ConnectPeerId",
+          "documentation":"<p>The ID of a Connect peer.</p>"
+        },
+        "EdgeLocation":{
+          "shape":"ExternalRegionCode",
+          "documentation":"<p>The Region where the edge is located.</p>"
+        },
+        "ConnectPeerState":{
+          "shape":"ConnectPeerState",
+          "documentation":"<p>The state of a Connect peer.</p>"
+        },
+        "CreatedAt":{
+          "shape":"DateTime",
+          "documentation":"<p>The timestamp when a Connect peer was created.</p>"
+        },
+        "Tags":{
+          "shape":"TagList",
+          "documentation":"<p>The list of key-value tags associated with the Connect peer summary.</p>"
+        },
+        "SubnetArn":{
+          "shape":"SubnetArn",
+          "documentation":"<p>The subnet ARN for the Connect peer summary.</p>"
+        }
+      },
+      "documentation":"<p>Summary description of a Connect peer.</p>"
+    },
+    "ConnectPeerSummaryList":{
+      "type":"list",
+      "member":{"shape":"ConnectPeerSummary"}
+    },
     "Connection":{
       "type":"structure",
       "members":{
         "ConnectionId":{
-          "shape":"String",
+          "shape":"ConnectionId",
           "documentation":"<p>The ID of the connection.</p>"
         },
         "ConnectionArn":{
-          "shape":"String",
+          "shape":"ConnectionArn",
           "documentation":"<p>The Amazon Resource Name (ARN) of the connection.</p>"
         },
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>"
         },
         "DeviceId":{
-          "shape":"String",
+          "shape":"DeviceId",
           "documentation":"<p>The ID of the first device in the connection.</p>"
         },
         "ConnectedDeviceId":{
-          "shape":"String",
+          "shape":"DeviceId",
           "documentation":"<p>The ID of the second device in the connection.</p>"
         },
         "LinkId":{
-          "shape":"String",
+          "shape":"LinkId",
           "documentation":"<p>The ID of the link for the first device in the connection.</p>"
         },
         "ConnectedLinkId":{
-          "shape":"String",
+          "shape":"LinkId",
           "documentation":"<p>The ID of the link for the second device in the connection.</p>"
         },
         "Description":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The description of the connection.</p>"
         },
         "CreatedAt":{
@@ -999,6 +2195,12 @@
         }
       },
       "documentation":"<p>Describes a connection.</p>"
+    },
+    "ConnectionArn":{
+      "type":"string",
+      "max":500,
+      "min":0,
+      "pattern":"[\\s\\S]*"
     },
     "ConnectionHealth":{
       "type":"structure",
@@ -1017,6 +2219,16 @@
         }
       },
       "documentation":"<p>Describes connection health.</p>"
+    },
+    "ConnectionId":{
+      "type":"string",
+      "max":50,
+      "min":0,
+      "pattern":"[\\s\\S]*"
+    },
+    "ConnectionIdList":{
+      "type":"list",
+      "member":{"shape":"ConnectionId"}
     },
     "ConnectionList":{
       "type":"list",
@@ -1045,6 +2257,525 @@
         "IPSEC"
       ]
     },
+    "ConstrainedString":{
+      "type":"string",
+      "max":256,
+      "min":0,
+      "pattern":"[\\s\\S]*"
+    },
+    "ConstrainedStringList":{
+      "type":"list",
+      "member":{"shape":"ConstrainedString"}
+    },
+    "CoreNetwork":{
+      "type":"structure",
+      "members":{
+        "GlobalNetworkId":{
+          "shape":"GlobalNetworkId",
+          "documentation":"<p>The ID of the global network that your core network is a part of. </p>"
+        },
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network.</p>"
+        },
+        "CoreNetworkArn":{
+          "shape":"CoreNetworkArn",
+          "documentation":"<p>The ARN of a core network.</p>"
+        },
+        "Description":{
+          "shape":"ConstrainedString",
+          "documentation":"<p>The description of a core network.</p>"
+        },
+        "CreatedAt":{
+          "shape":"DateTime",
+          "documentation":"<p>The timestamp when a core network was created.</p>"
+        },
+        "State":{
+          "shape":"CoreNetworkState",
+          "documentation":"<p>The current state of a core network.</p>"
+        },
+        "Segments":{
+          "shape":"CoreNetworkSegmentList",
+          "documentation":"<p>The segments within a core network.</p>"
+        },
+        "Edges":{
+          "shape":"CoreNetworkEdgeList",
+          "documentation":"<p>The edges within a core network.</p>"
+        },
+        "Tags":{
+          "shape":"TagList",
+          "documentation":"<p>The list of key-value tags associated with a core network.</p>"
+        }
+      },
+      "documentation":"<p>Describes a core network.</p>"
+    },
+    "CoreNetworkArn":{
+      "type":"string",
+      "max":500,
+      "min":0,
+      "pattern":"[\\s\\S]*"
+    },
+    "CoreNetworkChange":{
+      "type":"structure",
+      "members":{
+        "Type":{
+          "shape":"ChangeType",
+          "documentation":"<p>The type of change.</p>"
+        },
+        "Action":{
+          "shape":"ChangeAction",
+          "documentation":"<p>The action to take for a core network.</p>"
+        },
+        "Identifier":{
+          "shape":"ConstrainedString",
+          "documentation":"<p>The resource identifier.</p>"
+        },
+        "PreviousValues":{
+          "shape":"CoreNetworkChangeValues",
+          "documentation":"<p>The previous values for a core network.</p>"
+        },
+        "NewValues":{
+          "shape":"CoreNetworkChangeValues",
+          "documentation":"<p>The new value for a core network</p>"
+        },
+        "IdentifierPath":{
+          "shape":"ConstrainedString",
+          "documentation":"<p>Uniquely identifies the path for a change within the changeset. For example, the <code>IdentifierPath</code> for a core network segment change might be <code>\"CORE_NETWORK_SEGMENT/us-east-1/devsegment\"</code>.</p>"
+        }
+      },
+      "documentation":"<p>Details describing a core network change.</p>"
+    },
+    "CoreNetworkChangeEvent":{
+      "type":"structure",
+      "members":{
+        "Type":{
+          "shape":"ChangeType",
+          "documentation":"<p>Describes the type of change event. </p>"
+        },
+        "Action":{
+          "shape":"ChangeAction",
+          "documentation":"<p>The action taken for the change event.</p>"
+        },
+        "IdentifierPath":{
+          "shape":"ConstrainedString",
+          "documentation":"<p>Uniquely identifies the path for a change within the changeset. For example, the <code>IdentifierPath</code> for a core network segment change might be <code>\"CORE_NETWORK_SEGMENT/us-east-1/devsegment\"</code>.</p>"
+        },
+        "EventTime":{
+          "shape":"DateTime",
+          "documentation":"<p>The timestamp for an event change in status.</p>"
+        },
+        "Status":{
+          "shape":"ChangeStatus",
+          "documentation":"<p>The status of the core network change event.</p>"
+        },
+        "Values":{
+          "shape":"CoreNetworkChangeEventValues",
+          "documentation":"<p>Details of the change event.</p>"
+        }
+      },
+      "documentation":"<p>Describes a core network change event. This can be a change to a segment, attachment, route, etc.</p>"
+    },
+    "CoreNetworkChangeEventList":{
+      "type":"list",
+      "member":{"shape":"CoreNetworkChangeEvent"}
+    },
+    "CoreNetworkChangeEventValues":{
+      "type":"structure",
+      "members":{
+        "EdgeLocation":{
+          "shape":"ExternalRegionCode",
+          "documentation":"<p>The edge location for the core network change event.</p>"
+        },
+        "SegmentName":{
+          "shape":"ConstrainedString",
+          "documentation":"<p>The segment name if the change event is associated with a segment.</p>"
+        },
+        "AttachmentId":{
+          "shape":"AttachmentId",
+          "documentation":"<p>The ID of the attachment if the change event is associated with an attachment. </p>"
+        },
+        "Cidr":{
+          "shape":"ConstrainedString",
+          "documentation":"<p>For a <code>STATIC_ROUTE</code> event, this is the IP address.</p>"
+        }
+      },
+      "documentation":"<p>Describes a core network change event.</p>"
+    },
+    "CoreNetworkChangeList":{
+      "type":"list",
+      "member":{"shape":"CoreNetworkChange"}
+    },
+    "CoreNetworkChangeValues":{
+      "type":"structure",
+      "members":{
+        "SegmentName":{
+          "shape":"ConstrainedString",
+          "documentation":"<p>The names of the segments in a core network.</p>"
+        },
+        "EdgeLocations":{
+          "shape":"ExternalRegionCodeList",
+          "documentation":"<p>The Regions where edges are located in a core network. </p>"
+        },
+        "Asn":{
+          "shape":"Long",
+          "documentation":"<p>The ASN of a core network.</p>"
+        },
+        "Cidr":{
+          "shape":"ConstrainedString",
+          "documentation":"<p>The IP addresses used for a core network.</p>"
+        },
+        "DestinationIdentifier":{
+          "shape":"ConstrainedString",
+          "documentation":"<p>The ID of the destination.</p>"
+        },
+        "InsideCidrBlocks":{
+          "shape":"ConstrainedStringList",
+          "documentation":"<p>The inside IP addresses used for core network change values.</p>"
+        },
+        "SharedSegments":{
+          "shape":"ConstrainedStringList",
+          "documentation":"<p>The shared segments for a core network change value. </p>"
+        }
+      },
+      "documentation":"<p>Describes a core network change.</p>"
+    },
+    "CoreNetworkEdge":{
+      "type":"structure",
+      "members":{
+        "EdgeLocation":{
+          "shape":"ExternalRegionCode",
+          "documentation":"<p>The Region where a core network edge is located.</p>"
+        },
+        "Asn":{
+          "shape":"Long",
+          "documentation":"<p>The ASN of a core network edge.</p>"
+        },
+        "InsideCidrBlocks":{
+          "shape":"ConstrainedStringList",
+          "documentation":"<p>The inside IP addresses used for core network edges.</p>"
+        }
+      },
+      "documentation":"<p>Describes a core network edge.</p>"
+    },
+    "CoreNetworkEdgeList":{
+      "type":"list",
+      "member":{"shape":"CoreNetworkEdge"}
+    },
+    "CoreNetworkId":{
+      "type":"string",
+      "max":50,
+      "min":0,
+      "pattern":"^core-network-([0-9a-f]{8,17})$"
+    },
+    "CoreNetworkPolicy":{
+      "type":"structure",
+      "members":{
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network.</p>"
+        },
+        "PolicyVersionId":{
+          "shape":"Integer",
+          "documentation":"<p>The ID of the policy version.</p>"
+        },
+        "Alias":{
+          "shape":"CoreNetworkPolicyAlias",
+          "documentation":"<p>Whether a core network policy is the current LIVE policy or the most recently submitted policy.</p>"
+        },
+        "Description":{
+          "shape":"ConstrainedString",
+          "documentation":"<p>The description of a core network policy.</p>"
+        },
+        "CreatedAt":{
+          "shape":"DateTime",
+          "documentation":"<p>The timestamp when a core network policy was created.</p>"
+        },
+        "ChangeSetState":{
+          "shape":"ChangeSetState",
+          "documentation":"<p>The state of a core network policy.</p>"
+        },
+        "PolicyErrors":{
+          "shape":"CoreNetworkPolicyErrorList",
+          "documentation":"<p>Describes any errors in a core network policy.</p>"
+        },
+        "PolicyDocument":{
+          "shape":"CoreNetworkPolicyDocument",
+          "documentation":"<p>Describes a core network policy.</p>",
+          "jsonvalue":true
+        }
+      },
+      "documentation":"<p>Describes a core network policy. You can have only one LIVE Core Policy.</p>"
+    },
+    "CoreNetworkPolicyAlias":{
+      "type":"string",
+      "enum":[
+        "LIVE",
+        "LATEST"
+      ]
+    },
+    "CoreNetworkPolicyDocument":{
+      "type":"string",
+      "max":10000000,
+      "min":0,
+      "pattern":"[\\s\\S]*"
+    },
+    "CoreNetworkPolicyError":{
+      "type":"structure",
+      "required":[
+        "ErrorCode",
+        "Message"
+      ],
+      "members":{
+        "ErrorCode":{
+          "shape":"ServerSideString",
+          "documentation":"<p>The error code associated with a core network policy error.</p>"
+        },
+        "Message":{
+          "shape":"ServerSideString",
+          "documentation":"<p>The message associated with a core network policy error code.</p>"
+        },
+        "Path":{
+          "shape":"ServerSideString",
+          "documentation":"<p>The JSON path where the error was discovered in the policy document.</p>"
+        }
+      },
+      "documentation":"<p>Provides details about an error in a core network policy.</p>"
+    },
+    "CoreNetworkPolicyErrorList":{
+      "type":"list",
+      "member":{"shape":"CoreNetworkPolicyError"}
+    },
+    "CoreNetworkPolicyException":{
+      "type":"structure",
+      "required":["Message"],
+      "members":{
+        "Message":{"shape":"ServerSideString"},
+        "Errors":{
+          "shape":"CoreNetworkPolicyErrorList",
+          "documentation":"<p>Describes a core network policy exception.</p>"
+        }
+      },
+      "documentation":"<p>Describes a core network policy exception.</p>",
+      "error":{"httpStatusCode":400},
+      "exception":true
+    },
+    "CoreNetworkPolicyVersion":{
+      "type":"structure",
+      "members":{
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network.</p>"
+        },
+        "PolicyVersionId":{
+          "shape":"Integer",
+          "documentation":"<p>The ID of the policy version.</p>"
+        },
+        "Alias":{
+          "shape":"CoreNetworkPolicyAlias",
+          "documentation":"<p>Whether a core network policy is the current policy or the most recently submitted policy.</p>"
+        },
+        "Description":{
+          "shape":"ConstrainedString",
+          "documentation":"<p>The description of a core network policy version.</p>"
+        },
+        "CreatedAt":{
+          "shape":"DateTime",
+          "documentation":"<p>The timestamp when a core network policy version was created.</p>"
+        },
+        "ChangeSetState":{
+          "shape":"ChangeSetState",
+          "documentation":"<p>The status of the policy version change set.</p>"
+        }
+      },
+      "documentation":"<p>Describes a core network policy version.</p>"
+    },
+    "CoreNetworkPolicyVersionList":{
+      "type":"list",
+      "member":{"shape":"CoreNetworkPolicyVersion"}
+    },
+    "CoreNetworkSegment":{
+      "type":"structure",
+      "members":{
+        "Name":{
+          "shape":"ConstrainedString",
+          "documentation":"<p>The name of a core network segment.</p>"
+        },
+        "EdgeLocations":{
+          "shape":"ExternalRegionCodeList",
+          "documentation":"<p>The Regions where the edges are located.</p>"
+        },
+        "SharedSegments":{
+          "shape":"ConstrainedStringList",
+          "documentation":"<p>The shared segments of a core network.</p>"
+        }
+      },
+      "documentation":"<p>Describes a core network segment, which are dedicated routes. Only attachments within this segment can communicate with each other.</p>"
+    },
+    "CoreNetworkSegmentEdgeIdentifier":{
+      "type":"structure",
+      "members":{
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network.</p>"
+        },
+        "SegmentName":{
+          "shape":"ConstrainedString",
+          "documentation":"<p>The name of the segment edge.</p>"
+        },
+        "EdgeLocation":{
+          "shape":"ExternalRegionCode",
+          "documentation":"<p>The Region where the segment edge is located.</p>"
+        }
+      },
+      "documentation":"<p>Returns details about a core network edge.</p>"
+    },
+    "CoreNetworkSegmentList":{
+      "type":"list",
+      "member":{"shape":"CoreNetworkSegment"}
+    },
+    "CoreNetworkState":{
+      "type":"string",
+      "enum":[
+        "CREATING",
+        "UPDATING",
+        "AVAILABLE",
+        "DELETING"
+      ]
+    },
+    "CoreNetworkSummary":{
+      "type":"structure",
+      "members":{
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network.</p>"
+        },
+        "CoreNetworkArn":{
+          "shape":"CoreNetworkArn",
+          "documentation":"<p>a core network ARN.</p>"
+        },
+        "GlobalNetworkId":{
+          "shape":"GlobalNetworkId",
+          "documentation":"<p>The global network ID.</p>"
+        },
+        "OwnerAccountId":{
+          "shape":"AWSAccountId",
+          "documentation":"<p>The ID of the account owner.</p>"
+        },
+        "State":{
+          "shape":"CoreNetworkState",
+          "documentation":"<p>The state of a core network.</p>"
+        },
+        "Description":{
+          "shape":"ConstrainedString",
+          "documentation":"<p>The description of a core network.</p>"
+        },
+        "Tags":{
+          "shape":"TagList",
+          "documentation":"<p>The key-value tags associated with a core network summary.</p>"
+        }
+      },
+      "documentation":"<p>Returns summary information about a core network.</p>"
+    },
+    "CoreNetworkSummaryList":{
+      "type":"list",
+      "member":{"shape":"CoreNetworkSummary"}
+    },
+    "CreateConnectAttachmentRequest":{
+      "type":"structure",
+      "required":[
+        "CoreNetworkId",
+        "EdgeLocation",
+        "TransportAttachmentId",
+        "Options"
+      ],
+      "members":{
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network where you want to create the attachment. </p>"
+        },
+        "EdgeLocation":{
+          "shape":"ExternalRegionCode",
+          "documentation":"<p>The Region where the edge is located.</p>"
+        },
+        "TransportAttachmentId":{
+          "shape":"AttachmentId",
+          "documentation":"<p>The ID of the attachment between the two connections.</p>"
+        },
+        "Options":{
+          "shape":"ConnectAttachmentOptions",
+          "documentation":"<p>Options for creating an attachment.</p>"
+        },
+        "Tags":{
+          "shape":"TagList",
+          "documentation":"<p>The list of key-value tags associated with the request.</p>"
+        },
+        "ClientToken":{
+          "shape":"ClientToken",
+          "documentation":"<p>The client token associated with the request.</p>",
+          "idempotencyToken":true
+        }
+      }
+    },
+    "CreateConnectAttachmentResponse":{
+      "type":"structure",
+      "members":{
+        "ConnectAttachment":{
+          "shape":"ConnectAttachment",
+          "documentation":"<p>The response to a Connect attachment request.</p>"
+        }
+      }
+    },
+    "CreateConnectPeerRequest":{
+      "type":"structure",
+      "required":[
+        "ConnectAttachmentId",
+        "PeerAddress"
+      ],
+      "members":{
+        "ConnectAttachmentId":{
+          "shape":"AttachmentId",
+          "documentation":"<p>The ID of the connection attachment.</p>"
+        },
+        "CoreNetworkAddress":{
+          "shape":"IPAddress",
+          "documentation":"<p>A Connect peer core network address.</p>"
+        },
+        "PeerAddress":{
+          "shape":"IPAddress",
+          "documentation":"<p>The Connect peer address.</p>"
+        },
+        "BgpOptions":{
+          "shape":"BgpOptions",
+          "documentation":"<p>The Connect peer BGP options.</p>"
+        },
+        "InsideCidrBlocks":{
+          "shape":"ConstrainedStringList",
+          "documentation":"<p>The inside IP addresses used for BGP peering.</p>"
+        },
+        "Tags":{
+          "shape":"TagList",
+          "documentation":"<p>The tags associated with the peer request.</p>"
+        },
+        "ClientToken":{
+          "shape":"ClientToken",
+          "documentation":"<p>The client token associated with the request.</p>",
+          "idempotencyToken":true
+        },
+        "SubnetArn":{
+          "shape":"SubnetArn",
+          "documentation":"<p>The subnet ARN for the Connect peer.</p>"
+        }
+      }
+    },
+    "CreateConnectPeerResponse":{
+      "type":"structure",
+      "members":{
+        "ConnectPeer":{
+          "shape":"ConnectPeer",
+          "documentation":"<p>The response to the request.</p>"
+        }
+      }
+    },
     "CreateConnectionRequest":{
       "type":"structure",
       "required":[
@@ -1054,29 +2785,29 @@
       ],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "DeviceId":{
-          "shape":"String",
+          "shape":"DeviceId",
           "documentation":"<p>The ID of the first device in the connection.</p>"
         },
         "ConnectedDeviceId":{
-          "shape":"String",
+          "shape":"DeviceId",
           "documentation":"<p>The ID of the second device in the connection.</p>"
         },
         "LinkId":{
-          "shape":"String",
+          "shape":"LinkId",
           "documentation":"<p>The ID of the link for the first device.</p>"
         },
         "ConnectedLinkId":{
-          "shape":"String",
+          "shape":"LinkId",
           "documentation":"<p>The ID of the link for the second device.</p>"
         },
         "Description":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>A description of the connection.</p> <p>Length Constraints: Maximum length of 256 characters.</p>"
         },
         "Tags":{
@@ -1094,12 +2825,48 @@
         }
       }
     },
+    "CreateCoreNetworkRequest":{
+      "type":"structure",
+      "required":["GlobalNetworkId"],
+      "members":{
+        "GlobalNetworkId":{
+          "shape":"GlobalNetworkId",
+          "documentation":"<p>The ID of the global network that a core network will be a part of. </p>"
+        },
+        "Description":{
+          "shape":"ConstrainedString",
+          "documentation":"<p>The description of a core network.</p>"
+        },
+        "Tags":{
+          "shape":"TagList",
+          "documentation":"<p>Key-value tags associated with a core network request.</p>"
+        },
+        "PolicyDocument":{
+          "shape":"CoreNetworkPolicyDocument",
+          "documentation":"<p>The policy document for creating a core network.</p>"
+        },
+        "ClientToken":{
+          "shape":"ClientToken",
+          "documentation":"<p>The client token associated with a core network request.</p>",
+          "idempotencyToken":true
+        }
+      }
+    },
+    "CreateCoreNetworkResponse":{
+      "type":"structure",
+      "members":{
+        "CoreNetwork":{
+          "shape":"CoreNetwork",
+          "documentation":"<p>Returns details about a core network.</p>"
+        }
+      }
+    },
     "CreateDeviceRequest":{
       "type":"structure",
       "required":["GlobalNetworkId"],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
@@ -1109,23 +2876,23 @@
           "documentation":"<p>The Amazon Web Services location of the device, if applicable. For an on-premises device, you can omit this parameter.</p>"
         },
         "Description":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>A description of the device.</p> <p>Constraints: Maximum length of 256 characters.</p>"
         },
         "Type":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The type of the device.</p>"
         },
         "Vendor":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The vendor of the device.</p> <p>Constraints: Maximum length of 128 characters.</p>"
         },
         "Model":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The model of the device.</p> <p>Constraints: Maximum length of 128 characters.</p>"
         },
         "SerialNumber":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The serial number of the device.</p> <p>Constraints: Maximum length of 128 characters.</p>"
         },
         "Location":{
@@ -1133,7 +2900,7 @@
           "documentation":"<p>The location of the device.</p>"
         },
         "SiteId":{
-          "shape":"String",
+          "shape":"SiteId",
           "documentation":"<p>The ID of the site.</p>"
         },
         "Tags":{
@@ -1155,7 +2922,7 @@
       "type":"structure",
       "members":{
         "Description":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>A description of the global network.</p> <p>Constraints: Maximum length of 256 characters.</p>"
         },
         "Tags":{
@@ -1182,17 +2949,17 @@
       ],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "Description":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>A description of the link.</p> <p>Constraints: Maximum length of 256 characters.</p>"
         },
         "Type":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The type of the link.</p> <p>Constraints: Maximum length of 128 characters. Cannot include the following characters: | \\ ^</p>"
         },
         "Bandwidth":{
@@ -1200,11 +2967,11 @@
           "documentation":"<p> The upload speed and download speed in Mbps. </p>"
         },
         "Provider":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The provider of the link.</p> <p>Constraints: Maximum length of 128 characters. Cannot include the following characters: | \\ ^</p>"
         },
         "SiteId":{
-          "shape":"String",
+          "shape":"SiteId",
           "documentation":"<p>The ID of the site.</p>"
         },
         "Tags":{
@@ -1227,13 +2994,13 @@
       "required":["GlobalNetworkId"],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "Description":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>A description of your site.</p> <p>Constraints: Maximum length of 256 characters.</p>"
         },
         "Location":{
@@ -1255,23 +3022,182 @@
         }
       }
     },
+    "CreateSiteToSiteVpnAttachmentRequest":{
+      "type":"structure",
+      "required":[
+        "CoreNetworkId",
+        "VpnConnectionArn"
+      ],
+      "members":{
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network where you're creating a site-to-site VPN attachment.</p>"
+        },
+        "VpnConnectionArn":{
+          "shape":"VpnConnectionArn",
+          "documentation":"<p>The ARN identifying the VPN attachment.</p>"
+        },
+        "Tags":{
+          "shape":"TagList",
+          "documentation":"<p>The tags associated with the request.</p>"
+        },
+        "ClientToken":{
+          "shape":"ClientToken",
+          "documentation":"<p>The client token associated with the request.</p>",
+          "idempotencyToken":true
+        }
+      }
+    },
+    "CreateSiteToSiteVpnAttachmentResponse":{
+      "type":"structure",
+      "members":{
+        "SiteToSiteVpnAttachment":{
+          "shape":"SiteToSiteVpnAttachment",
+          "documentation":"<p>Details about a site-to-site VPN attachment.</p>"
+        }
+      }
+    },
+    "CreateTransitGatewayPeeringRequest":{
+      "type":"structure",
+      "required":[
+        "CoreNetworkId",
+        "TransitGatewayArn"
+      ],
+      "members":{
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network.</p>"
+        },
+        "TransitGatewayArn":{
+          "shape":"TransitGatewayArn",
+          "documentation":"<p>The ARN of the transit gateway for the peering request.</p>"
+        },
+        "Tags":{
+          "shape":"TagList",
+          "documentation":"<p>The list of key-value tags associated with the request.</p>"
+        },
+        "ClientToken":{
+          "shape":"ClientToken",
+          "documentation":"<p>The client token associated with the request.</p>",
+          "idempotencyToken":true
+        }
+      }
+    },
+    "CreateTransitGatewayPeeringResponse":{
+      "type":"structure",
+      "members":{
+        "TransitGatewayPeering":{
+          "shape":"TransitGatewayPeering",
+          "documentation":"<p>Returns information about the transit gateway peering connection request.</p>"
+        }
+      }
+    },
+    "CreateTransitGatewayRouteTableAttachmentRequest":{
+      "type":"structure",
+      "required":[
+        "PeeringId",
+        "TransitGatewayRouteTableArn"
+      ],
+      "members":{
+        "PeeringId":{
+          "shape":"PeeringId",
+          "documentation":"<p>The ID of the peer for the </p>"
+        },
+        "TransitGatewayRouteTableArn":{
+          "shape":"TransitGatewayRouteTableArn",
+          "documentation":"<p>The ARN of the transit gateway route table for the attachment request. For example, <code>\"TransitGatewayRouteTableArn\": \"arn:aws:ec2:us-west-2:123456789012:transit-gateway-route-table/tgw-rtb-9876543210123456\"</code>.</p>"
+        },
+        "Tags":{
+          "shape":"TagList",
+          "documentation":"<p>The list of key-value tags associated with the request.</p>"
+        },
+        "ClientToken":{
+          "shape":"ClientToken",
+          "documentation":"<p>The client token associated with the request.</p>",
+          "idempotencyToken":true
+        }
+      }
+    },
+    "CreateTransitGatewayRouteTableAttachmentResponse":{
+      "type":"structure",
+      "members":{
+        "TransitGatewayRouteTableAttachment":{
+          "shape":"TransitGatewayRouteTableAttachment",
+          "documentation":"<p>The route table associated with the create transit gateway route table attachment request.</p>"
+        }
+      }
+    },
+    "CreateVpcAttachmentRequest":{
+      "type":"structure",
+      "required":[
+        "CoreNetworkId",
+        "VpcArn",
+        "SubnetArns"
+      ],
+      "members":{
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network for the VPC attachment.</p>"
+        },
+        "VpcArn":{
+          "shape":"VpcArn",
+          "documentation":"<p>The ARN of the VPC.</p>"
+        },
+        "SubnetArns":{
+          "shape":"SubnetArnList",
+          "documentation":"<p>The subnet ARN of the VPC attachment.</p>"
+        },
+        "Options":{
+          "shape":"VpcOptions",
+          "documentation":"<p>Options for the VPC attachment.</p>"
+        },
+        "Tags":{
+          "shape":"TagList",
+          "documentation":"<p>The key-value tags associated with the request.</p>"
+        },
+        "ClientToken":{
+          "shape":"ClientToken",
+          "documentation":"<p>The client token associated with the request.</p>",
+          "idempotencyToken":true
+        }
+      }
+    },
+    "CreateVpcAttachmentResponse":{
+      "type":"structure",
+      "members":{
+        "VpcAttachment":{
+          "shape":"VpcAttachment",
+          "documentation":"<p>Provides details about the VPC attachment.</p>"
+        }
+      }
+    },
+    "CustomerGatewayArn":{
+      "type":"string",
+      "max":500,
+      "min":0,
+      "pattern":"[\\s\\S]*"
+    },
+    "CustomerGatewayArnList":{
+      "type":"list",
+      "member":{"shape":"CustomerGatewayArn"}
+    },
     "CustomerGatewayAssociation":{
       "type":"structure",
       "members":{
         "CustomerGatewayArn":{
-          "shape":"String",
+          "shape":"CustomerGatewayArn",
           "documentation":"<p>The Amazon Resource Name (ARN) of the customer gateway.</p>"
         },
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>"
         },
         "DeviceId":{
-          "shape":"String",
+          "shape":"DeviceId",
           "documentation":"<p>The ID of the device.</p>"
         },
         "LinkId":{
-          "shape":"String",
+          "shape":"LinkId",
           "documentation":"<p>The ID of the link.</p>"
         },
         "State":{
@@ -1295,6 +3221,48 @@
       ]
     },
     "DateTime":{"type":"timestamp"},
+    "DeleteAttachmentRequest":{
+      "type":"structure",
+      "required":["AttachmentId"],
+      "members":{
+        "AttachmentId":{
+          "shape":"AttachmentId",
+          "documentation":"<p>The ID of the attachment to delete.</p>",
+          "location":"uri",
+          "locationName":"attachmentId"
+        }
+      }
+    },
+    "DeleteAttachmentResponse":{
+      "type":"structure",
+      "members":{
+        "Attachment":{
+          "shape":"Attachment",
+          "documentation":"<p>Information about the deleted attachment.</p>"
+        }
+      }
+    },
+    "DeleteConnectPeerRequest":{
+      "type":"structure",
+      "required":["ConnectPeerId"],
+      "members":{
+        "ConnectPeerId":{
+          "shape":"ConnectPeerId",
+          "documentation":"<p>The ID of the deleted Connect peer.</p>",
+          "location":"uri",
+          "locationName":"connectPeerId"
+        }
+      }
+    },
+    "DeleteConnectPeerResponse":{
+      "type":"structure",
+      "members":{
+        "ConnectPeer":{
+          "shape":"ConnectPeer",
+          "documentation":"<p>Information about the deleted Connect peer.</p>"
+        }
+      }
+    },
     "DeleteConnectionRequest":{
       "type":"structure",
       "required":[
@@ -1303,13 +3271,13 @@
       ],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "ConnectionId":{
-          "shape":"String",
+          "shape":"ConnectionId",
           "documentation":"<p>The ID of the connection.</p>",
           "location":"uri",
           "locationName":"connectionId"
@@ -1325,6 +3293,57 @@
         }
       }
     },
+    "DeleteCoreNetworkPolicyVersionRequest":{
+      "type":"structure",
+      "required":[
+        "CoreNetworkId",
+        "PolicyVersionId"
+      ],
+      "members":{
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network for the deleted policy.</p>",
+          "location":"uri",
+          "locationName":"coreNetworkId"
+        },
+        "PolicyVersionId":{
+          "shape":"Integer",
+          "documentation":"<p>The version ID of the deleted policy.</p>",
+          "location":"uri",
+          "locationName":"policyVersionId"
+        }
+      }
+    },
+    "DeleteCoreNetworkPolicyVersionResponse":{
+      "type":"structure",
+      "members":{
+        "CoreNetworkPolicy":{
+          "shape":"CoreNetworkPolicy",
+          "documentation":"<p>Returns information about the deleted policy version. </p>"
+        }
+      }
+    },
+    "DeleteCoreNetworkRequest":{
+      "type":"structure",
+      "required":["CoreNetworkId"],
+      "members":{
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The network ID of the deleted core network.</p>",
+          "location":"uri",
+          "locationName":"coreNetworkId"
+        }
+      }
+    },
+    "DeleteCoreNetworkResponse":{
+      "type":"structure",
+      "members":{
+        "CoreNetwork":{
+          "shape":"CoreNetwork",
+          "documentation":"<p>Information about the deleted core network.</p>"
+        }
+      }
+    },
     "DeleteDeviceRequest":{
       "type":"structure",
       "required":[
@@ -1333,13 +3352,13 @@
       ],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "DeviceId":{
-          "shape":"String",
+          "shape":"DeviceId",
           "documentation":"<p>The ID of the device.</p>",
           "location":"uri",
           "locationName":"deviceId"
@@ -1360,7 +3379,7 @@
       "required":["GlobalNetworkId"],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
@@ -1384,13 +3403,13 @@
       ],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "LinkId":{
-          "shape":"String",
+          "shape":"LinkId",
           "documentation":"<p>The ID of the link.</p>",
           "location":"uri",
           "locationName":"linkId"
@@ -1406,6 +3425,44 @@
         }
       }
     },
+    "DeletePeeringRequest":{
+      "type":"structure",
+      "required":["PeeringId"],
+      "members":{
+        "PeeringId":{
+          "shape":"PeeringId",
+          "documentation":"<p>The ID of the peering connection to delete.</p>",
+          "location":"uri",
+          "locationName":"peeringId"
+        }
+      }
+    },
+    "DeletePeeringResponse":{
+      "type":"structure",
+      "members":{
+        "Peering":{
+          "shape":"Peering",
+          "documentation":"<p>Information about a deleted peering connection.</p>"
+        }
+      }
+    },
+    "DeleteResourcePolicyRequest":{
+      "type":"structure",
+      "required":["ResourceArn"],
+      "members":{
+        "ResourceArn":{
+          "shape":"ResourceArn",
+          "documentation":"<p>The ARN of the policy to delete.</p>",
+          "location":"uri",
+          "locationName":"resourceArn"
+        }
+      }
+    },
+    "DeleteResourcePolicyResponse":{
+      "type":"structure",
+      "members":{
+      }
+    },
     "DeleteSiteRequest":{
       "type":"structure",
       "required":[
@@ -1414,13 +3471,13 @@
       ],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "SiteId":{
-          "shape":"String",
+          "shape":"SiteId",
           "documentation":"<p>The ID of the site.</p>",
           "location":"uri",
           "locationName":"siteId"
@@ -1444,13 +3501,13 @@
       ],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "TransitGatewayArn":{
-          "shape":"String",
+          "shape":"TransitGatewayArn",
           "documentation":"<p>The Amazon Resource Name (ARN) of the transit gateway.</p>",
           "location":"uri",
           "locationName":"transitGatewayArn"
@@ -1470,7 +3527,7 @@
       "type":"structure",
       "members":{
         "GlobalNetworkIds":{
-          "shape":"StringList",
+          "shape":"GlobalNetworkIdList",
           "documentation":"<p>The IDs of one or more global networks. The maximum is 10.</p>",
           "location":"querystring",
           "locationName":"globalNetworkIds"
@@ -1482,7 +3539,7 @@
           "locationName":"maxResults"
         },
         "NextToken":{
-          "shape":"String",
+          "shape":"NextToken",
           "documentation":"<p>The token for the next page of results.</p>",
           "location":"querystring",
           "locationName":"nextToken"
@@ -1497,7 +3554,7 @@
           "documentation":"<p>Information about the global networks.</p>"
         },
         "NextToken":{
-          "shape":"String",
+          "shape":"NextToken",
           "documentation":"<p>The token for the next page of results.</p>"
         }
       }
@@ -1506,15 +3563,15 @@
       "type":"structure",
       "members":{
         "DeviceId":{
-          "shape":"String",
+          "shape":"DeviceId",
           "documentation":"<p>The ID of the device.</p>"
         },
         "DeviceArn":{
-          "shape":"String",
+          "shape":"DeviceArn",
           "documentation":"<p>The Amazon Resource Name (ARN) of the device.</p>"
         },
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>"
         },
         "AWSLocation":{
@@ -1522,23 +3579,23 @@
           "documentation":"<p>The Amazon Web Services location of the device.</p>"
         },
         "Description":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The description of the device.</p>"
         },
         "Type":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The device type.</p>"
         },
         "Vendor":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The device vendor.</p>"
         },
         "Model":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The device model.</p>"
         },
         "SerialNumber":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The device serial number.</p>"
         },
         "Location":{
@@ -1546,7 +3603,7 @@
           "documentation":"<p>The site location.</p>"
         },
         "SiteId":{
-          "shape":"String",
+          "shape":"SiteId",
           "documentation":"<p>The site ID.</p>"
         },
         "CreatedAt":{
@@ -1564,6 +3621,22 @@
       },
       "documentation":"<p>Describes a device.</p>"
     },
+    "DeviceArn":{
+      "type":"string",
+      "max":500,
+      "min":0,
+      "pattern":"[\\s\\S]*"
+    },
+    "DeviceId":{
+      "type":"string",
+      "max":50,
+      "min":0,
+      "pattern":"[\\s\\S]*"
+    },
+    "DeviceIdList":{
+      "type":"list",
+      "member":{"shape":"DeviceId"}
+    },
     "DeviceList":{
       "type":"list",
       "member":{"shape":"Device"}
@@ -1577,6 +3650,36 @@
         "UPDATING"
       ]
     },
+    "DisassociateConnectPeerRequest":{
+      "type":"structure",
+      "required":[
+        "GlobalNetworkId",
+        "ConnectPeerId"
+      ],
+      "members":{
+        "GlobalNetworkId":{
+          "shape":"GlobalNetworkId",
+          "documentation":"<p>The ID of the global network.</p>",
+          "location":"uri",
+          "locationName":"globalNetworkId"
+        },
+        "ConnectPeerId":{
+          "shape":"ConnectPeerId",
+          "documentation":"<p>The ID of the Connect peer to disassociate from a device.</p>",
+          "location":"uri",
+          "locationName":"connectPeerId"
+        }
+      }
+    },
+    "DisassociateConnectPeerResponse":{
+      "type":"structure",
+      "members":{
+        "ConnectPeerAssociation":{
+          "shape":"ConnectPeerAssociation",
+          "documentation":"<p>Describes the Connect peer association.</p>"
+        }
+      }
+    },
     "DisassociateCustomerGatewayRequest":{
       "type":"structure",
       "required":[
@@ -1585,13 +3688,13 @@
       ],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "CustomerGatewayArn":{
-          "shape":"String",
+          "shape":"CustomerGatewayArn",
           "documentation":"<p>The Amazon Resource Name (ARN) of the customer gateway.</p>",
           "location":"uri",
           "locationName":"customerGatewayArn"
@@ -1616,19 +3719,19 @@
       ],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "DeviceId":{
-          "shape":"String",
+          "shape":"DeviceId",
           "documentation":"<p>The ID of the device.</p>",
           "location":"querystring",
           "locationName":"deviceId"
         },
         "LinkId":{
-          "shape":"String",
+          "shape":"LinkId",
           "documentation":"<p>The ID of the link.</p>",
           "location":"querystring",
           "locationName":"linkId"
@@ -1652,13 +3755,13 @@
       ],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "TransitGatewayConnectPeerArn":{
-          "shape":"String",
+          "shape":"TransitGatewayConnectPeerArn",
           "documentation":"<p>The Amazon Resource Name (ARN) of the transit gateway Connect peer.</p>",
           "location":"uri",
           "locationName":"transitGatewayConnectPeerArn"
@@ -1681,6 +3784,42 @@
       "value":{"shape":"ExceptionContextValue"}
     },
     "ExceptionContextValue":{"type":"string"},
+    "ExecuteCoreNetworkChangeSetRequest":{
+      "type":"structure",
+      "required":[
+        "CoreNetworkId",
+        "PolicyVersionId"
+      ],
+      "members":{
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network.</p>",
+          "location":"uri",
+          "locationName":"coreNetworkId"
+        },
+        "PolicyVersionId":{
+          "shape":"Integer",
+          "documentation":"<p>The ID of the policy version.</p>",
+          "location":"uri",
+          "locationName":"policyVersionId"
+        }
+      }
+    },
+    "ExecuteCoreNetworkChangeSetResponse":{
+      "type":"structure",
+      "members":{
+      }
+    },
+    "ExternalRegionCode":{
+      "type":"string",
+      "max":63,
+      "min":1,
+      "pattern":"[\\s\\S]*"
+    },
+    "ExternalRegionCodeList":{
+      "type":"list",
+      "member":{"shape":"ExternalRegionCode"}
+    },
     "FilterMap":{
       "type":"map",
       "key":{"shape":"FilterName"},
@@ -1700,24 +3839,109 @@
       "type":"list",
       "member":{"shape":"FilterValue"}
     },
+    "GetConnectAttachmentRequest":{
+      "type":"structure",
+      "required":["AttachmentId"],
+      "members":{
+        "AttachmentId":{
+          "shape":"AttachmentId",
+          "documentation":"<p>The ID of the attachment.</p>",
+          "location":"uri",
+          "locationName":"attachmentId"
+        }
+      }
+    },
+    "GetConnectAttachmentResponse":{
+      "type":"structure",
+      "members":{
+        "ConnectAttachment":{
+          "shape":"ConnectAttachment",
+          "documentation":"<p>Details about the Connect attachment.</p>"
+        }
+      }
+    },
+    "GetConnectPeerAssociationsRequest":{
+      "type":"structure",
+      "required":["GlobalNetworkId"],
+      "members":{
+        "GlobalNetworkId":{
+          "shape":"GlobalNetworkId",
+          "documentation":"<p>The ID of the global network.</p>",
+          "location":"uri",
+          "locationName":"globalNetworkId"
+        },
+        "ConnectPeerIds":{
+          "shape":"ConnectPeerIdList",
+          "documentation":"<p>The IDs of the Connect peers.</p>",
+          "location":"querystring",
+          "locationName":"connectPeerIds"
+        },
+        "MaxResults":{
+          "shape":"MaxResults",
+          "documentation":"<p>The maximum number of results to return.</p>",
+          "location":"querystring",
+          "locationName":"maxResults"
+        },
+        "NextToken":{
+          "shape":"NextToken",
+          "documentation":"<p>The token for the next page of results.</p>",
+          "location":"querystring",
+          "locationName":"nextToken"
+        }
+      }
+    },
+    "GetConnectPeerAssociationsResponse":{
+      "type":"structure",
+      "members":{
+        "ConnectPeerAssociations":{
+          "shape":"ConnectPeerAssociationList",
+          "documentation":"<p>Displays a list of Connect peer associations.</p>"
+        },
+        "NextToken":{
+          "shape":"NextToken",
+          "documentation":"<p>The token for the next page of results.</p>"
+        }
+      }
+    },
+    "GetConnectPeerRequest":{
+      "type":"structure",
+      "required":["ConnectPeerId"],
+      "members":{
+        "ConnectPeerId":{
+          "shape":"ConnectPeerId",
+          "documentation":"<p>The ID of the Connect peer.</p>",
+          "location":"uri",
+          "locationName":"connectPeerId"
+        }
+      }
+    },
+    "GetConnectPeerResponse":{
+      "type":"structure",
+      "members":{
+        "ConnectPeer":{
+          "shape":"ConnectPeer",
+          "documentation":"<p>Returns information about a core network Connect peer.</p>"
+        }
+      }
+    },
     "GetConnectionsRequest":{
       "type":"structure",
       "required":["GlobalNetworkId"],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "ConnectionIds":{
-          "shape":"StringList",
+          "shape":"ConnectionIdList",
           "documentation":"<p>One or more connection IDs.</p>",
           "location":"querystring",
           "locationName":"connectionIds"
         },
         "DeviceId":{
-          "shape":"String",
+          "shape":"DeviceId",
           "documentation":"<p>The ID of the device.</p>",
           "location":"querystring",
           "locationName":"deviceId"
@@ -1729,7 +3953,7 @@
           "locationName":"maxResults"
         },
         "NextToken":{
-          "shape":"String",
+          "shape":"NextToken",
           "documentation":"<p>The token for the next page of results.</p>",
           "location":"querystring",
           "locationName":"nextToken"
@@ -1744,8 +3968,154 @@
           "documentation":"<p>Information about the connections.</p>"
         },
         "NextToken":{
-          "shape":"String",
+          "shape":"NextToken",
           "documentation":"<p>The token to use for the next page of results.</p>"
+        }
+      }
+    },
+    "GetCoreNetworkChangeEventsRequest":{
+      "type":"structure",
+      "required":[
+        "CoreNetworkId",
+        "PolicyVersionId"
+      ],
+      "members":{
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network.</p>",
+          "location":"uri",
+          "locationName":"coreNetworkId"
+        },
+        "PolicyVersionId":{
+          "shape":"Integer",
+          "documentation":"<p>The ID of the policy version.</p>",
+          "location":"uri",
+          "locationName":"policyVersionId"
+        },
+        "MaxResults":{
+          "shape":"MaxResults",
+          "documentation":"<p>The maximum number of results to return.</p>",
+          "location":"querystring",
+          "locationName":"maxResults"
+        },
+        "NextToken":{
+          "shape":"NextToken",
+          "documentation":"<p>The token for the next page of results.</p>",
+          "location":"querystring",
+          "locationName":"nextToken"
+        }
+      }
+    },
+    "GetCoreNetworkChangeEventsResponse":{
+      "type":"structure",
+      "members":{
+        "CoreNetworkChangeEvents":{
+          "shape":"CoreNetworkChangeEventList",
+          "documentation":"<p>The response to <code>GetCoreNetworkChangeEventsRequest</code>.</p>"
+        },
+        "NextToken":{
+          "shape":"NextToken",
+          "documentation":"<p>The token for the next page of results.</p>"
+        }
+      }
+    },
+    "GetCoreNetworkChangeSetRequest":{
+      "type":"structure",
+      "required":[
+        "CoreNetworkId",
+        "PolicyVersionId"
+      ],
+      "members":{
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network.</p>",
+          "location":"uri",
+          "locationName":"coreNetworkId"
+        },
+        "PolicyVersionId":{
+          "shape":"Integer",
+          "documentation":"<p>The ID of the policy version.</p>",
+          "location":"uri",
+          "locationName":"policyVersionId"
+        },
+        "MaxResults":{
+          "shape":"MaxResults",
+          "documentation":"<p>The maximum number of results to return.</p>",
+          "location":"querystring",
+          "locationName":"maxResults"
+        },
+        "NextToken":{
+          "shape":"NextToken",
+          "documentation":"<p>The token for the next page of results.</p>",
+          "location":"querystring",
+          "locationName":"nextToken"
+        }
+      }
+    },
+    "GetCoreNetworkChangeSetResponse":{
+      "type":"structure",
+      "members":{
+        "CoreNetworkChanges":{
+          "shape":"CoreNetworkChangeList",
+          "documentation":"<p>Describes a core network changes.</p>"
+        },
+        "NextToken":{
+          "shape":"NextToken",
+          "documentation":"<p>The token for the next page of results.</p>"
+        }
+      }
+    },
+    "GetCoreNetworkPolicyRequest":{
+      "type":"structure",
+      "required":["CoreNetworkId"],
+      "members":{
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network.</p>",
+          "location":"uri",
+          "locationName":"coreNetworkId"
+        },
+        "PolicyVersionId":{
+          "shape":"Integer",
+          "documentation":"<p>The ID of a core network policy version.</p>",
+          "location":"querystring",
+          "locationName":"policyVersionId"
+        },
+        "Alias":{
+          "shape":"CoreNetworkPolicyAlias",
+          "documentation":"<p>The alias of a core network policy </p>",
+          "location":"querystring",
+          "locationName":"alias"
+        }
+      }
+    },
+    "GetCoreNetworkPolicyResponse":{
+      "type":"structure",
+      "members":{
+        "CoreNetworkPolicy":{
+          "shape":"CoreNetworkPolicy",
+          "documentation":"<p>The details about a core network policy.</p>"
+        }
+      }
+    },
+    "GetCoreNetworkRequest":{
+      "type":"structure",
+      "required":["CoreNetworkId"],
+      "members":{
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network.</p>",
+          "location":"uri",
+          "locationName":"coreNetworkId"
+        }
+      }
+    },
+    "GetCoreNetworkResponse":{
+      "type":"structure",
+      "members":{
+        "CoreNetwork":{
+          "shape":"CoreNetwork",
+          "documentation":"<p>Details about a core network.</p>"
         }
       }
     },
@@ -1754,13 +4124,13 @@
       "required":["GlobalNetworkId"],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "CustomerGatewayArns":{
-          "shape":"StringList",
+          "shape":"CustomerGatewayArnList",
           "documentation":"<p>One or more customer gateway Amazon Resource Names (ARNs). The maximum is 10.</p>",
           "location":"querystring",
           "locationName":"customerGatewayArns"
@@ -1772,7 +4142,7 @@
           "locationName":"maxResults"
         },
         "NextToken":{
-          "shape":"String",
+          "shape":"NextToken",
           "documentation":"<p>The token for the next page of results.</p>",
           "location":"querystring",
           "locationName":"nextToken"
@@ -1787,7 +4157,7 @@
           "documentation":"<p>The customer gateway associations.</p>"
         },
         "NextToken":{
-          "shape":"String",
+          "shape":"NextToken",
           "documentation":"<p>The token for the next page of results.</p>"
         }
       }
@@ -1797,19 +4167,19 @@
       "required":["GlobalNetworkId"],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "DeviceIds":{
-          "shape":"StringList",
+          "shape":"DeviceIdList",
           "documentation":"<p>One or more device IDs. The maximum is 10.</p>",
           "location":"querystring",
           "locationName":"deviceIds"
         },
         "SiteId":{
-          "shape":"String",
+          "shape":"SiteId",
           "documentation":"<p>The ID of the site.</p>",
           "location":"querystring",
           "locationName":"siteId"
@@ -1821,7 +4191,7 @@
           "locationName":"maxResults"
         },
         "NextToken":{
-          "shape":"String",
+          "shape":"NextToken",
           "documentation":"<p>The token for the next page of results.</p>",
           "location":"querystring",
           "locationName":"nextToken"
@@ -1836,7 +4206,7 @@
           "documentation":"<p>The devices.</p>"
         },
         "NextToken":{
-          "shape":"String",
+          "shape":"NextToken",
           "documentation":"<p>The token for the next page of results.</p>"
         }
       }
@@ -1846,19 +4216,19 @@
       "required":["GlobalNetworkId"],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "DeviceId":{
-          "shape":"String",
+          "shape":"DeviceId",
           "documentation":"<p>The ID of the device.</p>",
           "location":"querystring",
           "locationName":"deviceId"
         },
         "LinkId":{
-          "shape":"String",
+          "shape":"LinkId",
           "documentation":"<p>The ID of the link.</p>",
           "location":"querystring",
           "locationName":"linkId"
@@ -1870,7 +4240,7 @@
           "locationName":"maxResults"
         },
         "NextToken":{
-          "shape":"String",
+          "shape":"NextToken",
           "documentation":"<p>The token for the next page of results.</p>",
           "location":"querystring",
           "locationName":"nextToken"
@@ -1885,7 +4255,7 @@
           "documentation":"<p>The link associations.</p>"
         },
         "NextToken":{
-          "shape":"String",
+          "shape":"NextToken",
           "documentation":"<p>The token for the next page of results.</p>"
         }
       }
@@ -1895,31 +4265,31 @@
       "required":["GlobalNetworkId"],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "LinkIds":{
-          "shape":"StringList",
+          "shape":"LinkIdList",
           "documentation":"<p>One or more link IDs. The maximum is 10.</p>",
           "location":"querystring",
           "locationName":"linkIds"
         },
         "SiteId":{
-          "shape":"String",
+          "shape":"SiteId",
           "documentation":"<p>The ID of the site.</p>",
           "location":"querystring",
           "locationName":"siteId"
         },
         "Type":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The link type.</p>",
           "location":"querystring",
           "locationName":"type"
         },
         "Provider":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The link provider.</p>",
           "location":"querystring",
           "locationName":"provider"
@@ -1931,7 +4301,7 @@
           "locationName":"maxResults"
         },
         "NextToken":{
-          "shape":"String",
+          "shape":"NextToken",
           "documentation":"<p>The token for the next page of results.</p>",
           "location":"querystring",
           "locationName":"nextToken"
@@ -1946,7 +4316,7 @@
           "documentation":"<p>The links.</p>"
         },
         "NextToken":{
-          "shape":"String",
+          "shape":"NextToken",
           "documentation":"<p>The token for the next page of results.</p>"
         }
       }
@@ -1956,13 +4326,13 @@
       "required":["GlobalNetworkId"],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "ResourceType":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The resource type.</p> <p>The following are the supported resource types for Direct Connect:</p> <ul> <li> <p> <code>dxcon</code> </p> </li> <li> <p> <code>dx-gateway</code> </p> </li> <li> <p> <code>dx-vif</code> </p> </li> </ul> <p>The following are the supported resource types for Network Manager:</p> <ul> <li> <p> <code>connection</code> </p> </li> <li> <p> <code>device</code> </p> </li> <li> <p> <code>link</code> </p> </li> <li> <p> <code>site</code> </p> </li> </ul> <p>The following are the supported resource types for Amazon VPC:</p> <ul> <li> <p> <code>customer-gateway</code> </p> </li> <li> <p> <code>transit-gateway</code> </p> </li> <li> <p> <code>transit-gateway-attachment</code> </p> </li> <li> <p> <code>transit-gateway-connect-peer</code> </p> </li> <li> <p> <code>transit-gateway-route-table</code> </p> </li> <li> <p> <code>vpn-connection</code> </p> </li> </ul>",
           "location":"querystring",
           "locationName":"resourceType"
@@ -1974,7 +4344,7 @@
           "locationName":"maxResults"
         },
         "NextToken":{
-          "shape":"String",
+          "shape":"NextToken",
           "documentation":"<p>The token for the next page of results.</p>",
           "location":"querystring",
           "locationName":"nextToken"
@@ -1989,7 +4359,7 @@
           "documentation":"<p>The count of resources.</p>"
         },
         "NextToken":{
-          "shape":"String",
+          "shape":"NextToken",
           "documentation":"<p>The token for the next page of results.</p>"
         }
       }
@@ -1999,37 +4369,43 @@
       "required":["GlobalNetworkId"],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network.</p>",
+          "location":"querystring",
+          "locationName":"coreNetworkId"
+        },
         "RegisteredGatewayArn":{
-          "shape":"String",
+          "shape":"ResourceArn",
           "documentation":"<p>The ARN of the registered gateway.</p>",
           "location":"querystring",
           "locationName":"registeredGatewayArn"
         },
         "AwsRegion":{
-          "shape":"String",
+          "shape":"ExternalRegionCode",
           "documentation":"<p>The Amazon Web Services Region.</p>",
           "location":"querystring",
           "locationName":"awsRegion"
         },
         "AccountId":{
-          "shape":"String",
+          "shape":"AWSAccountId",
           "documentation":"<p>The Amazon Web Services account ID.</p>",
           "location":"querystring",
           "locationName":"accountId"
         },
         "ResourceType":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The resource type.</p> <p>The following are the supported resource types for Direct Connect:</p> <ul> <li> <p> <code>dxcon</code> </p> </li> <li> <p> <code>dx-gateway</code> </p> </li> <li> <p> <code>dx-vif</code> </p> </li> </ul> <p>The following are the supported resource types for Network Manager:</p> <ul> <li> <p> <code>connection</code> </p> </li> <li> <p> <code>device</code> </p> </li> <li> <p> <code>link</code> </p> </li> <li> <p> <code>site</code> </p> </li> </ul> <p>The following are the supported resource types for Amazon VPC:</p> <ul> <li> <p> <code>customer-gateway</code> </p> </li> <li> <p> <code>transit-gateway</code> </p> </li> <li> <p> <code>transit-gateway-attachment</code> </p> </li> <li> <p> <code>transit-gateway-connect-peer</code> </p> </li> <li> <p> <code>transit-gateway-route-table</code> </p> </li> <li> <p> <code>vpn-connection</code> </p> </li> </ul>",
           "location":"querystring",
           "locationName":"resourceType"
         },
         "ResourceArn":{
-          "shape":"String",
+          "shape":"ResourceArn",
           "documentation":"<p>The ARN of the gateway.</p>",
           "location":"querystring",
           "locationName":"resourceArn"
@@ -2041,7 +4417,7 @@
           "locationName":"maxResults"
         },
         "NextToken":{
-          "shape":"String",
+          "shape":"NextToken",
           "documentation":"<p>The token for the next page of results.</p>",
           "location":"querystring",
           "locationName":"nextToken"
@@ -2056,7 +4432,7 @@
           "documentation":"<p>The resource relationships.</p>"
         },
         "NextToken":{
-          "shape":"String",
+          "shape":"NextToken",
           "documentation":"<p>The token for the next page of results.</p>"
         }
       }
@@ -2066,37 +4442,43 @@
       "required":["GlobalNetworkId"],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network.</p>",
+          "location":"querystring",
+          "locationName":"coreNetworkId"
+        },
         "RegisteredGatewayArn":{
-          "shape":"String",
+          "shape":"ResourceArn",
           "documentation":"<p>The ARN of the gateway.</p>",
           "location":"querystring",
           "locationName":"registeredGatewayArn"
         },
         "AwsRegion":{
-          "shape":"String",
+          "shape":"ExternalRegionCode",
           "documentation":"<p>The Amazon Web Services Region.</p>",
           "location":"querystring",
           "locationName":"awsRegion"
         },
         "AccountId":{
-          "shape":"String",
+          "shape":"AWSAccountId",
           "documentation":"<p>The Amazon Web Services account ID.</p>",
           "location":"querystring",
           "locationName":"accountId"
         },
         "ResourceType":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The resource type.</p> <p>The following are the supported resource types for Direct Connect:</p> <ul> <li> <p> <code>dxcon</code> - The definition model is <a href=\"https://docs.aws.amazon.com/directconnect/latest/APIReference/API_Connection.html\">Connection</a>.</p> </li> <li> <p> <code>dx-gateway</code> - The definition model is <a href=\"https://docs.aws.amazon.com/directconnect/latest/APIReference/API_DirectConnectGateway.html\">DirectConnectGateway</a>.</p> </li> <li> <p> <code>dx-vif</code> - The definition model is <a href=\"https://docs.aws.amazon.com/directconnect/latest/APIReference/API_VirtualInterface.html\">VirtualInterface</a>.</p> </li> </ul> <p>The following are the supported resource types for Network Manager:</p> <ul> <li> <p> <code>connection</code> - The definition model is <a href=\"https://docs.aws.amazon.com/networkmanager/latest/APIReference/API_Connection.html\">Connection</a>.</p> </li> <li> <p> <code>device</code> - The definition model is <a href=\"https://docs.aws.amazon.com/networkmanager/latest/APIReference/API_Device.html\">Device</a>.</p> </li> <li> <p> <code>link</code> - The definition model is <a href=\"https://docs.aws.amazon.com/networkmanager/latest/APIReference/API_Link.html\">Link</a>.</p> </li> <li> <p> <code>site</code> - The definition model is <a href=\"https://docs.aws.amazon.com/networkmanager/latest/APIReference/API_Site.html\">Site</a>.</p> </li> </ul> <p>The following are the supported resource types for Amazon VPC:</p> <ul> <li> <p> <code>customer-gateway</code> - The definition model is <a href=\"https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CustomerGateway.html\">CustomerGateway</a>.</p> </li> <li> <p> <code>transit-gateway</code> - The definition model is <a href=\"https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGateway.html\">TransitGateway</a>.</p> </li> <li> <p> <code>transit-gateway-attachment</code> - The definition model is <a href=\"https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayAttachment.html\">TransitGatewayAttachment</a>.</p> </li> <li> <p> <code>transit-gateway-connect-peer</code> - The definition model is <a href=\"https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayConnectPeer.html\">TransitGatewayConnectPeer</a>.</p> </li> <li> <p> <code>transit-gateway-route-table</code> - The definition model is <a href=\"https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayRouteTable.html\">TransitGatewayRouteTable</a>.</p> </li> <li> <p> <code>vpn-connection</code> - The definition model is <a href=\"https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpnConnection.html\">VpnConnection</a>.</p> </li> </ul>",
           "location":"querystring",
           "locationName":"resourceType"
         },
         "ResourceArn":{
-          "shape":"String",
+          "shape":"ResourceArn",
           "documentation":"<p>The ARN of the resource.</p>",
           "location":"querystring",
           "locationName":"resourceArn"
@@ -2108,7 +4490,7 @@
           "locationName":"maxResults"
         },
         "NextToken":{
-          "shape":"String",
+          "shape":"NextToken",
           "documentation":"<p>The token for the next page of results.</p>",
           "location":"querystring",
           "locationName":"nextToken"
@@ -2123,7 +4505,7 @@
           "documentation":"<p>The network resources.</p>"
         },
         "NextToken":{
-          "shape":"String",
+          "shape":"NextToken",
           "documentation":"<p>The token for the next page of results.</p>"
         }
       }
@@ -2136,7 +4518,7 @@
       ],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
@@ -2146,23 +4528,23 @@
           "documentation":"<p>The ID of the route table.</p>"
         },
         "ExactCidrMatches":{
-          "shape":"StringList",
+          "shape":"ConstrainedStringList",
           "documentation":"<p>An exact CIDR block.</p>"
         },
         "LongestPrefixMatches":{
-          "shape":"StringList",
+          "shape":"ConstrainedStringList",
           "documentation":"<p>The most specific route that matches the traffic (longest prefix match).</p>"
         },
         "SubnetOfMatches":{
-          "shape":"StringList",
+          "shape":"ConstrainedStringList",
           "documentation":"<p>The routes with a subnet that match the specified CIDR filter.</p>"
         },
         "SupernetOfMatches":{
-          "shape":"StringList",
+          "shape":"ConstrainedStringList",
           "documentation":"<p>The routes with a CIDR that encompasses the CIDR filter. Example: If you specify 10.0.1.0/30, then the result returns 10.0.1.0/29.</p>"
         },
         "PrefixListIds":{
-          "shape":"StringList",
+          "shape":"ConstrainedStringList",
           "documentation":"<p>The IDs of the prefix lists.</p>"
         },
         "States":{
@@ -2183,8 +4565,12 @@
       "type":"structure",
       "members":{
         "RouteTableArn":{
-          "shape":"String",
+          "shape":"ResourceArn",
           "documentation":"<p>The ARN of the route table.</p>"
+        },
+        "CoreNetworkSegmentEdge":{
+          "shape":"CoreNetworkSegmentEdgeIdentifier",
+          "documentation":"<p>Describes a core network segment edge.</p>"
         },
         "RouteTableType":{
           "shape":"RouteTableType",
@@ -2205,37 +4591,43 @@
       "required":["GlobalNetworkId"],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network.</p>",
+          "location":"querystring",
+          "locationName":"coreNetworkId"
+        },
         "RegisteredGatewayArn":{
-          "shape":"String",
+          "shape":"ResourceArn",
           "documentation":"<p>The ARN of the gateway.</p>",
           "location":"querystring",
           "locationName":"registeredGatewayArn"
         },
         "AwsRegion":{
-          "shape":"String",
+          "shape":"ExternalRegionCode",
           "documentation":"<p>The Amazon Web Services Region.</p>",
           "location":"querystring",
           "locationName":"awsRegion"
         },
         "AccountId":{
-          "shape":"String",
+          "shape":"AWSAccountId",
           "documentation":"<p>The Amazon Web Services account ID.</p>",
           "location":"querystring",
           "locationName":"accountId"
         },
         "ResourceType":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The resource type.</p> <p>The following are the supported resource types for Direct Connect:</p> <ul> <li> <p> <code>dxcon</code> </p> </li> <li> <p> <code>dx-gateway</code> </p> </li> <li> <p> <code>dx-vif</code> </p> </li> </ul> <p>The following are the supported resource types for Network Manager:</p> <ul> <li> <p> <code>connection</code> </p> </li> <li> <p> <code>device</code> </p> </li> <li> <p> <code>link</code> </p> </li> <li> <p> <code>site</code> </p> </li> </ul> <p>The following are the supported resource types for Amazon VPC:</p> <ul> <li> <p> <code>customer-gateway</code> </p> </li> <li> <p> <code>transit-gateway</code> </p> </li> <li> <p> <code>transit-gateway-attachment</code> </p> </li> <li> <p> <code>transit-gateway-connect-peer</code> </p> </li> <li> <p> <code>transit-gateway-route-table</code> </p> </li> <li> <p> <code>vpn-connection</code> </p> </li> </ul>",
           "location":"querystring",
           "locationName":"resourceType"
         },
         "ResourceArn":{
-          "shape":"String",
+          "shape":"ResourceArn",
           "documentation":"<p>The ARN of the resource.</p>",
           "location":"querystring",
           "locationName":"resourceArn"
@@ -2247,7 +4639,7 @@
           "locationName":"maxResults"
         },
         "NextToken":{
-          "shape":"String",
+          "shape":"NextToken",
           "documentation":"<p>The token for the next page of results.</p>",
           "location":"querystring",
           "locationName":"nextToken"
@@ -2262,8 +4654,30 @@
           "documentation":"<p>The network telemetry.</p>"
         },
         "NextToken":{
-          "shape":"String",
+          "shape":"NextToken",
           "documentation":"<p>The token for the next page of results.</p>"
+        }
+      }
+    },
+    "GetResourcePolicyRequest":{
+      "type":"structure",
+      "required":["ResourceArn"],
+      "members":{
+        "ResourceArn":{
+          "shape":"ResourceArn",
+          "documentation":"<p>The ARN of the resource.</p>",
+          "location":"uri",
+          "locationName":"resourceArn"
+        }
+      }
+    },
+    "GetResourcePolicyResponse":{
+      "type":"structure",
+      "members":{
+        "PolicyDocument":{
+          "shape":"ResourcePolicyDocument",
+          "documentation":"<p>The resource policy document.</p>",
+          "jsonvalue":true
         }
       }
     },
@@ -2275,13 +4689,13 @@
       ],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "RouteAnalysisId":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The ID of the route analysis.</p>",
           "location":"uri",
           "locationName":"routeAnalysisId"
@@ -2297,18 +4711,39 @@
         }
       }
     },
+    "GetSiteToSiteVpnAttachmentRequest":{
+      "type":"structure",
+      "required":["AttachmentId"],
+      "members":{
+        "AttachmentId":{
+          "shape":"AttachmentId",
+          "documentation":"<p>The ID of the attachment.</p>",
+          "location":"uri",
+          "locationName":"attachmentId"
+        }
+      }
+    },
+    "GetSiteToSiteVpnAttachmentResponse":{
+      "type":"structure",
+      "members":{
+        "SiteToSiteVpnAttachment":{
+          "shape":"SiteToSiteVpnAttachment",
+          "documentation":"<p>Describes the site-to-site attachment.</p>"
+        }
+      }
+    },
     "GetSitesRequest":{
       "type":"structure",
       "required":["GlobalNetworkId"],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "SiteIds":{
-          "shape":"StringList",
+          "shape":"SiteIdList",
           "documentation":"<p>One or more site IDs. The maximum is 10.</p>",
           "location":"querystring",
           "locationName":"siteIds"
@@ -2320,7 +4755,7 @@
           "locationName":"maxResults"
         },
         "NextToken":{
-          "shape":"String",
+          "shape":"NextToken",
           "documentation":"<p>The token for the next page of results.</p>",
           "location":"querystring",
           "locationName":"nextToken"
@@ -2335,7 +4770,7 @@
           "documentation":"<p>The sites.</p>"
         },
         "NextToken":{
-          "shape":"String",
+          "shape":"NextToken",
           "documentation":"<p>The token for the next page of results.</p>"
         }
       }
@@ -2345,13 +4780,13 @@
       "required":["GlobalNetworkId"],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "TransitGatewayConnectPeerArns":{
-          "shape":"StringList",
+          "shape":"TransitGatewayConnectPeerArnList",
           "documentation":"<p>One or more transit gateway Connect peer Amazon Resource Names (ARNs).</p>",
           "location":"querystring",
           "locationName":"transitGatewayConnectPeerArns"
@@ -2363,7 +4798,7 @@
           "locationName":"maxResults"
         },
         "NextToken":{
-          "shape":"String",
+          "shape":"NextToken",
           "documentation":"<p>The token for the next page of results.</p>",
           "location":"querystring",
           "locationName":"nextToken"
@@ -2378,8 +4813,29 @@
           "documentation":"<p>Information about the transit gateway Connect peer associations.</p>"
         },
         "NextToken":{
-          "shape":"String",
+          "shape":"NextToken",
           "documentation":"<p>The token to use for the next page of results.</p>"
+        }
+      }
+    },
+    "GetTransitGatewayPeeringRequest":{
+      "type":"structure",
+      "required":["PeeringId"],
+      "members":{
+        "PeeringId":{
+          "shape":"PeeringId",
+          "documentation":"<p>The ID of the peering request.</p>",
+          "location":"uri",
+          "locationName":"peeringId"
+        }
+      }
+    },
+    "GetTransitGatewayPeeringResponse":{
+      "type":"structure",
+      "members":{
+        "TransitGatewayPeering":{
+          "shape":"TransitGatewayPeering",
+          "documentation":"<p>Returns information about a transit gateway peering. </p>"
         }
       }
     },
@@ -2388,13 +4844,13 @@
       "required":["GlobalNetworkId"],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "TransitGatewayArns":{
-          "shape":"StringList",
+          "shape":"TransitGatewayArnList",
           "documentation":"<p>The Amazon Resource Names (ARNs) of one or more transit gateways. The maximum is 10.</p>",
           "location":"querystring",
           "locationName":"transitGatewayArns"
@@ -2406,7 +4862,7 @@
           "locationName":"maxResults"
         },
         "NextToken":{
-          "shape":"String",
+          "shape":"NextToken",
           "documentation":"<p>The token for the next page of results.</p>",
           "location":"querystring",
           "locationName":"nextToken"
@@ -2421,8 +4877,50 @@
           "documentation":"<p>The transit gateway registrations.</p>"
         },
         "NextToken":{
-          "shape":"String",
+          "shape":"NextToken",
           "documentation":"<p>The token for the next page of results.</p>"
+        }
+      }
+    },
+    "GetTransitGatewayRouteTableAttachmentRequest":{
+      "type":"structure",
+      "required":["AttachmentId"],
+      "members":{
+        "AttachmentId":{
+          "shape":"AttachmentId",
+          "documentation":"<p>The ID of the transit gateway route table attachment.</p>",
+          "location":"uri",
+          "locationName":"attachmentId"
+        }
+      }
+    },
+    "GetTransitGatewayRouteTableAttachmentResponse":{
+      "type":"structure",
+      "members":{
+        "TransitGatewayRouteTableAttachment":{
+          "shape":"TransitGatewayRouteTableAttachment",
+          "documentation":"<p>Returns information about the transit gateway route table attachment.</p>"
+        }
+      }
+    },
+    "GetVpcAttachmentRequest":{
+      "type":"structure",
+      "required":["AttachmentId"],
+      "members":{
+        "AttachmentId":{
+          "shape":"AttachmentId",
+          "documentation":"<p>The ID of the attachment.</p>",
+          "location":"uri",
+          "locationName":"attachmentId"
+        }
+      }
+    },
+    "GetVpcAttachmentResponse":{
+      "type":"structure",
+      "members":{
+        "VpcAttachment":{
+          "shape":"VpcAttachment",
+          "documentation":"<p>Returns details about a VPC attachment.</p>"
         }
       }
     },
@@ -2430,15 +4928,15 @@
       "type":"structure",
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>"
         },
         "GlobalNetworkArn":{
-          "shape":"String",
+          "shape":"GlobalNetworkArn",
           "documentation":"<p>The Amazon Resource Name (ARN) of the global network.</p>"
         },
         "Description":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The description of the global network.</p>"
         },
         "CreatedAt":{
@@ -2454,7 +4952,23 @@
           "documentation":"<p>The tags for the global network.</p>"
         }
       },
-      "documentation":"<p>Describes a global network.</p>"
+      "documentation":"<p>Describes a global network. This is a single private network acting as a high-level container for your network objects, including an Amazon Web Services-managed Core Network.</p>"
+    },
+    "GlobalNetworkArn":{
+      "type":"string",
+      "max":500,
+      "min":0,
+      "pattern":"[\\s\\S]*"
+    },
+    "GlobalNetworkId":{
+      "type":"string",
+      "max":50,
+      "min":0,
+      "pattern":"[\\s\\S]*"
+    },
+    "GlobalNetworkIdList":{
+      "type":"list",
+      "member":{"shape":"GlobalNetworkId"}
     },
     "GlobalNetworkList":{
       "type":"list",
@@ -2469,12 +4983,18 @@
         "UPDATING"
       ]
     },
+    "IPAddress":{
+      "type":"string",
+      "max":50,
+      "min":1,
+      "pattern":"[\\s\\S]*"
+    },
     "Integer":{"type":"integer"},
     "InternalServerException":{
       "type":"structure",
       "required":["Message"],
       "members":{
-        "Message":{"shape":"String"},
+        "Message":{"shape":"ServerSideString"},
         "RetryAfterSeconds":{
           "shape":"RetryAfterSeconds",
           "documentation":"<p>Indicates when to retry the request.</p>",
@@ -2491,27 +5011,27 @@
       "type":"structure",
       "members":{
         "LinkId":{
-          "shape":"String",
+          "shape":"LinkId",
           "documentation":"<p>The ID of the link.</p>"
         },
         "LinkArn":{
-          "shape":"String",
+          "shape":"LinkArn",
           "documentation":"<p>The Amazon Resource Name (ARN) of the link.</p>"
         },
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>"
         },
         "SiteId":{
-          "shape":"String",
+          "shape":"SiteId",
           "documentation":"<p>The ID of the site.</p>"
         },
         "Description":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The description of the link.</p>"
         },
         "Type":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The type of the link.</p>"
         },
         "Bandwidth":{
@@ -2519,7 +5039,7 @@
           "documentation":"<p>The bandwidth for the link.</p>"
         },
         "Provider":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The provider of the link.</p>"
         },
         "CreatedAt":{
@@ -2537,19 +5057,25 @@
       },
       "documentation":"<p>Describes a link.</p>"
     },
+    "LinkArn":{
+      "type":"string",
+      "max":500,
+      "min":0,
+      "pattern":"[\\s\\S]*"
+    },
     "LinkAssociation":{
       "type":"structure",
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>"
         },
         "DeviceId":{
-          "shape":"String",
+          "shape":"DeviceId",
           "documentation":"<p>The device ID for the link association.</p>"
         },
         "LinkId":{
-          "shape":"String",
+          "shape":"LinkId",
           "documentation":"<p>The ID of the link.</p>"
         },
         "LinkAssociationState":{
@@ -2572,6 +5098,16 @@
         "DELETED"
       ]
     },
+    "LinkId":{
+      "type":"string",
+      "max":50,
+      "min":0,
+      "pattern":"[\\s\\S]*"
+    },
+    "LinkIdList":{
+      "type":"list",
+      "member":{"shape":"LinkId"}
+    },
     "LinkList":{
       "type":"list",
       "member":{"shape":"Link"}
@@ -2585,12 +5121,259 @@
         "UPDATING"
       ]
     },
+    "ListAttachmentsRequest":{
+      "type":"structure",
+      "members":{
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network.</p>",
+          "location":"querystring",
+          "locationName":"coreNetworkId"
+        },
+        "AttachmentType":{
+          "shape":"AttachmentType",
+          "documentation":"<p>The type of attachment.</p>",
+          "location":"querystring",
+          "locationName":"attachmentType"
+        },
+        "EdgeLocation":{
+          "shape":"ExternalRegionCode",
+          "documentation":"<p>The Region where the edge is located.</p>",
+          "location":"querystring",
+          "locationName":"edgeLocation"
+        },
+        "State":{
+          "shape":"AttachmentState",
+          "documentation":"<p>The state of the attachment.</p>",
+          "location":"querystring",
+          "locationName":"state"
+        },
+        "MaxResults":{
+          "shape":"MaxResults",
+          "documentation":"<p>The maximum number of results to return.</p>",
+          "location":"querystring",
+          "locationName":"maxResults"
+        },
+        "NextToken":{
+          "shape":"NextToken",
+          "documentation":"<p>The token for the next page of results.</p>",
+          "location":"querystring",
+          "locationName":"nextToken"
+        }
+      }
+    },
+    "ListAttachmentsResponse":{
+      "type":"structure",
+      "members":{
+        "Attachments":{
+          "shape":"AttachmentList",
+          "documentation":"<p>Describes the list of attachments.</p>"
+        },
+        "NextToken":{
+          "shape":"NextToken",
+          "documentation":"<p>The token for the next page of results.</p>"
+        }
+      }
+    },
+    "ListConnectPeersRequest":{
+      "type":"structure",
+      "members":{
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network.</p>",
+          "location":"querystring",
+          "locationName":"coreNetworkId"
+        },
+        "ConnectAttachmentId":{
+          "shape":"AttachmentId",
+          "documentation":"<p>The ID of the attachment.</p>",
+          "location":"querystring",
+          "locationName":"connectAttachmentId"
+        },
+        "MaxResults":{
+          "shape":"MaxResults",
+          "documentation":"<p>The maximum number of results to return.</p>",
+          "location":"querystring",
+          "locationName":"maxResults"
+        },
+        "NextToken":{
+          "shape":"NextToken",
+          "documentation":"<p>The token for the next page of results.</p>",
+          "location":"querystring",
+          "locationName":"nextToken"
+        }
+      }
+    },
+    "ListConnectPeersResponse":{
+      "type":"structure",
+      "members":{
+        "ConnectPeers":{
+          "shape":"ConnectPeerSummaryList",
+          "documentation":"<p>Describes the Connect peers.</p>"
+        },
+        "NextToken":{
+          "shape":"NextToken",
+          "documentation":"<p>The token for the next page of results.</p>"
+        }
+      }
+    },
+    "ListCoreNetworkPolicyVersionsRequest":{
+      "type":"structure",
+      "required":["CoreNetworkId"],
+      "members":{
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network.</p>",
+          "location":"uri",
+          "locationName":"coreNetworkId"
+        },
+        "MaxResults":{
+          "shape":"MaxResults",
+          "documentation":"<p>The maximum number of results to return.</p>",
+          "location":"querystring",
+          "locationName":"maxResults"
+        },
+        "NextToken":{
+          "shape":"NextToken",
+          "documentation":"<p>The token for the next page of results.</p>",
+          "location":"querystring",
+          "locationName":"nextToken"
+        }
+      }
+    },
+    "ListCoreNetworkPolicyVersionsResponse":{
+      "type":"structure",
+      "members":{
+        "CoreNetworkPolicyVersions":{
+          "shape":"CoreNetworkPolicyVersionList",
+          "documentation":"<p>Describes core network policy versions.</p>"
+        },
+        "NextToken":{
+          "shape":"NextToken",
+          "documentation":"<p>The token for the next page of results.</p>"
+        }
+      }
+    },
+    "ListCoreNetworksRequest":{
+      "type":"structure",
+      "members":{
+        "MaxResults":{
+          "shape":"MaxResults",
+          "documentation":"<p>The maximum number of results to return.</p>",
+          "location":"querystring",
+          "locationName":"maxResults"
+        },
+        "NextToken":{
+          "shape":"NextToken",
+          "documentation":"<p>The token for the next page of results.</p>",
+          "location":"querystring",
+          "locationName":"nextToken"
+        }
+      }
+    },
+    "ListCoreNetworksResponse":{
+      "type":"structure",
+      "members":{
+        "CoreNetworks":{
+          "shape":"CoreNetworkSummaryList",
+          "documentation":"<p>Describes the list of core networks.</p>"
+        },
+        "NextToken":{
+          "shape":"NextToken",
+          "documentation":"<p>The token for the next page of results.</p>"
+        }
+      }
+    },
+    "ListOrganizationServiceAccessStatusRequest":{
+      "type":"structure",
+      "members":{
+        "MaxResults":{
+          "shape":"MaxResults",
+          "documentation":"<p>The maximum number of results to return.</p>",
+          "location":"querystring",
+          "locationName":"maxResults"
+        },
+        "NextToken":{
+          "shape":"NextToken",
+          "documentation":"<p>The token for the next page of results.</p>",
+          "location":"querystring",
+          "locationName":"nextToken"
+        }
+      }
+    },
+    "ListOrganizationServiceAccessStatusResponse":{
+      "type":"structure",
+      "members":{
+        "OrganizationStatus":{
+          "shape":"OrganizationStatus",
+          "documentation":"<p>Displays the status of an Amazon Web Services Organization.</p>"
+        },
+        "NextToken":{
+          "shape":"NextToken",
+          "documentation":"<p>The token for the next page of results.</p>"
+        }
+      }
+    },
+    "ListPeeringsRequest":{
+      "type":"structure",
+      "members":{
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network.</p>",
+          "location":"querystring",
+          "locationName":"coreNetworkId"
+        },
+        "PeeringType":{
+          "shape":"PeeringType",
+          "documentation":"<p>Returns a list of a peering requests.</p>",
+          "location":"querystring",
+          "locationName":"peeringType"
+        },
+        "EdgeLocation":{
+          "shape":"ExternalRegionCode",
+          "documentation":"<p>Returns a list edge locations for the </p>",
+          "location":"querystring",
+          "locationName":"edgeLocation"
+        },
+        "State":{
+          "shape":"PeeringState",
+          "documentation":"<p>Returns a list of the peering request states.</p>",
+          "location":"querystring",
+          "locationName":"state"
+        },
+        "MaxResults":{
+          "shape":"MaxResults",
+          "documentation":"<p>The maximum number of results to return.</p>",
+          "location":"querystring",
+          "locationName":"maxResults"
+        },
+        "NextToken":{
+          "shape":"NextToken",
+          "documentation":"<p>The token for the next page of results.</p>",
+          "location":"querystring",
+          "locationName":"nextToken"
+        }
+      }
+    },
+    "ListPeeringsResponse":{
+      "type":"structure",
+      "members":{
+        "Peerings":{
+          "shape":"PeeringList",
+          "documentation":"<p>Lists the transit gateway peerings for the <code>ListPeerings</code> request.</p>"
+        },
+        "NextToken":{
+          "shape":"NextToken",
+          "documentation":"<p>The token for the next page of results.</p>"
+        }
+      }
+    },
     "ListTagsForResourceRequest":{
       "type":"structure",
       "required":["ResourceArn"],
       "members":{
         "ResourceArn":{
-          "shape":"ResourceARN",
+          "shape":"ResourceArn",
           "documentation":"<p>The Amazon Resource Name (ARN) of the resource.</p>",
           "location":"uri",
           "locationName":"resourceArn"
@@ -2610,21 +5393,22 @@
       "type":"structure",
       "members":{
         "Address":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The physical address.</p>"
         },
         "Latitude":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The latitude.</p>"
         },
         "Longitude":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The longitude.</p>"
         }
       },
       "documentation":"<p>Describes a location.</p>",
       "sensitive":true
     },
+    "Long":{"type":"long"},
     "MaxResults":{
       "type":"integer",
       "max":500,
@@ -2634,31 +5418,35 @@
       "type":"structure",
       "members":{
         "RegisteredGatewayArn":{
-          "shape":"String",
+          "shape":"ResourceArn",
           "documentation":"<p>The ARN of the gateway.</p>"
         },
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network.</p>"
+        },
         "AwsRegion":{
-          "shape":"String",
+          "shape":"ExternalRegionCode",
           "documentation":"<p>The Amazon Web Services Region.</p>"
         },
         "AccountId":{
-          "shape":"String",
+          "shape":"AWSAccountId",
           "documentation":"<p>The Amazon Web Services account ID.</p>"
         },
         "ResourceType":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The resource type.</p> <p>The following are the supported resource types for Direct Connect:</p> <ul> <li> <p> <code>dxcon</code> </p> </li> <li> <p> <code>dx-gateway</code> </p> </li> <li> <p> <code>dx-vif</code> </p> </li> </ul> <p>The following are the supported resource types for Network Manager:</p> <ul> <li> <p> <code>connection</code> </p> </li> <li> <p> <code>device</code> </p> </li> <li> <p> <code>link</code> </p> </li> <li> <p> <code>site</code> </p> </li> </ul> <p>The following are the supported resource types for Amazon VPC:</p> <ul> <li> <p> <code>customer-gateway</code> </p> </li> <li> <p> <code>transit-gateway</code> </p> </li> <li> <p> <code>transit-gateway-attachment</code> </p> </li> <li> <p> <code>transit-gateway-connect-peer</code> </p> </li> <li> <p> <code>transit-gateway-route-table</code> </p> </li> <li> <p> <code>vpn-connection</code> </p> </li> </ul>"
         },
         "ResourceId":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The ID of the resource.</p>"
         },
         "ResourceArn":{
-          "shape":"String",
+          "shape":"ResourceArn",
           "documentation":"<p>The ARN of the resource.</p>"
         },
         "Definition":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>Information about the resource, in JSON format. Network Manager gets this information by describing the resource using its Describe API call.</p>"
         },
         "DefinitionTimestamp":{
@@ -2680,7 +5468,7 @@
       "type":"structure",
       "members":{
         "ResourceType":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The resource type.</p>"
         },
         "Count":{
@@ -2698,34 +5486,32 @@
       "type":"list",
       "member":{"shape":"NetworkResource"}
     },
-    "NetworkResourceMetadataKey":{"type":"string"},
     "NetworkResourceMetadataMap":{
       "type":"map",
-      "key":{"shape":"NetworkResourceMetadataKey"},
-      "value":{"shape":"NetworkResourceMetadataValue"}
+      "key":{"shape":"ConstrainedString"},
+      "value":{"shape":"ConstrainedString"}
     },
-    "NetworkResourceMetadataValue":{"type":"string"},
     "NetworkResourceSummary":{
       "type":"structure",
       "members":{
         "RegisteredGatewayArn":{
-          "shape":"String",
+          "shape":"ResourceArn",
           "documentation":"<p>The ARN of the gateway.</p>"
         },
         "ResourceArn":{
-          "shape":"String",
+          "shape":"ResourceArn",
           "documentation":"<p>The ARN of the resource.</p>"
         },
         "ResourceType":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The resource type.</p>"
         },
         "Definition":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>Information about the resource, in JSON format. Network Manager gets this information by describing the resource using its Describe API call.</p>"
         },
         "NameTag":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The value for the Name tag.</p>"
         },
         "IsMiddlebox":{
@@ -2739,7 +5525,7 @@
       "type":"structure",
       "members":{
         "DestinationCidrBlock":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>A unique identifier for the route, such as a CIDR block.</p>"
         },
         "Destinations":{
@@ -2747,7 +5533,7 @@
           "documentation":"<p>The destinations.</p>"
         },
         "PrefixListId":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The ID of the prefix list.</p>"
         },
         "State":{
@@ -2764,16 +5550,28 @@
     "NetworkRouteDestination":{
       "type":"structure",
       "members":{
+        "CoreNetworkAttachmentId":{
+          "shape":"AttachmentId",
+          "documentation":"<p>The ID of a core network attachment.</p>"
+        },
         "TransitGatewayAttachmentId":{
-          "shape":"String",
+          "shape":"TransitGatewayAttachmentId",
           "documentation":"<p>The ID of the transit gateway attachment.</p>"
         },
+        "SegmentName":{
+          "shape":"ConstrainedString",
+          "documentation":"<p>The name of the segment.</p>"
+        },
+        "EdgeLocation":{
+          "shape":"ExternalRegionCode",
+          "documentation":"<p>The edge location for the network destination.</p>"
+        },
         "ResourceType":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The resource type.</p>"
         },
         "ResourceId":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The ID of the resource.</p>"
         }
       },
@@ -2791,31 +5589,35 @@
       "type":"structure",
       "members":{
         "RegisteredGatewayArn":{
-          "shape":"String",
+          "shape":"ResourceArn",
           "documentation":"<p>The ARN of the gateway.</p>"
         },
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network.</p>"
+        },
         "AwsRegion":{
-          "shape":"String",
+          "shape":"ExternalRegionCode",
           "documentation":"<p>The Amazon Web Services Region.</p>"
         },
         "AccountId":{
-          "shape":"String",
+          "shape":"AWSAccountId",
           "documentation":"<p>The Amazon Web Services account ID.</p>"
         },
         "ResourceType":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The resource type.</p>"
         },
         "ResourceId":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The ID of the resource.</p>"
         },
         "ResourceArn":{
-          "shape":"String",
+          "shape":"ResourceArn",
           "documentation":"<p>The ARN of the resource.</p>"
         },
         "Address":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The address.</p>"
         },
         "Health":{
@@ -2829,6 +5631,45 @@
       "type":"list",
       "member":{"shape":"NetworkTelemetry"}
     },
+    "NextToken":{
+      "type":"string",
+      "max":2048,
+      "min":0,
+      "pattern":"[\\s\\S]*"
+    },
+    "OrganizationAwsServiceAccessStatus":{
+      "type":"string",
+      "max":50,
+      "min":0
+    },
+    "OrganizationId":{
+      "type":"string",
+      "max":50,
+      "min":0,
+      "pattern":"^o-([0-9a-f]{8,17})$"
+    },
+    "OrganizationStatus":{
+      "type":"structure",
+      "members":{
+        "OrganizationId":{
+          "shape":"OrganizationId",
+          "documentation":"<p>The ID of an Amazon Web Services Organization.</p>"
+        },
+        "OrganizationAwsServiceAccessStatus":{
+          "shape":"OrganizationAwsServiceAccessStatus",
+          "documentation":"<p>The status of the organization's AWS service access. This will be <code>ENABLED</code> or <code>DISABLED</code>.</p>"
+        },
+        "SLRDeploymentStatus":{
+          "shape":"SLRDeploymentStatus",
+          "documentation":"<p>The status of the SLR deployment for the account. This will be either <code>SUCCEEDED</code> or <code>IN_PROGRESS</code>.</p>"
+        },
+        "AccountStatusList":{
+          "shape":"AccountStatusList",
+          "documentation":"<p>The current service-linked role (SLR) deployment status for an Amazon Web Services Organization's accounts. This will be either <code>SUCCEEDED</code> or <code>IN_PROGRESS</code>.</p>"
+        }
+      },
+      "documentation":"<p>The status of an Amazon Web Services Organization and the accounts within that organization.</p>"
+    },
     "PathComponent":{
       "type":"structure",
       "members":{
@@ -2841,7 +5682,7 @@
           "documentation":"<p>The resource.</p>"
         },
         "DestinationCidrBlock":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The destination CIDR block in the route table.</p>"
         }
       },
@@ -2851,13 +5692,177 @@
       "type":"list",
       "member":{"shape":"PathComponent"}
     },
-    "ReasonContextKey":{"type":"string"},
+    "Peering":{
+      "type":"structure",
+      "members":{
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of the core network for the peering request.</p>"
+        },
+        "CoreNetworkArn":{
+          "shape":"CoreNetworkArn",
+          "documentation":"<p>The ARN of a core network.</p>"
+        },
+        "PeeringId":{
+          "shape":"PeeringId",
+          "documentation":"<p>The ID of the peering attachment. </p>"
+        },
+        "OwnerAccountId":{
+          "shape":"AWSAccountId",
+          "documentation":"<p>The ID of the account owner.</p>"
+        },
+        "PeeringType":{
+          "shape":"PeeringType",
+          "documentation":"<p>The type of peering. This will be <code>TRANSIT_GATEWAY</code>.</p>"
+        },
+        "State":{
+          "shape":"PeeringState",
+          "documentation":"<p>The current state of the peering connection. </p>"
+        },
+        "EdgeLocation":{
+          "shape":"ExternalRegionCode",
+          "documentation":"<p>The edge location for the peer.</p>"
+        },
+        "ResourceArn":{
+          "shape":"ResourceArn",
+          "documentation":"<p>The resource ARN of the peer.</p>"
+        },
+        "Tags":{
+          "shape":"TagList",
+          "documentation":"<p>The list of key-value tags associated with the peering.</p>"
+        },
+        "CreatedAt":{
+          "shape":"DateTime",
+          "documentation":"<p>The timestamp when the attachment peer was created.</p>"
+        }
+      },
+      "documentation":"<p>Describes a peering connection.</p>"
+    },
+    "PeeringId":{
+      "type":"string",
+      "max":50,
+      "min":0,
+      "pattern":"^peering-([0-9a-f]{8,17})$"
+    },
+    "PeeringList":{
+      "type":"list",
+      "member":{"shape":"Peering"}
+    },
+    "PeeringState":{
+      "type":"string",
+      "enum":[
+        "CREATING",
+        "FAILED",
+        "AVAILABLE",
+        "DELETING"
+      ]
+    },
+    "PeeringType":{
+      "type":"string",
+      "enum":["TRANSIT_GATEWAY"]
+    },
+    "ProposedSegmentChange":{
+      "type":"structure",
+      "members":{
+        "Tags":{
+          "shape":"TagList",
+          "documentation":"<p>The list of key-value tags that changed for the segment.</p>"
+        },
+        "AttachmentPolicyRuleNumber":{
+          "shape":"Integer",
+          "documentation":"<p>The rule number in the policy document that applies to this change.</p>"
+        },
+        "SegmentName":{
+          "shape":"ConstrainedString",
+          "documentation":"<p>The name of the segment to change.</p>"
+        }
+      },
+      "documentation":"<p>Describes a proposed segment change. In some cases, the segment change must first be evaluated and accepted. </p>"
+    },
+    "PutCoreNetworkPolicyRequest":{
+      "type":"structure",
+      "required":[
+        "CoreNetworkId",
+        "PolicyDocument"
+      ],
+      "members":{
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network.</p>",
+          "location":"uri",
+          "locationName":"coreNetworkId"
+        },
+        "PolicyDocument":{
+          "shape":"CoreNetworkPolicyDocument",
+          "documentation":"<p>The policy document.</p>",
+          "jsonvalue":true
+        },
+        "Description":{
+          "shape":"ConstrainedString",
+          "documentation":"<p>a core network policy description.</p>"
+        },
+        "LatestVersionId":{
+          "shape":"Integer",
+          "documentation":"<p>The ID of a core network policy. </p>"
+        },
+        "ClientToken":{
+          "shape":"ClientToken",
+          "documentation":"<p>The client token associated with the request.</p>",
+          "idempotencyToken":true
+        }
+      }
+    },
+    "PutCoreNetworkPolicyResponse":{
+      "type":"structure",
+      "members":{
+        "CoreNetworkPolicy":{
+          "shape":"CoreNetworkPolicy",
+          "documentation":"<p>Describes the changed core network policy.</p>"
+        }
+      }
+    },
+    "PutResourcePolicyRequest":{
+      "type":"structure",
+      "required":[
+        "PolicyDocument",
+        "ResourceArn"
+      ],
+      "members":{
+        "PolicyDocument":{
+          "shape":"ResourcePolicyDocument",
+          "documentation":"<p>The JSON resource policy document.</p>",
+          "jsonvalue":true
+        },
+        "ResourceArn":{
+          "shape":"ResourceArn",
+          "documentation":"<p>The ARN of the resource policy. </p>",
+          "location":"uri",
+          "locationName":"resourceArn"
+        }
+      }
+    },
+    "PutResourcePolicyResponse":{
+      "type":"structure",
+      "members":{
+      }
+    },
+    "ReasonContextKey":{
+      "type":"string",
+      "max":10000000,
+      "min":0,
+      "pattern":"[\\s\\S]*"
+    },
     "ReasonContextMap":{
       "type":"map",
       "key":{"shape":"ReasonContextKey"},
       "value":{"shape":"ReasonContextValue"}
     },
-    "ReasonContextValue":{"type":"string"},
+    "ReasonContextValue":{
+      "type":"string",
+      "max":10000000,
+      "min":0,
+      "pattern":"[\\s\\S]*"
+    },
     "RegisterTransitGatewayRequest":{
       "type":"structure",
       "required":[
@@ -2866,13 +5871,13 @@
       ],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "TransitGatewayArn":{
-          "shape":"String",
+          "shape":"TransitGatewayArn",
           "documentation":"<p>The Amazon Resource Name (ARN) of the transit gateway.</p>"
         }
       }
@@ -2886,15 +5891,36 @@
         }
       }
     },
+    "RejectAttachmentRequest":{
+      "type":"structure",
+      "required":["AttachmentId"],
+      "members":{
+        "AttachmentId":{
+          "shape":"AttachmentId",
+          "documentation":"<p>The ID of the attachment.</p>",
+          "location":"uri",
+          "locationName":"attachmentId"
+        }
+      }
+    },
+    "RejectAttachmentResponse":{
+      "type":"structure",
+      "members":{
+        "Attachment":{
+          "shape":"Attachment",
+          "documentation":"<p>Describes the rejected attachment request.</p>"
+        }
+      }
+    },
     "Relationship":{
       "type":"structure",
       "members":{
         "From":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The ARN of the resource.</p>"
         },
         "To":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The ARN of the resource.</p>"
         }
       },
@@ -2904,7 +5930,12 @@
       "type":"list",
       "member":{"shape":"Relationship"}
     },
-    "ResourceARN":{"type":"string"},
+    "ResourceArn":{
+      "type":"string",
+      "max":1500,
+      "min":0,
+      "pattern":"[\\s\\S]*"
+    },
     "ResourceNotFoundException":{
       "type":"structure",
       "required":[
@@ -2913,35 +5944,74 @@
         "ResourceType"
       ],
       "members":{
-        "Message":{"shape":"String"},
+        "Message":{"shape":"ServerSideString"},
         "ResourceId":{
-          "shape":"String",
+          "shape":"ServerSideString",
           "documentation":"<p>The ID of the resource.</p>"
         },
         "ResourceType":{
-          "shape":"String",
+          "shape":"ServerSideString",
           "documentation":"<p>The resource type.</p>"
         },
-        "Context":{"shape":"ExceptionContextMap"}
+        "Context":{
+          "shape":"ExceptionContextMap",
+          "documentation":"<p>The specified resource could not be found.</p>"
+        }
       },
       "documentation":"<p>The specified resource could not be found.</p>",
       "error":{"httpStatusCode":404},
       "exception":true
+    },
+    "ResourcePolicyDocument":{
+      "type":"string",
+      "max":10000000,
+      "min":0,
+      "pattern":"[\\s\\S]*"
+    },
+    "RestoreCoreNetworkPolicyVersionRequest":{
+      "type":"structure",
+      "required":[
+        "CoreNetworkId",
+        "PolicyVersionId"
+      ],
+      "members":{
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network.</p>",
+          "location":"uri",
+          "locationName":"coreNetworkId"
+        },
+        "PolicyVersionId":{
+          "shape":"Integer",
+          "documentation":"<p>The ID of the policy version to restore.</p>",
+          "location":"uri",
+          "locationName":"policyVersionId"
+        }
+      }
+    },
+    "RestoreCoreNetworkPolicyVersionResponse":{
+      "type":"structure",
+      "members":{
+        "CoreNetworkPolicy":{
+          "shape":"CoreNetworkPolicy",
+          "documentation":"<p>Describes the restored core network policy.</p>"
+        }
+      }
     },
     "RetryAfterSeconds":{"type":"integer"},
     "RouteAnalysis":{
       "type":"structure",
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>"
         },
         "OwnerAccountId":{
-          "shape":"String",
+          "shape":"AWSAccountId",
           "documentation":"<p>The ID of the AWS account that created the route analysis.</p>"
         },
         "RouteAnalysisId":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The ID of the route analysis.</p>"
         },
         "StartTimestamp":{
@@ -3024,15 +6094,15 @@
       "type":"structure",
       "members":{
         "TransitGatewayAttachmentArn":{
-          "shape":"String",
+          "shape":"TransitGatewayAttachmentArn",
           "documentation":"<p>The ARN of the transit gateway attachment.</p>"
         },
         "TransitGatewayArn":{
-          "shape":"String",
+          "shape":"TransitGatewayArn",
           "documentation":"<p>The ARN of the transit gateway.</p>"
         },
         "IpAddress":{
-          "shape":"String",
+          "shape":"IPAddress",
           "documentation":"<p>The IP address.</p>"
         }
       },
@@ -3042,11 +6112,11 @@
       "type":"structure",
       "members":{
         "TransitGatewayAttachmentArn":{
-          "shape":"String",
+          "shape":"TransitGatewayAttachmentArn",
           "documentation":"<p>The ARN of the transit gateway attachment.</p>"
         },
         "IpAddress":{
-          "shape":"String",
+          "shape":"IPAddress",
           "documentation":"<p>The IP address.</p>"
         }
       },
@@ -3089,15 +6159,22 @@
       "type":"structure",
       "members":{
         "TransitGatewayRouteTableArn":{
-          "shape":"String",
-          "documentation":"<p>The ARN of the transit gateway route table.</p>"
+          "shape":"TransitGatewayRouteTableArn",
+          "documentation":"<p>The ARN of the transit gateway route table for the attachment request. For example, <code>\"TransitGatewayRouteTableArn\": \"arn:aws:ec2:us-west-2:123456789012:transit-gateway-route-table/tgw-rtb-9876543210123456\"</code>.</p>"
+        },
+        "CoreNetworkSegmentEdge":{
+          "shape":"CoreNetworkSegmentEdgeIdentifier",
+          "documentation":"<p>The segment edge in a core network.</p>"
         }
       },
       "documentation":"<p>Describes a route table.</p>"
     },
     "RouteTableType":{
       "type":"string",
-      "enum":["TRANSIT_GATEWAY_ROUTE_TABLE"]
+      "enum":[
+        "TRANSIT_GATEWAY_ROUTE_TABLE",
+        "CORE_NETWORK_SEGMENT"
+      ]
     },
     "RouteType":{
       "type":"string",
@@ -3110,6 +6187,17 @@
       "type":"list",
       "member":{"shape":"RouteType"}
     },
+    "SLRDeploymentStatus":{
+      "type":"string",
+      "max":50,
+      "min":0
+    },
+    "ServerSideString":{
+      "type":"string",
+      "max":10000000,
+      "min":0,
+      "pattern":"[\\s\\S]*"
+    },
     "ServiceQuotaExceededException":{
       "type":"structure",
       "required":[
@@ -3119,23 +6207,23 @@
       ],
       "members":{
         "Message":{
-          "shape":"String",
+          "shape":"ServerSideString",
           "documentation":"<p>The error message.</p>"
         },
         "ResourceId":{
-          "shape":"String",
+          "shape":"ServerSideString",
           "documentation":"<p>The ID of the resource.</p>"
         },
         "ResourceType":{
-          "shape":"String",
+          "shape":"ServerSideString",
           "documentation":"<p>The resource type.</p>"
         },
         "LimitCode":{
-          "shape":"String",
+          "shape":"ServerSideString",
           "documentation":"<p>The limit code.</p>"
         },
         "ServiceCode":{
-          "shape":"String",
+          "shape":"ServerSideString",
           "documentation":"<p>The service code.</p>"
         }
       },
@@ -3147,19 +6235,19 @@
       "type":"structure",
       "members":{
         "SiteId":{
-          "shape":"String",
+          "shape":"SiteId",
           "documentation":"<p>The ID of the site.</p>"
         },
         "SiteArn":{
-          "shape":"String",
+          "shape":"SiteArn",
           "documentation":"<p>The Amazon Resource Name (ARN) of the site.</p>"
         },
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>"
         },
         "Description":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The description of the site.</p>"
         },
         "Location":{
@@ -3181,6 +6269,22 @@
       },
       "documentation":"<p>Describes a site.</p>"
     },
+    "SiteArn":{
+      "type":"string",
+      "max":500,
+      "min":0,
+      "pattern":"[\\s\\S]*"
+    },
+    "SiteId":{
+      "type":"string",
+      "max":50,
+      "min":0,
+      "pattern":"[\\s\\S]*"
+    },
+    "SiteIdList":{
+      "type":"list",
+      "member":{"shape":"SiteId"}
+    },
     "SiteList":{
       "type":"list",
       "member":{"shape":"Site"}
@@ -3194,6 +6298,39 @@
         "UPDATING"
       ]
     },
+    "SiteToSiteVpnAttachment":{
+      "type":"structure",
+      "members":{
+        "Attachment":{
+          "shape":"Attachment",
+          "documentation":"<p>Provides details about a site-to-site VPN attachment.</p>"
+        },
+        "VpnConnectionArn":{
+          "shape":"VpnConnectionArn",
+          "documentation":"<p>The ARN of the site-to-site VPN attachment. </p>"
+        }
+      },
+      "documentation":"<p>Creates a site-to-site VPN attachment.</p>"
+    },
+    "StartOrganizationServiceAccessUpdateRequest":{
+      "type":"structure",
+      "required":["Action"],
+      "members":{
+        "Action":{
+          "shape":"Action",
+          "documentation":"<p>The action to take for the update request. This can be either <code>ENABLE</code> or <code>DISABLE</code>.</p>"
+        }
+      }
+    },
+    "StartOrganizationServiceAccessUpdateResponse":{
+      "type":"structure",
+      "members":{
+        "OrganizationStatus":{
+          "shape":"OrganizationStatus",
+          "documentation":"<p>The status of the service access update request for an Amazon Web Services Organization.</p>"
+        }
+      }
+    },
     "StartRouteAnalysisRequest":{
       "type":"structure",
       "required":[
@@ -3203,7 +6340,7 @@
       ],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
@@ -3235,10 +6372,15 @@
         }
       }
     },
-    "String":{"type":"string"},
-    "StringList":{
+    "SubnetArn":{
+      "type":"string",
+      "max":500,
+      "min":0,
+      "pattern":"^arn:[^:]{1,63}:ec2:[^:]{0,63}:[^:]{0,63}:subnet\\/subnet-[0-9a-f]{8,17}$|^$"
+    },
+    "SubnetArnList":{
       "type":"list",
-      "member":{"shape":"String"}
+      "member":{"shape":"SubnetArn"}
     },
     "Tag":{
       "type":"structure",
@@ -3254,7 +6396,12 @@
       },
       "documentation":"<p>Describes a tag.</p>"
     },
-    "TagKey":{"type":"string"},
+    "TagKey":{
+      "type":"string",
+      "max":10000000,
+      "min":0,
+      "pattern":"[\\s\\S]*"
+    },
     "TagKeyList":{
       "type":"list",
       "member":{"shape":"TagKey"}
@@ -3271,7 +6418,7 @@
       ],
       "members":{
         "ResourceArn":{
-          "shape":"ResourceARN",
+          "shape":"ResourceArn",
           "documentation":"<p>The Amazon Resource Name (ARN) of the resource.</p>",
           "location":"uri",
           "locationName":"resourceArn"
@@ -3287,12 +6434,17 @@
       "members":{
       }
     },
-    "TagValue":{"type":"string"},
+    "TagValue":{
+      "type":"string",
+      "max":10000000,
+      "min":0,
+      "pattern":"[\\s\\S]*"
+    },
     "ThrottlingException":{
       "type":"structure",
       "required":["Message"],
       "members":{
-        "Message":{"shape":"String"},
+        "Message":{"shape":"ServerSideString"},
         "RetryAfterSeconds":{
           "shape":"RetryAfterSeconds",
           "documentation":"<p>Indicates when to retry the request.</p>",
@@ -3304,23 +6456,55 @@
       "error":{"httpStatusCode":429},
       "exception":true
     },
+    "TransitGatewayArn":{
+      "type":"string",
+      "max":500,
+      "min":0,
+      "pattern":"[\\s\\S]*"
+    },
+    "TransitGatewayArnList":{
+      "type":"list",
+      "member":{"shape":"TransitGatewayArn"}
+    },
+    "TransitGatewayAttachmentArn":{
+      "type":"string",
+      "max":500,
+      "min":0,
+      "pattern":"[\\s\\S]*"
+    },
+    "TransitGatewayAttachmentId":{
+      "type":"string",
+      "max":50,
+      "min":0,
+      "pattern":"[\\s\\S]*"
+    },
+    "TransitGatewayConnectPeerArn":{
+      "type":"string",
+      "max":500,
+      "min":0,
+      "pattern":"[\\s\\S]*"
+    },
+    "TransitGatewayConnectPeerArnList":{
+      "type":"list",
+      "member":{"shape":"TransitGatewayConnectPeerArn"}
+    },
     "TransitGatewayConnectPeerAssociation":{
       "type":"structure",
       "members":{
         "TransitGatewayConnectPeerArn":{
-          "shape":"String",
+          "shape":"TransitGatewayConnectPeerArn",
           "documentation":"<p>The Amazon Resource Name (ARN) of the transit gateway Connect peer.</p>"
         },
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>"
         },
         "DeviceId":{
-          "shape":"String",
+          "shape":"DeviceId",
           "documentation":"<p>The ID of the device.</p>"
         },
         "LinkId":{
-          "shape":"String",
+          "shape":"LinkId",
           "documentation":"<p>The ID of the link.</p>"
         },
         "State":{
@@ -3343,15 +6527,39 @@
         "DELETED"
       ]
     },
+    "TransitGatewayPeering":{
+      "type":"structure",
+      "members":{
+        "Peering":{
+          "shape":"Peering",
+          "documentation":"<p>Describes a transit gateway peer connection.</p>"
+        },
+        "TransitGatewayArn":{
+          "shape":"TransitGatewayArn",
+          "documentation":"<p>The ARN of the transit gateway.</p>"
+        },
+        "TransitGatewayPeeringAttachmentId":{
+          "shape":"TransitGatewayPeeringAttachmentId",
+          "documentation":"<p>The ID of the transit gateway peering attachment.</p>"
+        }
+      },
+      "documentation":"<p>Describes a transit gateway peering attachment.</p>"
+    },
+    "TransitGatewayPeeringAttachmentId":{
+      "type":"string",
+      "max":50,
+      "min":0,
+      "pattern":"^tgw-attach-([0-9a-f]{8,17})$"
+    },
     "TransitGatewayRegistration":{
       "type":"structure",
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>"
         },
         "TransitGatewayArn":{
-          "shape":"String",
+          "shape":"TransitGatewayArn",
           "documentation":"<p>The Amazon Resource Name (ARN) of the transit gateway.</p>"
         },
         "State":{
@@ -3383,11 +6591,39 @@
           "documentation":"<p>The code for the state reason.</p>"
         },
         "Message":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The message for the state reason.</p>"
         }
       },
       "documentation":"<p>Describes the status of a transit gateway registration.</p>"
+    },
+    "TransitGatewayRouteTableArn":{
+      "type":"string",
+      "max":500,
+      "min":0,
+      "pattern":"[\\s\\S]*"
+    },
+    "TransitGatewayRouteTableAttachment":{
+      "type":"structure",
+      "members":{
+        "Attachment":{"shape":"Attachment"},
+        "PeeringId":{
+          "shape":"PeeringId",
+          "documentation":"<p>The ID of the peering attachment.</p>"
+        },
+        "TransitGatewayRouteTableArn":{
+          "shape":"TransitGatewayRouteTableArn",
+          "documentation":"<p>The ARN of the transit gateway attachment route table. For example, <code>\"TransitGatewayRouteTableArn\": \"arn:aws:ec2:us-west-2:123456789012:transit-gateway-route-table/tgw-rtb-9876543210123456\"</code>.</p>"
+        }
+      },
+      "documentation":"<p>Describes a transit gateway route table attachment.</p>"
+    },
+    "TunnelProtocol":{
+      "type":"string",
+      "enum":[
+        "GRE",
+        "NO_ENCAP"
+      ]
     },
     "UntagResourceRequest":{
       "type":"structure",
@@ -3397,7 +6633,7 @@
       ],
       "members":{
         "ResourceArn":{
-          "shape":"ResourceARN",
+          "shape":"ResourceArn",
           "documentation":"<p>The Amazon Resource Name (ARN) of the resource.</p>",
           "location":"uri",
           "locationName":"resourceArn"
@@ -3423,27 +6659,27 @@
       ],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "ConnectionId":{
-          "shape":"String",
+          "shape":"ConnectionId",
           "documentation":"<p>The ID of the connection.</p>",
           "location":"uri",
           "locationName":"connectionId"
         },
         "LinkId":{
-          "shape":"String",
+          "shape":"LinkId",
           "documentation":"<p>The ID of the link for the first device in the connection.</p>"
         },
         "ConnectedLinkId":{
-          "shape":"String",
+          "shape":"LinkId",
           "documentation":"<p>The ID of the link for the second device in the connection.</p>"
         },
         "Description":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>A description of the connection.</p> <p>Length Constraints: Maximum length of 256 characters.</p>"
         }
       }
@@ -3457,6 +6693,31 @@
         }
       }
     },
+    "UpdateCoreNetworkRequest":{
+      "type":"structure",
+      "required":["CoreNetworkId"],
+      "members":{
+        "CoreNetworkId":{
+          "shape":"CoreNetworkId",
+          "documentation":"<p>The ID of a core network.</p>",
+          "location":"uri",
+          "locationName":"coreNetworkId"
+        },
+        "Description":{
+          "shape":"ConstrainedString",
+          "documentation":"<p>The description of the update.</p>"
+        }
+      }
+    },
+    "UpdateCoreNetworkResponse":{
+      "type":"structure",
+      "members":{
+        "CoreNetwork":{
+          "shape":"CoreNetwork",
+          "documentation":"<p>Returns information about a core network update.</p>"
+        }
+      }
+    },
     "UpdateDeviceRequest":{
       "type":"structure",
       "required":[
@@ -3465,13 +6726,13 @@
       ],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "DeviceId":{
-          "shape":"String",
+          "shape":"DeviceId",
           "documentation":"<p>The ID of the device.</p>",
           "location":"uri",
           "locationName":"deviceId"
@@ -3481,28 +6742,28 @@
           "documentation":"<p>The Amazon Web Services location of the device, if applicable. For an on-premises device, you can omit this parameter.</p>"
         },
         "Description":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>A description of the device.</p> <p>Constraints: Maximum length of 256 characters.</p>"
         },
         "Type":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The type of the device.</p>"
         },
         "Vendor":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The vendor of the device.</p> <p>Constraints: Maximum length of 128 characters.</p>"
         },
         "Model":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The model of the device.</p> <p>Constraints: Maximum length of 128 characters.</p>"
         },
         "SerialNumber":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The serial number of the device.</p> <p>Constraints: Maximum length of 128 characters.</p>"
         },
         "Location":{"shape":"Location"},
         "SiteId":{
-          "shape":"String",
+          "shape":"SiteId",
           "documentation":"<p>The ID of the site.</p>"
         }
       }
@@ -3521,13 +6782,13 @@
       "required":["GlobalNetworkId"],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of your global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "Description":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>A description of the global network.</p> <p>Constraints: Maximum length of 256 characters.</p>"
         }
       }
@@ -3549,23 +6810,23 @@
       ],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "LinkId":{
-          "shape":"String",
+          "shape":"LinkId",
           "documentation":"<p>The ID of the link.</p>",
           "location":"uri",
           "locationName":"linkId"
         },
         "Description":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>A description of the link.</p> <p>Constraints: Maximum length of 256 characters.</p>"
         },
         "Type":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The type of the link.</p> <p>Constraints: Maximum length of 128 characters.</p>"
         },
         "Bandwidth":{
@@ -3573,7 +6834,7 @@
           "documentation":"<p>The upload and download speed in Mbps. </p>"
         },
         "Provider":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>The provider of the link.</p> <p>Constraints: Maximum length of 128 characters.</p>"
         }
       }
@@ -3596,13 +6857,13 @@
       ],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "ResourceArn":{
-          "shape":"String",
+          "shape":"ResourceArn",
           "documentation":"<p>The ARN of the resource.</p>",
           "location":"uri",
           "locationName":"resourceArn"
@@ -3617,7 +6878,7 @@
       "type":"structure",
       "members":{
         "ResourceArn":{
-          "shape":"String",
+          "shape":"ResourceArn",
           "documentation":"<p>The ARN of the resource.</p>"
         },
         "Metadata":{
@@ -3634,19 +6895,19 @@
       ],
       "members":{
         "GlobalNetworkId":{
-          "shape":"String",
+          "shape":"GlobalNetworkId",
           "documentation":"<p>The ID of the global network.</p>",
           "location":"uri",
           "locationName":"globalNetworkId"
         },
         "SiteId":{
-          "shape":"String",
+          "shape":"SiteId",
           "documentation":"<p>The ID of your site.</p>",
           "location":"uri",
           "locationName":"siteId"
         },
         "Description":{
-          "shape":"String",
+          "shape":"ConstrainedString",
           "documentation":"<p>A description of your site.</p> <p>Constraints: Maximum length of 256 characters.</p>"
         },
         "Location":{
@@ -3664,11 +6925,44 @@
         }
       }
     },
+    "UpdateVpcAttachmentRequest":{
+      "type":"structure",
+      "required":["AttachmentId"],
+      "members":{
+        "AttachmentId":{
+          "shape":"AttachmentId",
+          "documentation":"<p>The ID of the attachment.</p>",
+          "location":"uri",
+          "locationName":"attachmentId"
+        },
+        "AddSubnetArns":{
+          "shape":"SubnetArnList",
+          "documentation":"<p>Adds a subnet ARN to the VPC attachment.</p>"
+        },
+        "RemoveSubnetArns":{
+          "shape":"SubnetArnList",
+          "documentation":"<p>Removes a subnet ARN from the attachment.</p>"
+        },
+        "Options":{
+          "shape":"VpcOptions",
+          "documentation":"<p>Additional options for updating the VPC attachment. </p>"
+        }
+      }
+    },
+    "UpdateVpcAttachmentResponse":{
+      "type":"structure",
+      "members":{
+        "VpcAttachment":{
+          "shape":"VpcAttachment",
+          "documentation":"<p>Describes the updated VPC attachment.</p>"
+        }
+      }
+    },
     "ValidationException":{
       "type":"structure",
       "required":["Message"],
       "members":{
-        "Message":{"shape":"String"},
+        "Message":{"shape":"ServerSideString"},
         "Reason":{
           "shape":"ValidationExceptionReason",
           "documentation":"<p>The reason for the error.</p>"
@@ -3690,11 +6984,11 @@
       ],
       "members":{
         "Name":{
-          "shape":"String",
+          "shape":"ServerSideString",
           "documentation":"<p>The name of the field.</p>"
         },
         "Message":{
-          "shape":"String",
+          "shape":"ServerSideString",
           "documentation":"<p>The message for the field.</p>"
         }
       },
@@ -3712,7 +7006,51 @@
         "FieldValidationFailed",
         "Other"
       ]
+    },
+    "VpcArn":{
+      "type":"string",
+      "max":500,
+      "min":0,
+      "pattern":"^arn:[^:]{1,63}:ec2:[^:]{0,63}:[^:]{0,63}:vpc\\/vpc-[0-9a-f]{8,17}$"
+    },
+    "VpcAttachment":{
+      "type":"structure",
+      "members":{
+        "Attachment":{
+          "shape":"Attachment",
+          "documentation":"<p>Provides details about the VPC attachment.</p>"
+        },
+        "SubnetArns":{
+          "shape":"SubnetArnList",
+          "documentation":"<p>The subnet ARNs.</p>"
+        },
+        "Options":{
+          "shape":"VpcOptions",
+          "documentation":"<p>Provides details about the VPC attachment.</p>"
+        }
+      },
+      "documentation":"<p>Describes a VPC attachment.</p>"
+    },
+    "VpcOptions":{
+      "type":"structure",
+      "members":{
+        "Ipv6Support":{
+          "shape":"Boolean",
+          "documentation":"<p>Indicates whether IPv6 is supported.</p>"
+        },
+        "ApplianceModeSupport":{
+          "shape":"Boolean",
+          "documentation":"<p>Indicates whether appliance mode is supported. If enabled, traffic flow between a source and destination use the same Availability Zone for the VPC attachment for the lifetime of that flow. The default value is <code>false</code>.</p>"
+        }
+      },
+      "documentation":"<p>Describes the VPC options.</p>"
+    },
+    "VpnConnectionArn":{
+      "type":"string",
+      "max":500,
+      "min":0,
+      "pattern":"^arn:[^:]{1,63}:ec2:[^:]{0,63}:[^:]{0,63}:vpn-connection\\/vpn-[0-9a-f]{8,17}$"
     }
   },
-  "documentation":"<p>Transit Gateway Network Manager (Network Manager) enables you to create a global network, in which you can monitor your Amazon Web Services and on-premises networks that are built around transit gateways.</p>"
+  "documentation":"<p>Amazon Web Services enables you to centrally manage your Amazon Web Services Cloud WAN core network and your Transit Gateway network across Amazon Web Services accounts, Regions, and on-premises locations.</p>"
 }

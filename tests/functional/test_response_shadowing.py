@@ -12,23 +12,12 @@
 # language governing permissions and limitations under the License.
 import pytest
 
-from botocore.session import Session
-
-
-def _all_services():
-    session = Session()
-    service_names = session.get_available_services()
-    return [session.get_service_model(name) for name in service_names]
-
-
-# Only compute our service models once
-ALL_SERVICES = _all_services()
+from tests import ALL_SERVICES
 
 
 def _all_service_error_shapes():
     for service_model in ALL_SERVICES:
-        for shape in service_model.error_shapes:
-            yield shape
+        yield from service_model.error_shapes
 
 
 def _all_operations():
@@ -41,9 +30,9 @@ def _assert_not_shadowed(key, shape):
     if not shape:
         return
 
-    assert key not in shape.members, (
-        f'Found shape "{shape.name}" that shadows the botocore response key "{key}"'
-    )
+    assert (
+        key not in shape.members
+    ), f'Found shape "{shape.name}" that shadows the botocore response key "{key}"'
 
 
 @pytest.mark.parametrize("operation_output_shape", _all_operations())

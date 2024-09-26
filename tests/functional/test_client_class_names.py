@@ -14,7 +14,6 @@ import pytest
 
 import botocore.session
 
-
 REGION = 'us-east-1'
 
 SERVICE_TO_CLASS_NAME = {
@@ -65,7 +64,7 @@ SERVICE_TO_CLASS_NAME = {
     'sts': 'STS',
     'support': 'Support',
     'swf': 'SWF',
-    'workspaces': 'WorkSpaces'
+    'workspaces': 'WorkSpaces',
 }
 
 

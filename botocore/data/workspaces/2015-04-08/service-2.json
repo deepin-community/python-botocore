@@ -48,6 +48,28 @@
       ],
       "documentation":"<p>Associates the specified IP access control group with the specified directory.</p>"
     },
+    "AssociateWorkspaceApplication":{
+      "name":"AssociateWorkspaceApplication",
+      "http":{
+        "method":"POST",
+        "requestUri":"/"
+      },
+      "input":{"shape":"AssociateWorkspaceApplicationRequest"},
+      "output":{"shape":"AssociateWorkspaceApplicationResult"},
+      "errors":[
+        {"shape":"AccessDeniedException"},
+        {"shape":"InvalidParameterValuesException"},
+        {"shape":"OperationNotSupportedException"},
+        {"shape":"ResourceAlreadyExistsException"},
+        {"shape":"ResourceInUseException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ComputeNotCompatibleException"},
+        {"shape":"OperatingSystemNotCompatibleException"},
+        {"shape":"ApplicationNotSupportedException"},
+        {"shape":"IncompatibleApplicationsException"}
+      ],
+      "documentation":"<p>Associates the specified application to the specified WorkSpace.</p>"
+    },
     "AuthorizeIpRules":{
       "name":"AuthorizeIpRules",
       "http":{
@@ -84,6 +106,23 @@
       ],
       "documentation":"<p>Copies the specified image from the specified Region to the current Region. For more information about copying images, see <a href=\"https://docs.aws.amazon.com/workspaces/latest/adminguide/copy-custom-image.html\"> Copy a Custom WorkSpaces Image</a>.</p> <p>In the China (Ningxia) Region, you can copy images only within the same Region.</p> <p>In Amazon Web Services GovCloud (US), to copy images to and from other Regions, contact Amazon Web Services Support.</p> <important> <p>Before copying a shared image, be sure to verify that it has been shared from the correct Amazon Web Services account. To determine if an image has been shared and to see the ID of the Amazon Web Services account that owns an image, use the <a href=\"https://docs.aws.amazon.com/workspaces/latest/api/API_DescribeWorkspaceImages.html\">DescribeWorkSpaceImages</a> and <a href=\"https://docs.aws.amazon.com/workspaces/latest/api/API_DescribeWorkspaceImagePermissions.html\">DescribeWorkspaceImagePermissions</a> API operations. </p> </important>"
     },
+    "CreateConnectClientAddIn":{
+      "name":"CreateConnectClientAddIn",
+      "http":{
+        "method":"POST",
+        "requestUri":"/"
+      },
+      "input":{"shape":"CreateConnectClientAddInRequest"},
+      "output":{"shape":"CreateConnectClientAddInResult"},
+      "errors":[
+        {"shape":"InvalidParameterValuesException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ResourceCreationFailedException"},
+        {"shape":"ResourceAlreadyExistsException"},
+        {"shape":"AccessDeniedException"}
+      ],
+      "documentation":"<p>Creates a client-add-in for Amazon Connect within a directory. You can create only one Amazon Connect client add-in within a directory.</p> <p>This client add-in allows WorkSpaces users to seamlessly connect to Amazon Connect.</p>"
+    },
     "CreateConnectionAlias":{
       "name":"CreateConnectionAlias",
       "http":{
@@ -119,6 +158,23 @@
       ],
       "documentation":"<p>Creates an IP access control group.</p> <p>An IP access control group provides you with the ability to control the IP addresses from which users are allowed to access their WorkSpaces. To specify the CIDR address ranges, add rules to your IP access control group and then associate the group with your directory. You can add rules when you create the group or at any time using <a>AuthorizeIpRules</a>.</p> <p>There is a default IP access control group associated with your directory. If you don't associate an IP access control group with your directory, the default group is used. The default group includes a default rule that allows users to access their WorkSpaces from anywhere. You cannot modify the default IP access control group for your directory.</p>"
     },
+    "CreateStandbyWorkspaces":{
+      "name":"CreateStandbyWorkspaces",
+      "http":{
+        "method":"POST",
+        "requestUri":"/"
+      },
+      "input":{"shape":"CreateStandbyWorkspacesRequest"},
+      "output":{"shape":"CreateStandbyWorkspacesResult"},
+      "errors":[
+        {"shape":"AccessDeniedException"},
+        {"shape":"InvalidParameterValuesException"},
+        {"shape":"OperationNotSupportedException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"ResourceLimitExceededException"}
+      ],
+      "documentation":"<p>Creates a standby WorkSpace in a secondary Region.</p>"
+    },
     "CreateTags":{
       "name":"CreateTags",
       "http":{
@@ -151,7 +207,7 @@
         {"shape":"AccessDeniedException"},
         {"shape":"InvalidParameterValuesException"}
       ],
-      "documentation":"<p>Creates a new updated WorkSpace image based on the specified source image. The new updated WorkSpace image has the latest drivers and other updates required by the Amazon WorkSpaces components.</p> <p>To determine which WorkSpace images need to be updated with the latest Amazon WorkSpaces requirements, use <a href=\"https://docs.aws.amazon.com/workspaces/latest/api/API_DescribeWorkspaceImages.html\"> DescribeWorkspaceImages</a>.</p> <note> <ul> <li> <p>Only Windows 10 WorkSpace images can be programmatically updated at this time.</p> </li> <li> <p>Microsoft Windows updates and other application updates are not included in the update process.</p> </li> <li> <p>The source WorkSpace image is not deleted. You can delete the source image after you've verified your new updated image and created a new bundle. </p> </li> </ul> </note>"
+      "documentation":"<p>Creates a new updated WorkSpace image based on the specified source image. The new updated WorkSpace image has the latest drivers and other updates required by the Amazon WorkSpaces components.</p> <p>To determine which WorkSpace images need to be updated with the latest Amazon WorkSpaces requirements, use <a href=\"https://docs.aws.amazon.com/workspaces/latest/api/API_DescribeWorkspaceImages.html\"> DescribeWorkspaceImages</a>.</p> <note> <ul> <li> <p>Only Windows 10, Windows Server 2016, and Windows Server 2019 WorkSpace images can be programmatically updated at this time.</p> </li> <li> <p>Microsoft Windows updates and other application updates are not included in the update process.</p> </li> <li> <p>The source WorkSpace image is not deleted. You can delete the source image after you've verified your new updated image and created a new bundle. </p> </li> </ul> </note>"
     },
     "CreateWorkspaceBundle":{
       "name":"CreateWorkspaceBundle",
@@ -171,6 +227,25 @@
       ],
       "documentation":"<p>Creates the specified WorkSpace bundle. For more information about creating WorkSpace bundles, see <a href=\"https://docs.aws.amazon.com/workspaces/latest/adminguide/create-custom-bundle.html\"> Create a Custom WorkSpaces Image and Bundle</a>.</p>"
     },
+    "CreateWorkspaceImage":{
+      "name":"CreateWorkspaceImage",
+      "http":{
+        "method":"POST",
+        "requestUri":"/"
+      },
+      "input":{"shape":"CreateWorkspaceImageRequest"},
+      "output":{"shape":"CreateWorkspaceImageResult"},
+      "errors":[
+        {"shape":"ResourceLimitExceededException"},
+        {"shape":"ResourceAlreadyExistsException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"OperationNotSupportedException"},
+        {"shape":"InvalidResourceStateException"},
+        {"shape":"AccessDeniedException"},
+        {"shape":"InvalidParameterValuesException"}
+      ],
+      "documentation":"<p>Creates a new WorkSpace image from an existing WorkSpace.</p>"
+    },
     "CreateWorkspaces":{
       "name":"CreateWorkspaces",
       "http":{
@@ -183,7 +258,37 @@
         {"shape":"ResourceLimitExceededException"},
         {"shape":"InvalidParameterValuesException"}
       ],
-      "documentation":"<p>Creates one or more WorkSpaces.</p> <p>This operation is asynchronous and returns before the WorkSpaces are created.</p>"
+      "documentation":"<p>Creates one or more WorkSpaces.</p> <p>This operation is asynchronous and returns before the WorkSpaces are created.</p> <note> <ul> <li> <p>The <code>MANUAL</code> running mode value is only supported by Amazon WorkSpaces Core. Contact your account team to be allow-listed to use this value. For more information, see <a href=\"http://aws.amazon.com/workspaces/core/\">Amazon WorkSpaces Core</a>.</p> </li> <li> <p>You don't need to specify the <code>PCOIP</code> protocol for Linux bundles because <code>WSP</code> is the default protocol for those bundles.</p> </li> </ul> </note>"
+    },
+    "DeleteClientBranding":{
+      "name":"DeleteClientBranding",
+      "http":{
+        "method":"POST",
+        "requestUri":"/"
+      },
+      "input":{"shape":"DeleteClientBrandingRequest"},
+      "output":{"shape":"DeleteClientBrandingResult"},
+      "errors":[
+        {"shape":"InvalidParameterValuesException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"AccessDeniedException"}
+      ],
+      "documentation":"<p>Deletes customized client branding. Client branding allows you to customize your WorkSpace's client login portal. You can tailor your login portal company logo, the support email address, support link, link to reset password, and a custom message for users trying to sign in.</p> <p>After you delete your customized client branding, your login portal reverts to the default client branding.</p>"
+    },
+    "DeleteConnectClientAddIn":{
+      "name":"DeleteConnectClientAddIn",
+      "http":{
+        "method":"POST",
+        "requestUri":"/"
+      },
+      "input":{"shape":"DeleteConnectClientAddInRequest"},
+      "output":{"shape":"DeleteConnectClientAddInResult"},
+      "errors":[
+        {"shape":"InvalidParameterValuesException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"AccessDeniedException"}
+      ],
+      "documentation":"<p>Deletes a client-add-in for Amazon Connect that is configured within a directory.</p>"
     },
     "DeleteConnectionAlias":{
       "name":"DeleteConnectionAlias",
@@ -264,6 +369,24 @@
       ],
       "documentation":"<p>Deletes the specified image from your account. To delete an image, you must first delete any bundles that are associated with the image and unshare the image if it is shared with other accounts. </p>"
     },
+    "DeployWorkspaceApplications":{
+      "name":"DeployWorkspaceApplications",
+      "http":{
+        "method":"POST",
+        "requestUri":"/"
+      },
+      "input":{"shape":"DeployWorkspaceApplicationsRequest"},
+      "output":{"shape":"DeployWorkspaceApplicationsResult"},
+      "errors":[
+        {"shape":"AccessDeniedException"},
+        {"shape":"InvalidParameterValuesException"},
+        {"shape":"OperationNotSupportedException"},
+        {"shape":"ResourceInUseException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"IncompatibleApplicationsException"}
+      ],
+      "documentation":"<p>Deploys associated applications to the specified WorkSpace</p>"
+    },
     "DeregisterWorkspaceDirectory":{
       "name":"DeregisterWorkspaceDirectory",
       "http":{
@@ -307,6 +430,69 @@
       ],
       "documentation":"<p>Retrieves a list that describes modifications to the configuration of Bring Your Own License (BYOL) for the specified account.</p>"
     },
+    "DescribeApplicationAssociations":{
+      "name":"DescribeApplicationAssociations",
+      "http":{
+        "method":"POST",
+        "requestUri":"/"
+      },
+      "input":{"shape":"DescribeApplicationAssociationsRequest"},
+      "output":{"shape":"DescribeApplicationAssociationsResult"},
+      "errors":[
+        {"shape":"AccessDeniedException"},
+        {"shape":"InvalidParameterValuesException"},
+        {"shape":"OperationNotSupportedException"},
+        {"shape":"ResourceNotFoundException"}
+      ],
+      "documentation":"<p>Describes the associations between the application and the specified associated resources.</p>"
+    },
+    "DescribeApplications":{
+      "name":"DescribeApplications",
+      "http":{
+        "method":"POST",
+        "requestUri":"/"
+      },
+      "input":{"shape":"DescribeApplicationsRequest"},
+      "output":{"shape":"DescribeApplicationsResult"},
+      "errors":[
+        {"shape":"AccessDeniedException"},
+        {"shape":"InvalidParameterValuesException"},
+        {"shape":"OperationNotSupportedException"},
+        {"shape":"ResourceNotFoundException"}
+      ],
+      "documentation":"<p>Describes the specified applications by filtering based on their compute types, license availability, operating systems, and owners.</p>"
+    },
+    "DescribeBundleAssociations":{
+      "name":"DescribeBundleAssociations",
+      "http":{
+        "method":"POST",
+        "requestUri":"/"
+      },
+      "input":{"shape":"DescribeBundleAssociationsRequest"},
+      "output":{"shape":"DescribeBundleAssociationsResult"},
+      "errors":[
+        {"shape":"AccessDeniedException"},
+        {"shape":"InvalidParameterValuesException"},
+        {"shape":"OperationNotSupportedException"},
+        {"shape":"ResourceNotFoundException"}
+      ],
+      "documentation":"<p>Describes the associations between the applications and the specified bundle.</p>"
+    },
+    "DescribeClientBranding":{
+      "name":"DescribeClientBranding",
+      "http":{
+        "method":"POST",
+        "requestUri":"/"
+      },
+      "input":{"shape":"DescribeClientBrandingRequest"},
+      "output":{"shape":"DescribeClientBrandingResult"},
+      "errors":[
+        {"shape":"InvalidParameterValuesException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"AccessDeniedException"}
+      ],
+      "documentation":"<p>Describes the specified client branding. Client branding allows you to customize the log in page of various device types for your users. You can add your company logo, the support email address, support link, link to reset password, and a custom message for users trying to sign in.</p> <note> <p>Only device types that have branding information configured will be shown in the response.</p> </note>"
+    },
     "DescribeClientProperties":{
       "name":"DescribeClientProperties",
       "http":{
@@ -321,6 +507,21 @@
         {"shape":"AccessDeniedException"}
       ],
       "documentation":"<p>Retrieves a list that describes one or more specified Amazon WorkSpaces clients.</p>"
+    },
+    "DescribeConnectClientAddIns":{
+      "name":"DescribeConnectClientAddIns",
+      "http":{
+        "method":"POST",
+        "requestUri":"/"
+      },
+      "input":{"shape":"DescribeConnectClientAddInsRequest"},
+      "output":{"shape":"DescribeConnectClientAddInsResult"},
+      "errors":[
+        {"shape":"InvalidParameterValuesException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"AccessDeniedException"}
+      ],
+      "documentation":"<p>Retrieves a list of Amazon Connect client add-ins that have been created.</p>"
     },
     "DescribeConnectionAliasPermissions":{
       "name":"DescribeConnectionAliasPermissions",
@@ -353,6 +554,22 @@
       ],
       "documentation":"<p>Retrieves a list that describes the connection aliases used for cross-Region redirection. For more information, see <a href=\"https://docs.aws.amazon.com/workspaces/latest/adminguide/cross-region-redirection.html\"> Cross-Region Redirection for Amazon WorkSpaces</a>.</p>"
     },
+    "DescribeImageAssociations":{
+      "name":"DescribeImageAssociations",
+      "http":{
+        "method":"POST",
+        "requestUri":"/"
+      },
+      "input":{"shape":"DescribeImageAssociationsRequest"},
+      "output":{"shape":"DescribeImageAssociationsResult"},
+      "errors":[
+        {"shape":"AccessDeniedException"},
+        {"shape":"InvalidParameterValuesException"},
+        {"shape":"OperationNotSupportedException"},
+        {"shape":"ResourceNotFoundException"}
+      ],
+      "documentation":"<p>Describes the associations between the applications and the specified image.</p>"
+    },
     "DescribeIpGroups":{
       "name":"DescribeIpGroups",
       "http":{
@@ -379,6 +596,22 @@
         {"shape":"ResourceNotFoundException"}
       ],
       "documentation":"<p>Describes the specified tags for the specified WorkSpaces resource.</p>"
+    },
+    "DescribeWorkspaceAssociations":{
+      "name":"DescribeWorkspaceAssociations",
+      "http":{
+        "method":"POST",
+        "requestUri":"/"
+      },
+      "input":{"shape":"DescribeWorkspaceAssociationsRequest"},
+      "output":{"shape":"DescribeWorkspaceAssociationsResult"},
+      "errors":[
+        {"shape":"AccessDeniedException"},
+        {"shape":"InvalidParameterValuesException"},
+        {"shape":"OperationNotSupportedException"},
+        {"shape":"ResourceNotFoundException"}
+      ],
+      "documentation":"<p>Describes the associations betweens applications and the specified WorkSpace.</p>"
     },
     "DescribeWorkspaceBundles":{
       "name":"DescribeWorkspaceBundles",
@@ -509,6 +742,39 @@
       ],
       "documentation":"<p>Disassociates the specified IP access control group from the specified directory.</p>"
     },
+    "DisassociateWorkspaceApplication":{
+      "name":"DisassociateWorkspaceApplication",
+      "http":{
+        "method":"POST",
+        "requestUri":"/"
+      },
+      "input":{"shape":"DisassociateWorkspaceApplicationRequest"},
+      "output":{"shape":"DisassociateWorkspaceApplicationResult"},
+      "errors":[
+        {"shape":"AccessDeniedException"},
+        {"shape":"InvalidParameterValuesException"},
+        {"shape":"OperationNotSupportedException"},
+        {"shape":"ResourceInUseException"},
+        {"shape":"ResourceNotFoundException"}
+      ],
+      "documentation":"<p>Disassociates the specified application from a WorkSpace.</p>"
+    },
+    "ImportClientBranding":{
+      "name":"ImportClientBranding",
+      "http":{
+        "method":"POST",
+        "requestUri":"/"
+      },
+      "input":{"shape":"ImportClientBrandingRequest"},
+      "output":{"shape":"ImportClientBrandingResult"},
+      "errors":[
+        {"shape":"InvalidParameterValuesException"},
+        {"shape":"ResourceLimitExceededException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"AccessDeniedException"}
+      ],
+      "documentation":"<p>Imports client branding. Client branding allows you to customize your WorkSpace's client login portal. You can tailor your login portal company logo, the support email address, support link, link to reset password, and a custom message for users trying to sign in.</p> <p>After you import client branding, the default branding experience for the specified platform type is replaced with the imported experience</p> <note> <ul> <li> <p>You must specify at least one platform type when importing client branding.</p> </li> <li> <p>You can import up to 6 MB of data with each request. If your request exceeds this limit, you can import client branding for different platform types using separate requests.</p> </li> <li> <p>In each platform type, the <code>SupportEmail</code> and <code>SupportLink</code> parameters are mutually exclusive. You can specify only one parameter for each platform type, but not both.</p> </li> <li> <p>Imported data can take up to a minute to appear in the WorkSpaces client.</p> </li> </ul> </note>"
+    },
     "ImportWorkspaceImage":{
       "name":"ImportWorkspaceImage",
       "http":{
@@ -525,7 +791,7 @@
         {"shape":"AccessDeniedException"},
         {"shape":"InvalidParameterValuesException"}
       ],
-      "documentation":"<p>Imports the specified Windows 10 Bring Your Own License (BYOL) image into Amazon WorkSpaces. The image must be an already licensed Amazon EC2 image that is in your Amazon Web Services account, and you must own the image. For more information about creating BYOL images, see <a href=\"https://docs.aws.amazon.com/workspaces/latest/adminguide/byol-windows-images.html\"> Bring Your Own Windows Desktop Licenses</a>.</p>"
+      "documentation":"<p>Imports the specified Windows 10 or 11 Bring Your Own License (BYOL) image into Amazon WorkSpaces. The image must be an already licensed Amazon EC2 image that is in your Amazon Web Services account, and you must own the image. For more information about creating BYOL images, see <a href=\"https://docs.aws.amazon.com/workspaces/latest/adminguide/byol-windows-images.html\"> Bring Your Own Windows Desktop Licenses</a>.</p>"
     },
     "ListAvailableManagementCidrRanges":{
       "name":"ListAvailableManagementCidrRanges",
@@ -576,6 +842,22 @@
       ],
       "documentation":"<p>Modifies the configuration of Bring Your Own License (BYOL) for the specified account.</p>"
     },
+    "ModifyCertificateBasedAuthProperties":{
+      "name":"ModifyCertificateBasedAuthProperties",
+      "http":{
+        "method":"POST",
+        "requestUri":"/"
+      },
+      "input":{"shape":"ModifyCertificateBasedAuthPropertiesRequest"},
+      "output":{"shape":"ModifyCertificateBasedAuthPropertiesResult"},
+      "errors":[
+        {"shape":"AccessDeniedException"},
+        {"shape":"InvalidParameterValuesException"},
+        {"shape":"OperationNotSupportedException"},
+        {"shape":"ResourceNotFoundException"}
+      ],
+      "documentation":"<p>Modifies the properties of the certificate-based authentication you want to use with your WorkSpaces.</p>"
+    },
     "ModifyClientProperties":{
       "name":"ModifyClientProperties",
       "http":{
@@ -590,6 +872,22 @@
         {"shape":"AccessDeniedException"}
       ],
       "documentation":"<p>Modifies the properties of the specified Amazon WorkSpaces clients.</p>"
+    },
+    "ModifySamlProperties":{
+      "name":"ModifySamlProperties",
+      "http":{
+        "method":"POST",
+        "requestUri":"/"
+      },
+      "input":{"shape":"ModifySamlPropertiesRequest"},
+      "output":{"shape":"ModifySamlPropertiesResult"},
+      "errors":[
+        {"shape":"AccessDeniedException"},
+        {"shape":"InvalidParameterValuesException"},
+        {"shape":"OperationNotSupportedException"},
+        {"shape":"ResourceNotFoundException"}
+      ],
+      "documentation":"<p>Modifies multiple properties related to SAML 2.0 authentication, including the enablement status, user access URL, and relay state parameter name that are used for configuring federation with an SAML 2.0 identity provider.</p>"
     },
     "ModifySelfservicePermissions":{
       "name":"ModifySelfservicePermissions",
@@ -653,7 +951,7 @@
         {"shape":"AccessDeniedException"},
         {"shape":"ResourceUnavailableException"}
       ],
-      "documentation":"<p>Modifies the specified WorkSpace properties. For important information about how to modify the size of the root and user volumes, see <a href=\"https://docs.aws.amazon.com/workspaces/latest/adminguide/modify-workspaces.html\"> Modify a WorkSpace</a>. </p>"
+      "documentation":"<p>Modifies the specified WorkSpace properties. For important information about how to modify the size of the root and user volumes, see <a href=\"https://docs.aws.amazon.com/workspaces/latest/adminguide/modify-workspaces.html\"> Modify a WorkSpace</a>. </p> <note> <p>The <code>MANUAL</code> running mode value is only supported by Amazon WorkSpaces Core. Contact your account team to be allow-listed to use this value. For more information, see <a href=\"http://aws.amazon.com/workspaces/core/\">Amazon WorkSpaces Core</a>.</p> </note>"
     },
     "ModifyWorkspaceState":{
       "name":"ModifyWorkspaceState",
@@ -666,7 +964,8 @@
       "errors":[
         {"shape":"InvalidParameterValuesException"},
         {"shape":"InvalidResourceStateException"},
-        {"shape":"ResourceNotFoundException"}
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"OperationNotSupportedException"}
       ],
       "documentation":"<p>Sets the state of the specified WorkSpace.</p> <p>To maintain a WorkSpace without being interrupted, set the WorkSpace state to <code>ADMIN_MAINTENANCE</code>. WorkSpaces in this state do not respond to requests to reboot, stop, start, rebuild, or restore. An AutoStop WorkSpace in this state is not stopped. Users cannot log into a WorkSpace in the <code>ADMIN_MAINTENANCE</code> state.</p>"
     },
@@ -678,6 +977,9 @@
       },
       "input":{"shape":"RebootWorkspacesRequest"},
       "output":{"shape":"RebootWorkspacesResult"},
+      "errors":[
+        {"shape":"OperationNotSupportedException"}
+      ],
       "documentation":"<p>Reboots the specified WorkSpaces.</p> <p>You cannot reboot a WorkSpace unless its state is <code>AVAILABLE</code> or <code>UNHEALTHY</code>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have rebooted.</p>"
     },
     "RebuildWorkspaces":{
@@ -688,6 +990,9 @@
       },
       "input":{"shape":"RebuildWorkspacesRequest"},
       "output":{"shape":"RebuildWorkspacesResult"},
+      "errors":[
+        {"shape":"OperationNotSupportedException"}
+      ],
       "documentation":"<p>Rebuilds the specified WorkSpace.</p> <p>You cannot rebuild a WorkSpace unless its state is <code>AVAILABLE</code>, <code>ERROR</code>, <code>UNHEALTHY</code>, <code>STOPPED</code>, or <code>REBOOTING</code>.</p> <p>Rebuilding a WorkSpace is a potentially destructive action that can result in the loss of data. For more information, see <a href=\"https://docs.aws.amazon.com/workspaces/latest/adminguide/reset-workspace.html\">Rebuild a WorkSpace</a>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have been completely rebuilt.</p>"
     },
     "RegisterWorkspaceDirectory":{
@@ -721,7 +1026,8 @@
       "errors":[
         {"shape":"InvalidParameterValuesException"},
         {"shape":"ResourceNotFoundException"},
-        {"shape":"AccessDeniedException"}
+        {"shape":"AccessDeniedException"},
+        {"shape":"OperationNotSupportedException"}
       ],
       "documentation":"<p>Restores the specified WorkSpace to its last known healthy state.</p> <p>You cannot restore a WorkSpace unless its state is <code> AVAILABLE</code>, <code>ERROR</code>, <code>UNHEALTHY</code>, or <code>STOPPED</code>.</p> <p>Restoring a WorkSpace is a potentially destructive action that can result in the loss of data. For more information, see <a href=\"https://docs.aws.amazon.com/workspaces/latest/adminguide/restore-workspace.html\">Restore a WorkSpace</a>.</p> <p>This operation is asynchronous and returns before the WorkSpace is completely restored.</p>"
     },
@@ -771,6 +1077,21 @@
       "output":{"shape":"TerminateWorkspacesResult"},
       "documentation":"<p>Terminates the specified WorkSpaces.</p> <important> <p>Terminating a WorkSpace is a permanent action and cannot be undone. The user's data is destroyed. If you need to archive any user data, contact Amazon Web Services Support before terminating the WorkSpace.</p> </important> <p>You can terminate a WorkSpace that is in any state except <code>SUSPENDED</code>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have been completely terminated. After a WorkSpace is terminated, the <code>TERMINATED</code> state is returned only briefly before the WorkSpace directory metadata is cleaned up, so this state is rarely returned. To confirm that a WorkSpace is terminated, check for the WorkSpace ID by using <a href=\"https://docs.aws.amazon.com/workspaces/latest/api/API_DescribeWorkspaces.html\"> DescribeWorkSpaces</a>. If the WorkSpace ID isn't returned, then the WorkSpace has been successfully terminated.</p> <note> <p>Simple AD and AD Connector are made available to you free of charge to use with WorkSpaces. If there are no WorkSpaces being used with your Simple AD or AD Connector directory for 30 consecutive days, this directory will be automatically deregistered for use with Amazon WorkSpaces, and you will be charged for this directory as per the <a href=\"http://aws.amazon.com/directoryservice/pricing/\">Directory Service pricing terms</a>.</p> <p>To delete empty directories, see <a href=\"https://docs.aws.amazon.com/workspaces/latest/adminguide/delete-workspaces-directory.html\"> Delete the Directory for Your WorkSpaces</a>. If you delete your Simple AD or AD Connector directory, you can always create a new one when you want to start using WorkSpaces again.</p> </note>"
     },
+    "UpdateConnectClientAddIn":{
+      "name":"UpdateConnectClientAddIn",
+      "http":{
+        "method":"POST",
+        "requestUri":"/"
+      },
+      "input":{"shape":"UpdateConnectClientAddInRequest"},
+      "output":{"shape":"UpdateConnectClientAddInResult"},
+      "errors":[
+        {"shape":"InvalidParameterValuesException"},
+        {"shape":"ResourceNotFoundException"},
+        {"shape":"AccessDeniedException"}
+      ],
+      "documentation":"<p>Updates a Amazon Connect client add-in. Use this action to update the name and endpoint URL of a Amazon Connect client add-in.</p>"
+    },
     "UpdateConnectionAliasPermission":{
       "name":"UpdateConnectionAliasPermission",
       "http":{
@@ -819,7 +1140,8 @@
         {"shape":"AccessDeniedException"},
         {"shape":"InvalidParameterValuesException"},
         {"shape":"ResourceNotFoundException"},
-        {"shape":"ResourceUnavailableException"}
+        {"shape":"ResourceUnavailableException"},
+        {"shape":"OperationNotSupportedException"}
       ],
       "documentation":"<p>Updates a WorkSpace bundle with a new image. For more information about updating WorkSpace bundles, see <a href=\"https://docs.aws.amazon.com/workspaces/latest/adminguide/update-custom-bundle.html\"> Update a Custom WorkSpaces Bundle</a>.</p> <important> <p>Existing WorkSpaces aren't automatically updated when you update the bundle that they're based on. To update existing WorkSpaces that are based on a bundle that you've updated, you must either rebuild the WorkSpaces or delete and recreate them.</p> </important>"
     },
@@ -895,7 +1217,25 @@
       "type":"list",
       "member":{"shape":"AccountModification"}
     },
+    "AddInName":{
+      "type":"string",
+      "max":64,
+      "min":1,
+      "pattern":"^.*$"
+    },
+    "AddInUrl":{
+      "type":"string",
+      "max":1024,
+      "min":1,
+      "pattern":"^(http|https)\\://\\S+"
+    },
     "Alias":{"type":"string"},
+    "AmazonUuid":{
+      "type":"string",
+      "max":36,
+      "min":36,
+      "pattern":"[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}"
+    },
     "Application":{
       "type":"string",
       "enum":[
@@ -903,11 +1243,68 @@
         "Microsoft_Office_2019"
       ]
     },
+    "ApplicationAssociatedResourceType":{
+      "type":"string",
+      "enum":[
+        "WORKSPACE",
+        "BUNDLE",
+        "IMAGE"
+      ]
+    },
+    "ApplicationAssociatedResourceTypeList":{
+      "type":"list",
+      "member":{"shape":"ApplicationAssociatedResourceType"}
+    },
     "ApplicationList":{
       "type":"list",
       "member":{"shape":"Application"},
       "max":5,
       "min":1
+    },
+    "ApplicationNotSupportedException":{
+      "type":"structure",
+      "members":{
+      },
+      "documentation":"<p>The specified application is not supported.</p>",
+      "exception":true
+    },
+    "ApplicationResourceAssociation":{
+      "type":"structure",
+      "members":{
+        "ApplicationId":{
+          "shape":"WorkSpaceApplicationId",
+          "documentation":"<p>The identifier of the application.</p>"
+        },
+        "AssociatedResourceId":{
+          "shape":"NonEmptyString",
+          "documentation":"<p>The identifier of the associated resource.</p>"
+        },
+        "AssociatedResourceType":{
+          "shape":"ApplicationAssociatedResourceType",
+          "documentation":"<p>The resource type of the associated resource.</p>"
+        },
+        "Created":{
+          "shape":"Timestamp",
+          "documentation":"<p>The time the association was created.</p>"
+        },
+        "LastUpdatedTime":{
+          "shape":"Timestamp",
+          "documentation":"<p>The time the association status was last updated.</p>"
+        },
+        "State":{
+          "shape":"AssociationState",
+          "documentation":"<p>The status of the application resource association.</p>"
+        },
+        "StateReason":{
+          "shape":"AssociationStateReason",
+          "documentation":"<p>The reason the association deployment failed.</p>"
+        }
+      },
+      "documentation":"<p>Describes the association between an application and an application resource.</p>"
+    },
+    "ApplicationResourceAssociationList":{
+      "type":"list",
+      "member":{"shape":"ApplicationResourceAssociation"}
     },
     "AssociateConnectionAliasRequest":{
       "type":"structure",
@@ -957,6 +1354,70 @@
       "members":{
       }
     },
+    "AssociateWorkspaceApplicationRequest":{
+      "type":"structure",
+      "required":[
+        "WorkspaceId",
+        "ApplicationId"
+      ],
+      "members":{
+        "WorkspaceId":{
+          "shape":"WorkspaceId",
+          "documentation":"<p>The identifier of the WorkSpace.</p>"
+        },
+        "ApplicationId":{
+          "shape":"WorkSpaceApplicationId",
+          "documentation":"<p>The identifier of the application.</p>"
+        }
+      }
+    },
+    "AssociateWorkspaceApplicationResult":{
+      "type":"structure",
+      "members":{
+        "Association":{
+          "shape":"WorkspaceResourceAssociation",
+          "documentation":"<p>Information about the association between the specified WorkSpace and the specified application.</p>"
+        }
+      }
+    },
+    "AssociationErrorCode":{
+      "type":"string",
+      "enum":[
+        "ValidationError.InsufficientDiskSpace",
+        "ValidationError.InsufficientMemory",
+        "ValidationError.UnsupportedOperatingSystem",
+        "DeploymentError.InternalServerError",
+        "DeploymentError.WorkspaceUnreachable"
+      ]
+    },
+    "AssociationState":{
+      "type":"string",
+      "enum":[
+        "PENDING_INSTALL",
+        "PENDING_INSTALL_DEPLOYMENT",
+        "PENDING_UNINSTALL",
+        "PENDING_UNINSTALL_DEPLOYMENT",
+        "INSTALLING",
+        "UNINSTALLING",
+        "ERROR",
+        "COMPLETED",
+        "REMOVED"
+      ]
+    },
+    "AssociationStateReason":{
+      "type":"structure",
+      "members":{
+        "ErrorCode":{
+          "shape":"AssociationErrorCode",
+          "documentation":"<p>The error code of the association deployment failure.</p>"
+        },
+        "ErrorMessage":{
+          "shape":"String2048",
+          "documentation":"<p>The error message of the association deployment failure.</p>"
+        }
+      },
+      "documentation":"<p>Indicates the reason that the association deployment failed, including the error code and error message.</p>"
+    },
     "AssociationStatus":{
       "type":"string",
       "enum":[
@@ -994,6 +1455,14 @@
       "pattern":"^\\d{12}$"
     },
     "BooleanObject":{"type":"boolean"},
+    "BundleAssociatedResourceType":{
+      "type":"string",
+      "enum":["APPLICATION"]
+    },
+    "BundleAssociatedResourceTypeList":{
+      "type":"list",
+      "member":{"shape":"BundleAssociatedResourceType"}
+    },
     "BundleId":{
       "type":"string",
       "pattern":"^wsb-[0-9a-z]{8,63}$"
@@ -1009,12 +1478,123 @@
       "member":{"shape":"WorkspaceBundle"}
     },
     "BundleOwner":{"type":"string"},
+    "BundleResourceAssociation":{
+      "type":"structure",
+      "members":{
+        "AssociatedResourceId":{
+          "shape":"NonEmptyString",
+          "documentation":"<p>The identifier of the associated resource.</p>"
+        },
+        "AssociatedResourceType":{
+          "shape":"BundleAssociatedResourceType",
+          "documentation":"<p>The resource type of the associated resources.</p>"
+        },
+        "BundleId":{
+          "shape":"BundleId",
+          "documentation":"<p>The identifier of the bundle.</p>"
+        },
+        "Created":{
+          "shape":"Timestamp",
+          "documentation":"<p>The time the association is created.</p>"
+        },
+        "LastUpdatedTime":{
+          "shape":"Timestamp",
+          "documentation":"<p>The time the association status was last updated.</p>"
+        },
+        "State":{
+          "shape":"AssociationState",
+          "documentation":"<p>The status of the bundle resource association.</p>"
+        },
+        "StateReason":{
+          "shape":"AssociationStateReason",
+          "documentation":"<p>The reason the association deployment failed.</p>"
+        }
+      },
+      "documentation":"<p>Describes the association between an application and a bundle resource.</p>"
+    },
+    "BundleResourceAssociationList":{
+      "type":"list",
+      "member":{"shape":"BundleResourceAssociation"}
+    },
+    "BundleType":{
+      "type":"string",
+      "enum":[
+        "REGULAR",
+        "STANDBY"
+      ]
+    },
+    "CertificateAuthorityArn":{
+      "type":"string",
+      "max":200,
+      "min":5,
+      "pattern":"arn:[\\w+=/,.@-]+:[\\w+=/,.@-]+:[\\w+=/,.@-]*:[0-9]*:[\\w+=,.@-]+(/[\\w+=,.@-]+)*"
+    },
+    "CertificateBasedAuthProperties":{
+      "type":"structure",
+      "members":{
+        "Status":{
+          "shape":"CertificateBasedAuthStatusEnum",
+          "documentation":"<p>The status of the certificate-based authentication properties.</p>"
+        },
+        "CertificateAuthorityArn":{
+          "shape":"CertificateAuthorityArn",
+          "documentation":"<p>The Amazon Resource Name (ARN) of the Amazon Web Services Certificate Manager Private CA resource.</p>"
+        }
+      },
+      "documentation":"<p>Describes the properties of the certificate-based authentication you want to use with your WorkSpaces.</p>"
+    },
+    "CertificateBasedAuthStatusEnum":{
+      "type":"string",
+      "enum":[
+        "DISABLED",
+        "ENABLED"
+      ]
+    },
+    "ClientDeviceType":{
+      "type":"string",
+      "enum":[
+        "DeviceTypeWindows",
+        "DeviceTypeOsx",
+        "DeviceTypeAndroid",
+        "DeviceTypeIos",
+        "DeviceTypeLinux",
+        "DeviceTypeWeb"
+      ]
+    },
+    "ClientDeviceTypeList":{
+      "type":"list",
+      "member":{"shape":"ClientDeviceType"},
+      "max":6,
+      "min":1
+    },
+    "ClientEmail":{
+      "type":"string",
+      "max":64,
+      "min":6,
+      "pattern":"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$"
+    },
+    "ClientLocale":{
+      "type":"string",
+      "max":5,
+      "min":5,
+      "pattern":"^[a-z]{2}_[A-Z]{2}$"
+    },
+    "ClientLoginMessage":{
+      "type":"string",
+      "max":2000,
+      "min":0,
+      "pattern":"^.*$"
+    },
     "ClientProperties":{
       "type":"structure",
       "members":{
         "ReconnectEnabled":{
           "shape":"ReconnectEnum",
           "documentation":"<p>Specifies whether users can cache their credentials on the Amazon WorkSpaces client. When enabled, users can choose to reconnect to their WorkSpaces without re-entering their credentials. </p>"
+        },
+        "LogUploadEnabled":{
+          "shape":"LogUploadEnum",
+          "documentation":"<p>Specifies whether users can upload diagnostic log files of Amazon WorkSpaces client directly to WorkSpaces to troubleshoot issues when using the WorkSpaces client. When enabled, the log files will be sent to WorkSpaces automatically and will be applied to all users in the specified directory.</p>"
         }
       },
       "documentation":"<p>Describes an Amazon WorkSpaces client.</p>"
@@ -1037,6 +1617,12 @@
       },
       "documentation":"<p>Information about the Amazon WorkSpaces client.</p>"
     },
+    "ClientUrl":{
+      "type":"string",
+      "max":200,
+      "min":1,
+      "pattern":"^(http|https)\\://\\S+"
+    },
     "Compute":{
       "type":"string",
       "enum":[
@@ -1046,8 +1632,21 @@
         "POWER",
         "GRAPHICS",
         "POWERPRO",
-        "GRAPHICSPRO"
+        "GRAPHICSPRO",
+        "GRAPHICS_G4DN",
+        "GRAPHICSPRO_G4DN"
       ]
+    },
+    "ComputeList":{
+      "type":"list",
+      "member":{"shape":"Compute"}
+    },
+    "ComputeNotCompatibleException":{
+      "type":"structure",
+      "members":{
+      },
+      "documentation":"<p>The compute type of the WorkSpace is not compatible with the application.</p>",
+      "exception":true
     },
     "ComputeType":{
       "type":"structure",
@@ -1060,6 +1659,32 @@
       "documentation":"<p>Describes the compute type of the bundle.</p>"
     },
     "ComputerName":{"type":"string"},
+    "ConnectClientAddIn":{
+      "type":"structure",
+      "members":{
+        "AddInId":{
+          "shape":"AmazonUuid",
+          "documentation":"<p>The client add-in identifier.</p>"
+        },
+        "ResourceId":{
+          "shape":"DirectoryId",
+          "documentation":"<p>The directory identifier for which the client add-in is configured.</p>"
+        },
+        "Name":{
+          "shape":"AddInName",
+          "documentation":"<p>The name of the client add in.</p>"
+        },
+        "URL":{
+          "shape":"AddInUrl",
+          "documentation":"<p>The endpoint URL of the client add-in.</p>"
+        }
+      },
+      "documentation":"<p>Describes an Amazon Connect client add-in.</p>"
+    },
+    "ConnectClientAddInList":{
+      "type":"list",
+      "member":{"shape":"ConnectClientAddIn"}
+    },
     "ConnectionAlias":{
       "type":"structure",
       "members":{
@@ -1223,6 +1848,37 @@
         }
       }
     },
+    "CreateConnectClientAddInRequest":{
+      "type":"structure",
+      "required":[
+        "ResourceId",
+        "Name",
+        "URL"
+      ],
+      "members":{
+        "ResourceId":{
+          "shape":"DirectoryId",
+          "documentation":"<p>The directory identifier for which to configure the client add-in.</p>"
+        },
+        "Name":{
+          "shape":"AddInName",
+          "documentation":"<p>The name of the client add-in.</p>"
+        },
+        "URL":{
+          "shape":"AddInUrl",
+          "documentation":"<p>The endpoint URL of the Amazon Connect client add-in.</p>"
+        }
+      }
+    },
+    "CreateConnectClientAddInResult":{
+      "type":"structure",
+      "members":{
+        "AddInId":{
+          "shape":"AmazonUuid",
+          "documentation":"<p>The client add-in identifier.</p>"
+        }
+      }
+    },
     "CreateConnectionAliasRequest":{
       "type":"structure",
       "required":["ConnectionString"],
@@ -1274,6 +1930,36 @@
         "GroupId":{
           "shape":"IpGroupId",
           "documentation":"<p>The identifier of the group.</p>"
+        }
+      }
+    },
+    "CreateStandbyWorkspacesRequest":{
+      "type":"structure",
+      "required":[
+        "PrimaryRegion",
+        "StandbyWorkspaces"
+      ],
+      "members":{
+        "PrimaryRegion":{
+          "shape":"Region",
+          "documentation":"<p>The Region of the primary WorkSpace.</p>"
+        },
+        "StandbyWorkspaces":{
+          "shape":"StandbyWorkspacesList",
+          "documentation":"<p>Information about the standby WorkSpace to be created.</p>"
+        }
+      }
+    },
+    "CreateStandbyWorkspacesResult":{
+      "type":"structure",
+      "members":{
+        "FailedStandbyRequests":{
+          "shape":"FailedCreateStandbyWorkspacesRequestList",
+          "documentation":"<p>Information about the standby WorkSpace that could not be created. </p>"
+        },
+        "PendingStandbyRequests":{
+          "shape":"PendingCreateStandbyWorkspacesRequestList",
+          "documentation":"<p>Information about the standby WorkSpace that was created.</p>"
         }
       }
     },
@@ -1371,6 +2057,69 @@
         "WorkspaceBundle":{"shape":"WorkspaceBundle"}
       }
     },
+    "CreateWorkspaceImageRequest":{
+      "type":"structure",
+      "required":[
+        "Name",
+        "Description",
+        "WorkspaceId"
+      ],
+      "members":{
+        "Name":{
+          "shape":"WorkspaceImageName",
+          "documentation":"<p>The name of the new WorkSpace image.</p>"
+        },
+        "Description":{
+          "shape":"WorkspaceImageDescription",
+          "documentation":"<p>The description of the new WorkSpace image.</p>"
+        },
+        "WorkspaceId":{
+          "shape":"WorkspaceId",
+          "documentation":"<p>The identifier of the source WorkSpace</p>"
+        },
+        "Tags":{
+          "shape":"TagList",
+          "documentation":"<p>The tags that you want to add to the new WorkSpace image. To add tags when you're creating the image, you must create an IAM policy that grants your IAM user permission to use <code>workspaces:CreateTags</code>.</p>"
+        }
+      }
+    },
+    "CreateWorkspaceImageResult":{
+      "type":"structure",
+      "members":{
+        "ImageId":{
+          "shape":"WorkspaceImageId",
+          "documentation":"<p>The identifier of the new WorkSpace image.</p>"
+        },
+        "Name":{
+          "shape":"WorkspaceImageName",
+          "documentation":"<p>The name of the image.</p>"
+        },
+        "Description":{
+          "shape":"WorkspaceImageDescription",
+          "documentation":"<p>The description of the image.</p>"
+        },
+        "OperatingSystem":{
+          "shape":"OperatingSystem",
+          "documentation":"<p>The operating system that the image is running.</p>"
+        },
+        "State":{
+          "shape":"WorkspaceImageState",
+          "documentation":"<p>The availability status of the image.</p>"
+        },
+        "RequiredTenancy":{
+          "shape":"WorkspaceImageRequiredTenancy",
+          "documentation":"<p>Specifies whether the image is running on dedicated hardware. When Bring Your Own License (BYOL) is enabled, this value is set to DEDICATED. For more information, see <a href=\"https://docs.aws.amazon.com/workspaces/latest/adminguide/byol-windows-images.htm\"> Bring Your Own Windows Desktop Images.</a>.</p>"
+        },
+        "Created":{
+          "shape":"Timestamp",
+          "documentation":"<p>The date when the image was created.</p>"
+        },
+        "OwnerAccountId":{
+          "shape":"AwsAccount",
+          "documentation":"<p>The identifier of the Amazon Web Services account that owns the image.</p>"
+        }
+      }
+    },
     "CreateWorkspacesRequest":{
       "type":"structure",
       "required":["Workspaces"],
@@ -1393,6 +2142,27 @@
           "documentation":"<p>Information about the WorkSpaces that were created.</p> <p>Because this operation is asynchronous, the identifier returned is not immediately available for use with other operations. For example, if you call <a>DescribeWorkspaces</a> before the WorkSpace is created, the information returned can be incomplete.</p>"
         }
       }
+    },
+    "DataReplication":{
+      "type":"string",
+      "enum":[
+        "NO_REPLICATION",
+        "PRIMARY_AS_SOURCE"
+      ]
+    },
+    "DataReplicationSettings":{
+      "type":"structure",
+      "members":{
+        "DataReplication":{
+          "shape":"DataReplication",
+          "documentation":"<p>Indicates whether data replication is enabled, and if enabled, the type of data replication.</p>"
+        },
+        "RecoverySnapshotTime":{
+          "shape":"Timestamp",
+          "documentation":"<p>The date and time at which the last successful snapshot was taken of the primary WorkSpace used for replicating data.</p>"
+        }
+      },
+      "documentation":"<p>Describes the data replication settings.</p>"
     },
     "DedicatedTenancyCidrRangeList":{
       "type":"list",
@@ -1420,6 +2190,63 @@
         "ENABLED",
         "DISABLED"
       ]
+    },
+    "DefaultClientBrandingAttributes":{
+      "type":"structure",
+      "members":{
+        "LogoUrl":{
+          "shape":"ClientUrl",
+          "documentation":"<p>The logo. The only image format accepted is a binary data object that is converted from a <code>.png</code> file.</p>"
+        },
+        "SupportEmail":{
+          "shape":"ClientEmail",
+          "documentation":"<p>The support email. The company's customer support email address.</p> <note> <ul> <li> <p>In each platform type, the <code>SupportEmail</code> and <code>SupportLink</code> parameters are mutually exclusive. You can specify one parameter for each platform type, but not both.</p> </li> <li> <p>The default email is <code>workspaces-feedback@amazon.com</code>.</p> </li> </ul> </note>"
+        },
+        "SupportLink":{
+          "shape":"ClientUrl",
+          "documentation":"<p>The support link. The link for the company's customer support page for their WorkSpace.</p> <note> <ul> <li> <p>In each platform type, the <code>SupportEmail</code> and <code>SupportLink</code> parameters are mutually exclusive.You can specify one parameter for each platform type, but not both.</p> </li> <li> <p>The default support link is <code>workspaces-feedback@amazon.com</code>.</p> </li> </ul> </note>"
+        },
+        "ForgotPasswordLink":{
+          "shape":"ClientUrl",
+          "documentation":"<p>The forgotten password link. This is the web address that users can go to if they forget the password for their WorkSpace.</p>"
+        },
+        "LoginMessage":{
+          "shape":"LoginMessage",
+          "documentation":"<p>The login message. Specified as a key value pair, in which the key is a locale and the value is the localized message for that locale. The only key supported is <code>en_US</code>. The HTML tags supported include the following: <code>a, b, blockquote, br, cite, code, dd, dl, dt, div, em, i, li, ol, p, pre, q, small, span, strike, strong, sub, sup, u, ul</code>.</p>"
+        }
+      },
+      "documentation":"<p>Returns default client branding attributes that were imported. These attributes display on the client login screen.</p> <important> <p>Client branding attributes are public facing. Ensure that you don't include sensitive information.</p> </important>"
+    },
+    "DefaultImportClientBrandingAttributes":{
+      "type":"structure",
+      "members":{
+        "Logo":{
+          "shape":"DefaultLogo",
+          "documentation":"<p>The logo. The only image format accepted is a binary data object that is converted from a <code>.png</code> file.</p>"
+        },
+        "SupportEmail":{
+          "shape":"ClientEmail",
+          "documentation":"<p>The support email. The company's customer support email address.</p> <note> <ul> <li> <p>In each platform type, the <code>SupportEmail</code> and <code>SupportLink</code> parameters are mutually exclusive. You can specify one parameter for each platform type, but not both.</p> </li> <li> <p>The default email is <code>workspaces-feedback@amazon.com</code>.</p> </li> </ul> </note>"
+        },
+        "SupportLink":{
+          "shape":"ClientUrl",
+          "documentation":"<p>The support link. The link for the company's customer support page for their WorkSpace.</p> <note> <ul> <li> <p>In each platform type, the <code>SupportEmail</code> and <code>SupportLink</code> parameters are mutually exclusive. You can specify one parameter for each platform type, but not both.</p> </li> <li> <p>The default support link is <code>workspaces-feedback@amazon.com</code>.</p> </li> </ul> </note>"
+        },
+        "ForgotPasswordLink":{
+          "shape":"ClientUrl",
+          "documentation":"<p>The forgotten password link. This is the web address that users can go to if they forget the password for their WorkSpace.</p>"
+        },
+        "LoginMessage":{
+          "shape":"LoginMessage",
+          "documentation":"<p>The login message. Specified as a key value pair, in which the key is a locale and the value is the localized message for that locale. The only key supported is <code>en_US</code>. The HTML tags supported include the following: <code>a, b, blockquote, br, cite, code, dd, dl, dt, div, em, i, li, ol, p, pre, q, small, span, strike, strong, sub, sup, u, ul</code>.</p>"
+        }
+      },
+      "documentation":"<p>The default client branding attributes to be imported. These attributes display on the client login screen.</p> <important> <p>Client branding attributes are public facing. Ensure that you do not include sensitive information.</p> </important>"
+    },
+    "DefaultLogo":{
+      "type":"blob",
+      "max":1500000,
+      "min":1
     },
     "DefaultOu":{"type":"string"},
     "DefaultWorkspaceCreationProperties":{
@@ -1451,6 +2278,69 @@
         }
       },
       "documentation":"<p>Describes the default values that are used to create WorkSpaces. For more information, see <a href=\"https://docs.aws.amazon.com/workspaces/latest/adminguide/update-directory-details.html\">Update Directory Details for Your WorkSpaces</a>.</p>"
+    },
+    "DeletableCertificateBasedAuthPropertiesList":{
+      "type":"list",
+      "member":{"shape":"DeletableCertificateBasedAuthProperty"}
+    },
+    "DeletableCertificateBasedAuthProperty":{
+      "type":"string",
+      "enum":["CERTIFICATE_BASED_AUTH_PROPERTIES_CERTIFICATE_AUTHORITY_ARN"]
+    },
+    "DeletableSamlPropertiesList":{
+      "type":"list",
+      "member":{"shape":"DeletableSamlProperty"}
+    },
+    "DeletableSamlProperty":{
+      "type":"string",
+      "enum":[
+        "SAML_PROPERTIES_USER_ACCESS_URL",
+        "SAML_PROPERTIES_RELAY_STATE_PARAMETER_NAME"
+      ]
+    },
+    "DeleteClientBrandingRequest":{
+      "type":"structure",
+      "required":[
+        "ResourceId",
+        "Platforms"
+      ],
+      "members":{
+        "ResourceId":{
+          "shape":"DirectoryId",
+          "documentation":"<p>The directory identifier of the WorkSpace for which you want to delete client branding.</p>"
+        },
+        "Platforms":{
+          "shape":"ClientDeviceTypeList",
+          "documentation":"<p>The device type for which you want to delete client branding.</p>"
+        }
+      }
+    },
+    "DeleteClientBrandingResult":{
+      "type":"structure",
+      "members":{
+      }
+    },
+    "DeleteConnectClientAddInRequest":{
+      "type":"structure",
+      "required":[
+        "AddInId",
+        "ResourceId"
+      ],
+      "members":{
+        "AddInId":{
+          "shape":"AmazonUuid",
+          "documentation":"<p>The identifier of the client add-in to delete.</p>"
+        },
+        "ResourceId":{
+          "shape":"DirectoryId",
+          "documentation":"<p>The directory identifier for which the client add-in is configured.</p>"
+        }
+      }
+    },
+    "DeleteConnectClientAddInResult":{
+      "type":"structure",
+      "members":{
+      }
     },
     "DeleteConnectionAliasRequest":{
       "type":"structure",
@@ -1533,6 +2423,29 @@
       "members":{
       }
     },
+    "DeployWorkspaceApplicationsRequest":{
+      "type":"structure",
+      "required":["WorkspaceId"],
+      "members":{
+        "WorkspaceId":{
+          "shape":"WorkspaceId",
+          "documentation":"<p>The identifier of the WorkSpace.</p>"
+        },
+        "Force":{
+          "shape":"BooleanObject",
+          "documentation":"<p>Indicates whether the force flag is applied for the specified WorkSpace. When the force flag is enabled, it allows previously failed deployments to be retried.</p>"
+        }
+      }
+    },
+    "DeployWorkspaceApplicationsResult":{
+      "type":"structure",
+      "members":{
+        "Deployment":{
+          "shape":"WorkSpaceApplicationDeployment",
+          "documentation":"<p>The list of deployed associations and information about them.</p>"
+        }
+      }
+    },
     "DeregisterWorkspaceDirectoryRequest":{
       "type":"structure",
       "required":["DirectoryId"],
@@ -1588,6 +2501,155 @@
         }
       }
     },
+    "DescribeApplicationAssociationsRequest":{
+      "type":"structure",
+      "required":[
+        "ApplicationId",
+        "AssociatedResourceTypes"
+      ],
+      "members":{
+        "MaxResults":{
+          "shape":"Limit",
+          "documentation":"<p>The maximum number of associations to return.</p>"
+        },
+        "NextToken":{
+          "shape":"PaginationToken",
+          "documentation":"<p>If you received a <code>NextToken</code> from a previous call that was paginated, provide this token to receive the next set of results.</p>"
+        },
+        "ApplicationId":{
+          "shape":"WorkSpaceApplicationId",
+          "documentation":"<p>The identifier of the specified application.</p>"
+        },
+        "AssociatedResourceTypes":{
+          "shape":"ApplicationAssociatedResourceTypeList",
+          "documentation":"<p>The resource type of the associated resources.</p>"
+        }
+      }
+    },
+    "DescribeApplicationAssociationsResult":{
+      "type":"structure",
+      "members":{
+        "Associations":{
+          "shape":"ApplicationResourceAssociationList",
+          "documentation":"<p>List of associations and information about them.</p>"
+        },
+        "NextToken":{
+          "shape":"PaginationToken",
+          "documentation":"<p>If you received a <code>NextToken</code> from a previous call that was paginated, provide this token to receive the next set of results.</p>"
+        }
+      }
+    },
+    "DescribeApplicationsRequest":{
+      "type":"structure",
+      "members":{
+        "ApplicationIds":{
+          "shape":"WorkSpaceApplicationIdList",
+          "documentation":"<p>The identifiers of one or more applications.</p>"
+        },
+        "ComputeTypeNames":{
+          "shape":"ComputeList",
+          "documentation":"<p>The compute types supported by the applications.</p>"
+        },
+        "LicenseType":{
+          "shape":"WorkSpaceApplicationLicenseType",
+          "documentation":"<p>The license availability for the applications.</p>"
+        },
+        "OperatingSystemNames":{
+          "shape":"OperatingSystemNameList",
+          "documentation":"<p>The operating systems supported by the applications.</p>"
+        },
+        "Owner":{
+          "shape":"WorkSpaceApplicationOwner",
+          "documentation":"<p>The owner of the applications.</p>"
+        },
+        "MaxResults":{
+          "shape":"Limit",
+          "documentation":"<p>The maximum number of applications to return.</p>"
+        },
+        "NextToken":{
+          "shape":"PaginationToken",
+          "documentation":"<p>If you received a <code>NextToken</code> from a previous call that was paginated, provide this token to receive the next set of results.</p>"
+        }
+      }
+    },
+    "DescribeApplicationsResult":{
+      "type":"structure",
+      "members":{
+        "Applications":{
+          "shape":"WorkSpaceApplicationList",
+          "documentation":"<p>List of information about the specified applications.</p>"
+        },
+        "NextToken":{
+          "shape":"PaginationToken",
+          "documentation":"<p>If you received a <code>NextToken</code> from a previous call that was paginated, provide this token to receive the next set of results.</p>"
+        }
+      }
+    },
+    "DescribeBundleAssociationsRequest":{
+      "type":"structure",
+      "required":[
+        "BundleId",
+        "AssociatedResourceTypes"
+      ],
+      "members":{
+        "BundleId":{
+          "shape":"BundleId",
+          "documentation":"<p>The identifier of the bundle.</p>"
+        },
+        "AssociatedResourceTypes":{
+          "shape":"BundleAssociatedResourceTypeList",
+          "documentation":"<p>The resource types of the associated resource.</p>"
+        }
+      }
+    },
+    "DescribeBundleAssociationsResult":{
+      "type":"structure",
+      "members":{
+        "Associations":{
+          "shape":"BundleResourceAssociationList",
+          "documentation":"<p>List of information about the specified associations.</p>"
+        }
+      }
+    },
+    "DescribeClientBrandingRequest":{
+      "type":"structure",
+      "required":["ResourceId"],
+      "members":{
+        "ResourceId":{
+          "shape":"DirectoryId",
+          "documentation":"<p>The directory identifier of the WorkSpace for which you want to view client branding information.</p>"
+        }
+      }
+    },
+    "DescribeClientBrandingResult":{
+      "type":"structure",
+      "members":{
+        "DeviceTypeWindows":{
+          "shape":"DefaultClientBrandingAttributes",
+          "documentation":"<p>The branding information for Windows devices.</p>"
+        },
+        "DeviceTypeOsx":{
+          "shape":"DefaultClientBrandingAttributes",
+          "documentation":"<p>The branding information for macOS devices.</p>"
+        },
+        "DeviceTypeAndroid":{
+          "shape":"DefaultClientBrandingAttributes",
+          "documentation":"<p>The branding information for Android devices.</p>"
+        },
+        "DeviceTypeIos":{
+          "shape":"IosClientBrandingAttributes",
+          "documentation":"<p>The branding information for iOS devices.</p>"
+        },
+        "DeviceTypeLinux":{
+          "shape":"DefaultClientBrandingAttributes",
+          "documentation":"<p>The branding information for Linux devices.</p>"
+        },
+        "DeviceTypeWeb":{
+          "shape":"DefaultClientBrandingAttributes",
+          "documentation":"<p>The branding information for Web access.</p>"
+        }
+      }
+    },
     "DescribeClientPropertiesRequest":{
       "type":"structure",
       "required":["ResourceIds"],
@@ -1604,6 +2666,37 @@
         "ClientPropertiesList":{
           "shape":"ClientPropertiesList",
           "documentation":"<p>Information about the specified Amazon WorkSpaces clients.</p>"
+        }
+      }
+    },
+    "DescribeConnectClientAddInsRequest":{
+      "type":"structure",
+      "required":["ResourceId"],
+      "members":{
+        "ResourceId":{
+          "shape":"DirectoryId",
+          "documentation":"<p>The directory identifier for which the client add-in is configured.</p>"
+        },
+        "NextToken":{
+          "shape":"PaginationToken",
+          "documentation":"<p>If you received a <code>NextToken</code> from a previous call that was paginated, provide this token to receive the next set of results.</p>"
+        },
+        "MaxResults":{
+          "shape":"Limit",
+          "documentation":"<p>The maximum number of items to return.</p>"
+        }
+      }
+    },
+    "DescribeConnectClientAddInsResult":{
+      "type":"structure",
+      "members":{
+        "AddIns":{
+          "shape":"ConnectClientAddInList",
+          "documentation":"<p>Information about client add-ins.</p>"
+        },
+        "NextToken":{
+          "shape":"PaginationToken",
+          "documentation":"<p>The token to use to retrieve the next page of results. This value is null when there are no more results to return. </p>"
         }
       }
     },
@@ -1676,6 +2769,32 @@
         }
       }
     },
+    "DescribeImageAssociationsRequest":{
+      "type":"structure",
+      "required":[
+        "ImageId",
+        "AssociatedResourceTypes"
+      ],
+      "members":{
+        "ImageId":{
+          "shape":"WorkspaceImageId",
+          "documentation":"<p>The identifier of the image.</p>"
+        },
+        "AssociatedResourceTypes":{
+          "shape":"ImageAssociatedResourceTypeList",
+          "documentation":"<p>The resource types of the associated resource.</p>"
+        }
+      }
+    },
+    "DescribeImageAssociationsResult":{
+      "type":"structure",
+      "members":{
+        "Associations":{
+          "shape":"ImageResourceAssociationList",
+          "documentation":"<p>List of information about the specified associations.</p>"
+        }
+      }
+    },
     "DescribeIpGroupsRequest":{
       "type":"structure",
       "members":{
@@ -1722,6 +2841,32 @@
         "TagList":{
           "shape":"TagList",
           "documentation":"<p>The tags.</p>"
+        }
+      }
+    },
+    "DescribeWorkspaceAssociationsRequest":{
+      "type":"structure",
+      "required":[
+        "WorkspaceId",
+        "AssociatedResourceTypes"
+      ],
+      "members":{
+        "WorkspaceId":{
+          "shape":"WorkspaceId",
+          "documentation":"<p>The identifier of the WorkSpace.</p>"
+        },
+        "AssociatedResourceTypes":{
+          "shape":"WorkSpaceAssociatedResourceTypeList",
+          "documentation":"<p>The resource types of the associated resources.</p>"
+        }
+      }
+    },
+    "DescribeWorkspaceAssociationsResult":{
+      "type":"structure",
+      "members":{
+        "Associations":{
+          "shape":"WorkspaceResourceAssociationList",
+          "documentation":"<p>List of information about the specified associations.</p>"
         }
       }
     },
@@ -1929,6 +3074,10 @@
         "NextToken":{
           "shape":"PaginationToken",
           "documentation":"<p>If you received a <code>NextToken</code> from a previous call that was paginated, provide this token to receive the next set of results.</p>"
+        },
+        "WorkspaceName":{
+          "shape":"WorkspaceName",
+          "documentation":"<p>The name of the user-decoupled WorkSpace.</p>"
         }
       }
     },
@@ -2000,6 +3149,32 @@
       "members":{
       }
     },
+    "DisassociateWorkspaceApplicationRequest":{
+      "type":"structure",
+      "required":[
+        "WorkspaceId",
+        "ApplicationId"
+      ],
+      "members":{
+        "WorkspaceId":{
+          "shape":"WorkspaceId",
+          "documentation":"<p>The identifier of the WorkSpace.</p>"
+        },
+        "ApplicationId":{
+          "shape":"WorkSpaceApplicationId",
+          "documentation":"<p>The identifier of the application.</p>"
+        }
+      }
+    },
+    "DisassociateWorkspaceApplicationResult":{
+      "type":"structure",
+      "members":{
+        "Association":{
+          "shape":"WorkspaceResourceAssociation",
+          "documentation":"<p>Information about the targeted association.</p>"
+        }
+      }
+    },
     "DnsIpAddresses":{
       "type":"list",
       "member":{"shape":"IpAddress"}
@@ -2008,8 +3183,49 @@
       "type":"string",
       "pattern":"^ami\\-([a-f0-9]{8}|[a-f0-9]{17})$"
     },
+    "ErrorDetails":{
+      "type":"structure",
+      "members":{
+        "ErrorCode":{
+          "shape":"WorkspaceImageErrorDetailCode",
+          "documentation":"<p>Indicates the error code returned.</p>"
+        },
+        "ErrorMessage":{
+          "shape":"Description",
+          "documentation":"<p>The text of the error message related the error code.</p>"
+        }
+      },
+      "documentation":"<p>Describes in-depth details about the error. These details include the possible causes of the error and troubleshooting information.</p>"
+    },
+    "ErrorDetailsList":{
+      "type":"list",
+      "member":{"shape":"ErrorDetails"}
+    },
     "ErrorType":{"type":"string"},
+    "ExceptionErrorCode":{"type":"string"},
     "ExceptionMessage":{"type":"string"},
+    "FailedCreateStandbyWorkspacesRequest":{
+      "type":"structure",
+      "members":{
+        "StandbyWorkspaceRequest":{
+          "shape":"StandbyWorkspace",
+          "documentation":"<p>Information about the standby WorkSpace that could not be created.</p>"
+        },
+        "ErrorCode":{
+          "shape":"WorkspaceErrorCode",
+          "documentation":"<p>The error code that is returned if the standby WorkSpace could not be created.</p>"
+        },
+        "ErrorMessage":{
+          "shape":"Description",
+          "documentation":"<p>The text of the error message that is returned if the standby WorkSpace could not be created.</p>"
+        }
+      },
+      "documentation":"<p>Describes the standby WorkSpace that could not be created.</p>"
+    },
+    "FailedCreateStandbyWorkspacesRequestList":{
+      "type":"list",
+      "member":{"shape":"FailedCreateStandbyWorkspacesRequest"}
+    },
     "FailedCreateWorkspaceRequest":{
       "type":"structure",
       "members":{
@@ -2070,6 +3286,14 @@
       },
       "documentation":"<p>Describes a WorkSpace that could not be rebooted. (<a>RebootWorkspaces</a>), rebuilt (<a>RebuildWorkspaces</a>), restored (<a>RestoreWorkspace</a>), terminated (<a>TerminateWorkspaces</a>), started (<a>StartWorkspaces</a>), or stopped (<a>StopWorkspaces</a>).</p>"
     },
+    "ImageAssociatedResourceType":{
+      "type":"string",
+      "enum":["APPLICATION"]
+    },
+    "ImageAssociatedResourceTypeList":{
+      "type":"list",
+      "member":{"shape":"ImageAssociatedResourceType"}
+    },
     "ImagePermission":{
       "type":"structure",
       "members":{
@@ -2084,12 +3308,113 @@
       "type":"list",
       "member":{"shape":"ImagePermission"}
     },
+    "ImageResourceAssociation":{
+      "type":"structure",
+      "members":{
+        "AssociatedResourceId":{
+          "shape":"NonEmptyString",
+          "documentation":"<p>The identifier of the associated resource.</p>"
+        },
+        "AssociatedResourceType":{
+          "shape":"ImageAssociatedResourceType",
+          "documentation":"<p>The resource type of the associated resources.</p>"
+        },
+        "Created":{
+          "shape":"Timestamp",
+          "documentation":"<p>The time the association is created.</p>"
+        },
+        "LastUpdatedTime":{
+          "shape":"Timestamp",
+          "documentation":"<p>The time the association status was last updated.</p>"
+        },
+        "ImageId":{
+          "shape":"WorkspaceImageId",
+          "documentation":"<p>The identifier of the image.</p>"
+        },
+        "State":{
+          "shape":"AssociationState",
+          "documentation":"<p>The status of the image resource association.</p>"
+        },
+        "StateReason":{
+          "shape":"AssociationStateReason",
+          "documentation":"<p>The reason the association deployment failed.</p>"
+        }
+      },
+      "documentation":"<p>Describes the association between an application and an image resource.</p>"
+    },
+    "ImageResourceAssociationList":{
+      "type":"list",
+      "member":{"shape":"ImageResourceAssociation"}
+    },
     "ImageType":{
       "type":"string",
       "enum":[
         "OWNED",
         "SHARED"
       ]
+    },
+    "ImportClientBrandingRequest":{
+      "type":"structure",
+      "required":["ResourceId"],
+      "members":{
+        "ResourceId":{
+          "shape":"DirectoryId",
+          "documentation":"<p>The directory identifier of the WorkSpace for which you want to import client branding.</p>"
+        },
+        "DeviceTypeWindows":{
+          "shape":"DefaultImportClientBrandingAttributes",
+          "documentation":"<p>The branding information to import for Windows devices.</p>"
+        },
+        "DeviceTypeOsx":{
+          "shape":"DefaultImportClientBrandingAttributes",
+          "documentation":"<p>The branding information to import for macOS devices.</p>"
+        },
+        "DeviceTypeAndroid":{
+          "shape":"DefaultImportClientBrandingAttributes",
+          "documentation":"<p>The branding information to import for Android devices.</p>"
+        },
+        "DeviceTypeIos":{
+          "shape":"IosImportClientBrandingAttributes",
+          "documentation":"<p>The branding information to import for iOS devices.</p>"
+        },
+        "DeviceTypeLinux":{
+          "shape":"DefaultImportClientBrandingAttributes",
+          "documentation":"<p>The branding information to import for Linux devices.</p>"
+        },
+        "DeviceTypeWeb":{
+          "shape":"DefaultImportClientBrandingAttributes",
+          "documentation":"<p>The branding information to import for web access.</p>"
+        }
+      }
+    },
+    "ImportClientBrandingResult":{
+      "type":"structure",
+      "members":{
+        "DeviceTypeWindows":{
+          "shape":"DefaultClientBrandingAttributes",
+          "documentation":"<p>The branding information configured for Windows devices.</p>"
+        },
+        "DeviceTypeOsx":{
+          "shape":"DefaultClientBrandingAttributes",
+          "documentation":"<p>The branding information configured for macOS devices.</p>"
+        },
+        "DeviceTypeAndroid":{
+          "shape":"DefaultClientBrandingAttributes",
+          "documentation":"<p>The branding information configured for Android devices.</p>"
+        },
+        "DeviceTypeIos":{
+          "shape":"IosClientBrandingAttributes",
+          "documentation":"<p>The branding information configured for iOS devices.</p>"
+        },
+        "DeviceTypeLinux":{
+          "shape":"DefaultClientBrandingAttributes",
+          "documentation":"<p>The branding information configured for Linux devices.</p>"
+        },
+        "DeviceTypeWeb":{
+          "shape":"DefaultClientBrandingAttributes",
+          "documentation":"<p>The branding information configured for web access.</p>"
+        }
+      }
     },
     "ImportWorkspaceImageRequest":{
       "type":"structure",
@@ -2106,7 +3431,7 @@
         },
         "IngestionProcess":{
           "shape":"WorkspaceImageIngestionProcess",
-          "documentation":"<p>The ingestion process to be used when importing the image, depending on which protocol you want to use for your BYOL Workspace image, either PCoIP or WorkSpaces Streaming Protocol (WSP). To use WSP, specify a value that ends in <code>_WSP</code>. To use PCoIP, specify a value that does not end in <code>_WSP</code>. </p> <p>For non-GPU-enabled bundles (bundles other than Graphics or GraphicsPro), specify <code>BYOL_REGULAR</code> or <code>BYOL_REGULAR_WSP</code>, depending on the protocol.</p>"
+          "documentation":"<p>The ingestion process to be used when importing the image, depending on which protocol you want to use for your BYOL Workspace image, either PCoIP, WorkSpaces Streaming Protocol (WSP), or bring your own protocol (BYOP). To use WSP, specify a value that ends in <code>_WSP</code>. To use PCoIP, specify a value that does not end in <code>_WSP</code>. To use BYOP, specify a value that ends in <code>_BYOP</code>.</p> <p>For non-GPU-enabled bundles (bundles other than Graphics or GraphicsPro), specify <code>BYOL_REGULAR</code>, <code>BYOL_REGULAR_WSP</code>, or <code>BYOL_REGULAR_BYOP</code>, depending on the protocol.</p> <note> <p>The <code>BYOL_REGULAR_BYOP</code> and <code>BYOL_GRAPHICS_G4DN_BYOP</code> values are only supported by Amazon WorkSpaces Core. Contact your account team to be allow-listed to use these values. For more information, see <a href=\"http://aws.amazon.com/workspaces/core/\">Amazon WorkSpaces Core</a>.</p> </note>"
         },
         "ImageName":{
           "shape":"WorkspaceImageName",
@@ -2122,7 +3447,7 @@
         },
         "Applications":{
           "shape":"ApplicationList",
-          "documentation":"<p>If specified, the version of Microsoft Office to subscribe to. Valid only for Windows 10 BYOL images. For more information about subscribing to Office for BYOL images, see <a href=\"https://docs.aws.amazon.com/workspaces/latest/adminguide/byol-windows-images.html\"> Bring Your Own Windows Desktop Licenses</a>.</p> <note> <p>Although this parameter is an array, only one item is allowed at this time.</p> </note>"
+          "documentation":"<p>If specified, the version of Microsoft Office to subscribe to. Valid only for Windows 10 and 11 BYOL images. For more information about subscribing to Office for BYOL images, see <a href=\"https://docs.aws.amazon.com/workspaces/latest/adminguide/byol-windows-images.html\"> Bring Your Own Windows Desktop Licenses</a>.</p> <note> <ul> <li> <p>Although this parameter is an array, only one item is allowed at this time.</p> </li> <li> <p>Windows 11 only supports <code>Microsoft_Office_2019</code>.</p> </li> </ul> </note>"
         }
       }
     },
@@ -2134,6 +3459,13 @@
           "documentation":"<p>The identifier of the WorkSpace image.</p>"
         }
       }
+    },
+    "IncompatibleApplicationsException":{
+      "type":"structure",
+      "members":{
+      },
+      "documentation":"<p>The specified application is not compatible with the resource.</p>",
+      "exception":true
     },
     "InvalidParameterValuesException":{
       "type":"structure",
@@ -2153,6 +3485,89 @@
       },
       "documentation":"<p>The state of the resource is not valid for this operation.</p>",
       "exception":true
+    },
+    "Ios2XLogo":{
+      "type":"blob",
+      "max":1770000,
+      "min":1
+    },
+    "Ios3XLogo":{
+      "type":"blob",
+      "max":1770000,
+      "min":1
+    },
+    "IosClientBrandingAttributes":{
+      "type":"structure",
+      "members":{
+        "LogoUrl":{
+          "shape":"ClientUrl",
+          "documentation":"<p>The logo. This is the standard-resolution display that has a 1:1 pixel density (or @1x), where one pixel is equal to one point. The only image format accepted is a binary data object that is converted from a <code>.png</code> file.</p>"
+        },
+        "Logo2xUrl":{
+          "shape":"ClientUrl",
+          "documentation":"<p>The @2x version of the logo. This is the higher resolution display that offers a scale factor of 2.0 (or @2x). The only image format accepted is a binary data object that is converted from a <code>.png</code> file.</p> <note> <p> For more information about iOS image size and resolution, see <a href=\"https://developer.apple.com/design/human-interface-guidelines/ios/icons-and-images/image-size-and-resolution/\">Image Size and Resolution </a> in the <i>Apple Human Interface Guidelines</i>.</p> </note>"
+        },
+        "Logo3xUrl":{
+          "shape":"ClientUrl",
+          "documentation":"<p>The @3x version of the logo. This is the higher resolution display that offers a scale factor of 3.0 (or @3x).The only image format accepted is a binary data object that is converted from a <code>.png</code> file.</p> <note> <p> For more information about iOS image size and resolution, see <a href=\"https://developer.apple.com/design/human-interface-guidelines/ios/icons-and-images/image-size-and-resolution/\">Image Size and Resolution </a> in the <i>Apple Human Interface Guidelines</i>.</p> </note>"
+        },
+        "SupportEmail":{
+          "shape":"ClientEmail",
+          "documentation":"<p>The support email. The company's customer support email address.</p> <note> <ul> <li> <p>In each platform type, the <code>SupportEmail</code> and <code>SupportLink</code> parameters are mutually exclusive. You can specify one parameter for each platform type, but not both.</p> </li> <li> <p>The default email is <code>workspaces-feedback@amazon.com</code>.</p> </li> </ul> </note>"
+        },
+        "SupportLink":{
+          "shape":"ClientUrl",
+          "documentation":"<p>The support link. The link for the company's customer support page for their WorkSpace.</p> <note> <ul> <li> <p>In each platform type, the <code>SupportEmail</code> and <code>SupportLink</code> parameters are mutually exclusive. You can specify one parameter for each platform type, but not both.</p> </li> <li> <p>The default support link is <code>workspaces-feedback@amazon.com</code>.</p> </li> </ul> </note>"
+        },
+        "ForgotPasswordLink":{
+          "shape":"ClientUrl",
+          "documentation":"<p>The forgotten password link. This is the web address that users can go to if they forget the password for their WorkSpace.</p>"
+        },
+        "LoginMessage":{
+          "shape":"LoginMessage",
+          "documentation":"<p>The login message. Specified as a key value pair, in which the key is a locale and the value is the localized message for that locale. The only key supported is <code>en_US</code>. The HTML tags supported include the following: <code>a, b, blockquote, br, cite, code, dd, dl, dt, div, em, i, li, ol, p, pre, q, small, span, strike, strong, sub, sup, u, ul</code>.</p>"
+        }
+      },
+      "documentation":"<p>The client branding attributes for iOS device types. These attributes are displayed on the iOS client login screen only.</p> <important> <p>Client branding attributes are public facing. Ensure you do not include sensitive information.</p> </important>"
+    },
+    "IosImportClientBrandingAttributes":{
+      "type":"structure",
+      "members":{
+        "Logo":{
+          "shape":"IosLogo",
+          "documentation":"<p>The logo. This is the standard-resolution display that has a 1:1 pixel density (or @1x), where one pixel is equal to one point. The only image format accepted is a binary data object that is converted from a <code>.png</code> file.</p>"
+        },
+        "Logo2x":{
+          "shape":"Ios2XLogo",
+          "documentation":"<p>The @2x version of the logo. This is the higher resolution display that offers a scale factor of 2.0 (or @2x). The only image format accepted is a binary data object that is converted from a <code>.png</code> file.</p> <note> <p> For more information about iOS image size and resolution, see <a href=\"https://developer.apple.com/design/human-interface-guidelines/ios/icons-and-images/image-size-and-resolution/\">Image Size and Resolution </a> in the <i>Apple Human Interface Guidelines</i>.</p> </note>"
+        },
+        "Logo3x":{
+          "shape":"Ios3XLogo",
+          "documentation":"<p>The @3x version of the logo. This is the higher resolution display that offers a scale factor of 3.0 (or @3x). The only image format accepted is a binary data object that is converted from a <code>.png</code> file.</p> <note> <p> For more information about iOS image size and resolution, see <a href=\"https://developer.apple.com/design/human-interface-guidelines/ios/icons-and-images/image-size-and-resolution/\">Image Size and Resolution </a> in the <i>Apple Human Interface Guidelines</i>.</p> </note>"
+        },
+        "SupportEmail":{
+          "shape":"ClientEmail",
+          "documentation":"<p>The support email. The company's customer support email address.</p> <note> <ul> <li> <p>In each platform type, the <code>SupportEmail</code> and <code>SupportLink</code> parameters are mutually exclusive. You can specify one parameter for each platform type, but not both.</p> </li> <li> <p>The default email is <code>workspaces-feedback@amazon.com</code>.</p> </li> </ul> </note>"
+        },
+        "SupportLink":{
+          "shape":"ClientUrl",
+          "documentation":"<p>The support link. The link for the company's customer support page for their WorkSpace.</p> <note> <ul> <li> <p>In each platform type, the <code>SupportEmail</code> and <code>SupportLink</code> parameters are mutually exclusive. You can specify one parameter for each platform type, but not both.</p> </li> <li> <p>The default support link is <code>workspaces-feedback@amazon.com</code>.</p> </li> </ul> </note>"
+        },
+        "ForgotPasswordLink":{
+          "shape":"ClientUrl",
+          "documentation":"<p>The forgotten password link. This is the web address that users can go to if they forget the password for their WorkSpace.</p>"
+        },
+        "LoginMessage":{
+          "shape":"LoginMessage",
+          "documentation":"<p>The login message. Specified as a key value pair, in which the key is a locale and the value is the localized message for that locale. The only key supported is <code>en_US</code>. The HTML tags supported include the following: <code>a, b, blockquote, br, cite, code, dd, dl, dt, div, em, i, li, ol, p, pre, q, small, span, strike, strong, sub, sup, u, ul</code>.</p>"
+        }
+      },
+      "documentation":"<p>The client branding attributes to import for iOS device types. These attributes are displayed on the iOS client login screen.</p> <important> <p>Client branding attributes are public facing. Ensure you do not include sensitive information.</p> </important>"
+    },
+    "IosLogo":{
+      "type":"blob",
+      "max":447000,
+      "min":1
     },
     "IpAddress":{"type":"string"},
     "IpGroupDesc":{"type":"string"},
@@ -2224,6 +3639,18 @@
           "documentation":"<p>The token to use to retrieve the next page of results. This value is null when there are no more results to return. </p>"
         }
       }
+    },
+    "LogUploadEnum":{
+      "type":"string",
+      "enum":[
+        "ENABLED",
+        "DISABLED"
+      ]
+    },
+    "LoginMessage":{
+      "type":"map",
+      "key":{"shape":"ClientLocale"},
+      "value":{"shape":"ClientLoginMessage"}
     },
     "ManagementCidrRangeConstraint":{
       "type":"string",
@@ -2315,6 +3742,29 @@
       "members":{
       }
     },
+    "ModifyCertificateBasedAuthPropertiesRequest":{
+      "type":"structure",
+      "required":["ResourceId"],
+      "members":{
+        "ResourceId":{
+          "shape":"DirectoryId",
+          "documentation":"<p>The resource identifiers, in the form of directory IDs.</p>"
+        },
+        "CertificateBasedAuthProperties":{
+          "shape":"CertificateBasedAuthProperties",
+          "documentation":"<p>The properties of the certificate-based authentication.</p>"
+        },
+        "PropertiesToDelete":{
+          "shape":"DeletableCertificateBasedAuthPropertiesList",
+          "documentation":"<p>The properties of the certificate-based authentication you want to delete.</p>"
+        }
+      }
+    },
+    "ModifyCertificateBasedAuthPropertiesResult":{
+      "type":"structure",
+      "members":{
+      }
+    },
     "ModifyClientPropertiesRequest":{
       "type":"structure",
       "required":[
@@ -2333,6 +3783,29 @@
       }
     },
     "ModifyClientPropertiesResult":{
+      "type":"structure",
+      "members":{
+      }
+    },
+    "ModifySamlPropertiesRequest":{
+      "type":"structure",
+      "required":["ResourceId"],
+      "members":{
+        "ResourceId":{
+          "shape":"DirectoryId",
+          "documentation":"<p>The directory identifier for which you want to configure SAML properties.</p>"
+        },
+        "SamlProperties":{
+          "shape":"SamlProperties",
+          "documentation":"<p>The properties for configuring SAML 2.0 authentication.</p>"
+        },
+        "PropertiesToDelete":{
+          "shape":"DeletableSamlPropertiesList",
+          "documentation":"<p>The SAML properties to delete as part of your request.</p> <p>Specify one of the following options:</p> <ul> <li> <p> <code>SAML_PROPERTIES_USER_ACCESS_URL</code> to delete the user access URL.</p> </li> <li> <p> <code>SAML_PROPERTIES_RELAY_STATE_PARAMETER_NAME</code> to delete the relay state parameter name.</p> </li> </ul>"
+        }
+      }
+    },
+    "ModifySamlPropertiesResult":{
       "type":"structure",
       "members":{
       }
@@ -2405,10 +3878,7 @@
     },
     "ModifyWorkspacePropertiesRequest":{
       "type":"structure",
-      "required":[
-        "WorkspaceId",
-        "WorkspaceProperties"
-      ],
+      "required":["WorkspaceId"],
       "members":{
         "WorkspaceId":{
           "shape":"WorkspaceId",
@@ -2417,6 +3887,10 @@
         "WorkspaceProperties":{
           "shape":"WorkspaceProperties",
           "documentation":"<p>The properties of the WorkSpace.</p>"
+        },
+        "DataReplication":{
+          "shape":"DataReplication",
+          "documentation":"<p>Indicates the data replication status.</p>"
         }
       }
     },
@@ -2461,6 +3935,33 @@
       },
       "documentation":"<p>The operating system that the image is running.</p>"
     },
+    "OperatingSystemName":{
+      "type":"string",
+      "enum":[
+        "AMAZON_LINUX_2",
+        "UBUNTU_18_04",
+        "UBUNTU_20_04",
+        "UBUNTU_22_04",
+        "UNKNOWN",
+        "WINDOWS_10",
+        "WINDOWS_11",
+        "WINDOWS_7",
+        "WINDOWS_SERVER_2016",
+        "WINDOWS_SERVER_2019",
+        "WINDOWS_SERVER_2022"
+      ]
+    },
+    "OperatingSystemNameList":{
+      "type":"list",
+      "member":{"shape":"OperatingSystemName"}
+    },
+    "OperatingSystemNotCompatibleException":{
+      "type":"structure",
+      "members":{
+      },
+      "documentation":"<p>The operating system of the WorkSpace is not compatible with the application.</p>",
+      "exception":true
+    },
     "OperatingSystemType":{
       "type":"string",
       "enum":[
@@ -2479,7 +3980,14 @@
     "OperationNotSupportedException":{
       "type":"structure",
       "members":{
-        "message":{"shape":"ExceptionMessage"}
+        "message":{
+          "shape":"ExceptionMessage",
+          "documentation":"<p>The exception error message.</p>"
+        },
+        "reason":{
+          "shape":"ExceptionErrorCode",
+          "documentation":"<p>The exception error reason.</p>"
+        }
       },
       "documentation":"<p>This operation is not supported.</p>",
       "exception":true
@@ -2488,6 +3996,43 @@
       "type":"string",
       "max":2048,
       "min":1
+    },
+    "PendingCreateStandbyWorkspacesRequest":{
+      "type":"structure",
+      "members":{
+        "UserName":{
+          "shape":"UserName",
+          "documentation":"<p>Describes the standby WorkSpace that was created.</p> <p>Because this operation is asynchronous, the identifier returned is not immediately available for use with other operations. For example, if you call <a href=\"https://docs.aws.amazon.com/workspaces/latest/api/API_DescribeWorkspaces.html\"> DescribeWorkspaces</a> before the WorkSpace is created, the information returned can be incomplete. </p>"
+        },
+        "DirectoryId":{
+          "shape":"DirectoryId",
+          "documentation":"<p>The identifier of the directory for the standby WorkSpace.</p>"
+        },
+        "State":{
+          "shape":"WorkspaceState",
+          "documentation":"<p>The operational state of the standby WorkSpace.</p>"
+        },
+        "WorkspaceId":{
+          "shape":"WorkspaceId",
+          "documentation":"<p>The identifier of the standby WorkSpace.</p>"
+        }
+      },
+      "documentation":"<p>Information about the standby WorkSpace.</p>"
+    },
+    "PendingCreateStandbyWorkspacesRequestList":{
+      "type":"list",
+      "member":{"shape":"PendingCreateStandbyWorkspacesRequest"}
+    },
+    "Protocol":{
+      "type":"string",
+      "enum":[
+        "PCOIP",
+        "WSP"
+      ]
+    },
+    "ProtocolList":{
+      "type":"list",
+      "member":{"shape":"Protocol"}
     },
     "RebootRequest":{
       "type":"structure",
@@ -2617,6 +4162,32 @@
       "max":20,
       "min":1
     },
+    "RelatedWorkspaceProperties":{
+      "type":"structure",
+      "members":{
+        "WorkspaceId":{
+          "shape":"WorkspaceId",
+          "documentation":"<p>The identifier of the related WorkSpace.</p>"
+        },
+        "Region":{
+          "shape":"Region",
+          "documentation":"<p>The Region of the related WorkSpace.</p>"
+        },
+        "State":{
+          "shape":"WorkspaceState",
+          "documentation":"<p>Indicates the state of the WorkSpace.</p>"
+        },
+        "Type":{
+          "shape":"StandbyWorkspaceRelationshipType",
+          "documentation":"<p>Indicates the type of WorkSpace.</p>"
+        }
+      },
+      "documentation":"<p>Describes the related WorkSpace. The related WorkSpace could be a standby WorkSpace or primary WorkSpace related to the specified WorkSpace.</p>"
+    },
+    "RelatedWorkspaces":{
+      "type":"list",
+      "member":{"shape":"RelatedWorkspaceProperties"}
+    },
     "ResourceAlreadyExistsException":{
       "type":"structure",
       "members":{
@@ -2646,6 +4217,18 @@
       "member":{"shape":"NonEmptyString"},
       "max":25,
       "min":1
+    },
+    "ResourceInUseException":{
+      "type":"structure",
+      "members":{
+        "message":{"shape":"ExceptionMessage"},
+        "ResourceId":{
+          "shape":"NonEmptyString",
+          "documentation":"<p>The ID of the resource that is in use.</p>"
+        }
+      },
+      "documentation":"<p>The specified resource is currently in use.</p>",
+      "exception":true
     },
     "ResourceLimitExceededException":{
       "type":"structure",
@@ -2740,10 +4323,43 @@
       "type":"string",
       "enum":[
         "AUTO_STOP",
-        "ALWAYS_ON"
+        "ALWAYS_ON",
+        "MANUAL"
       ]
     },
     "RunningModeAutoStopTimeoutInMinutes":{"type":"integer"},
+    "SamlProperties":{
+      "type":"structure",
+      "members":{
+        "Status":{
+          "shape":"SamlStatusEnum",
+          "documentation":"<p>Indicates the status of SAML 2.0 authentication. These statuses include the following.</p> <ul> <li> <p>If the setting is <code>DISABLED</code>, end users will be directed to login with their directory credentials.</p> </li> <li> <p>If the setting is <code>ENABLED</code>, end users will be directed to login via the user access URL. Users attempting to connect to WorkSpaces from a client application that does not support SAML 2.0 authentication will not be able to connect.</p> </li> <li> <p>If the setting is <code>ENABLED_WITH_DIRECTORY_LOGIN_FALLBACK</code>, end users will be directed to login via the user access URL on supported client applications, but will not prevent clients that do not support SAML 2.0 authentication from connecting as if SAML 2.0 authentication was disabled.</p> </li> </ul>"
+        },
+        "UserAccessUrl":{
+          "shape":"SamlUserAccessUrl",
+          "documentation":"<p>The SAML 2.0 identity provider (IdP) user access URL is the URL a user would navigate to in their web browser in order to federate from the IdP and directly access the application, without any SAML 2.0 service provider (SP) bindings.</p>"
+        },
+        "RelayStateParameterName":{
+          "shape":"NonEmptyString",
+          "documentation":"<p>The relay state parameter name supported by the SAML 2.0 identity provider (IdP). When the end user is redirected to the user access URL from the WorkSpaces client application, this relay state parameter name is appended as a query parameter to the URL along with the relay state endpoint to return the user to the client application session.</p> <p>To use SAML 2.0 authentication with WorkSpaces, the IdP must support IdP-initiated deep linking for the relay state URL. Consult your IdP documentation for more information.</p>"
+        }
+      },
+      "documentation":"<p>Describes the enablement status, user access URL, and relay state parameter name that are used for configuring federation with an SAML 2.0 identity provider.</p>"
+    },
+    "SamlStatusEnum":{
+      "type":"string",
+      "enum":[
+        "DISABLED",
+        "ENABLED",
+        "ENABLED_WITH_DIRECTORY_LOGIN_FALLBACK"
+      ]
+    },
+    "SamlUserAccessUrl":{
+      "type":"string",
+      "max":200,
+      "min":8,
+      "pattern":"^(http|https)\\://\\S+$"
+    },
     "SecurityGroupId":{
       "type":"string",
       "max":20,
@@ -2789,6 +4405,69 @@
     "SnapshotList":{
       "type":"list",
       "member":{"shape":"Snapshot"}
+    },
+    "StandbyWorkspace":{
+      "type":"structure",
+      "required":[
+        "PrimaryWorkspaceId",
+        "DirectoryId"
+      ],
+      "members":{
+        "PrimaryWorkspaceId":{
+          "shape":"WorkspaceId",
+          "documentation":"<p>The identifier of the standby WorkSpace.</p>"
+        },
+        "VolumeEncryptionKey":{
+          "shape":"VolumeEncryptionKey",
+          "documentation":"<p>The volume encryption key of the standby WorkSpace.</p>"
+        },
+        "DirectoryId":{
+          "shape":"DirectoryId",
+          "documentation":"<p>The identifier of the directory for the standby WorkSpace.</p>"
+        },
+        "Tags":{
+          "shape":"TagList",
+          "documentation":"<p>The tags associated with the standby WorkSpace.</p>"
+        },
+        "DataReplication":{
+          "shape":"DataReplication",
+          "documentation":"<p>Indicates whether data replication is enabled, and if enabled, the type of data replication.</p>"
+        }
+      },
+      "documentation":"<p>Describes a standby WorkSpace.</p>"
+    },
+    "StandbyWorkspaceRelationshipType":{
+      "type":"string",
+      "enum":[
+        "PRIMARY",
+        "STANDBY"
+      ]
+    },
+    "StandbyWorkspacesList":{
+      "type":"list",
+      "member":{"shape":"StandbyWorkspace"}
+    },
+    "StandbyWorkspacesProperties":{
+      "type":"structure",
+      "members":{
+        "StandbyWorkspaceId":{
+          "shape":"WorkspaceId",
+          "documentation":"<p>The identifier of the standby WorkSpace</p>"
+        },
+        "DataReplication":{
+          "shape":"DataReplication",
+          "documentation":"<p>Indicates whether data replication is enabled, and if enabled, the type of data replication.</p>"
+        },
+        "RecoverySnapshotTime":{
+          "shape":"Timestamp",
+          "documentation":"<p>The date and time at which the last successful snapshot was taken of the primary WorkSpace used for replicating data.</p>"
+        }
+      },
+      "documentation":"<p>Describes the properties of the related standby WorkSpaces. </p>"
+    },
+    "StandbyWorkspacesPropertiesList":{
+      "type":"list",
+      "member":{"shape":"StandbyWorkspacesProperties"}
     },
     "StartRequest":{
       "type":"structure",
@@ -2859,6 +4538,11 @@
           "documentation":"<p>Information about the WorkSpaces that could not be stopped.</p>"
         }
       }
+    },
+    "String2048":{
+      "type":"string",
+      "max":2048,
+      "min":0
     },
     "SubnetId":{
       "type":"string",
@@ -2969,6 +4653,36 @@
       },
       "documentation":"<p>The configuration of this WorkSpace is not supported for this operation. For more information, see <a href=\"https://docs.aws.amazon.com/workspaces/latest/adminguide/required-service-components.html\">Required Configuration and Service Components for WorkSpaces </a>.</p>",
       "exception":true
+    },
+    "UpdateConnectClientAddInRequest":{
+      "type":"structure",
+      "required":[
+        "AddInId",
+        "ResourceId"
+      ],
+      "members":{
+        "AddInId":{
+          "shape":"AmazonUuid",
+          "documentation":"<p>The identifier of the client add-in to update.</p>"
+        },
+        "ResourceId":{
+          "shape":"DirectoryId",
+          "documentation":"<p>The directory identifier for which the client add-in is configured.</p>"
+        },
+        "Name":{
+          "shape":"AddInName",
+          "documentation":"<p>The name of the client add-in.</p>"
+        },
+        "URL":{
+          "shape":"AddInUrl",
+          "documentation":"<p>The endpoint URL of the Amazon Connect client add-in.</p>"
+        }
+      }
+    },
+    "UpdateConnectClientAddInResult":{
+      "type":"structure",
+      "members":{
+      }
     },
     "UpdateConnectionAliasPermissionRequest":{
       "type":"structure",
@@ -3096,6 +4810,100 @@
     },
     "UserVolumeSizeGib":{"type":"integer"},
     "VolumeEncryptionKey":{"type":"string"},
+    "WorkSpaceApplication":{
+      "type":"structure",
+      "members":{
+        "ApplicationId":{
+          "shape":"WorkSpaceApplicationId",
+          "documentation":"<p>The identifier of the application.</p>"
+        },
+        "Created":{
+          "shape":"Timestamp",
+          "documentation":"<p>The time the application is created.</p>"
+        },
+        "Description":{
+          "shape":"String2048",
+          "documentation":"<p>The description of the WorkSpace application.</p>"
+        },
+        "LicenseType":{
+          "shape":"WorkSpaceApplicationLicenseType",
+          "documentation":"<p>The license availability for the applications.</p>"
+        },
+        "Name":{
+          "shape":"NonEmptyString",
+          "documentation":"<p>The name of the WorkSpace application.</p>"
+        },
+        "Owner":{
+          "shape":"WorkSpaceApplicationOwner",
+          "documentation":"<p>The owner of the WorkSpace application.</p>"
+        },
+        "State":{
+          "shape":"WorkSpaceApplicationState",
+          "documentation":"<p>The status of WorkSpace application.</p>"
+        },
+        "SupportedComputeTypeNames":{
+          "shape":"ComputeList",
+          "documentation":"<p>The supported compute types of the WorkSpace application.</p>"
+        },
+        "SupportedOperatingSystemNames":{
+          "shape":"OperatingSystemNameList",
+          "documentation":"<p>The supported operating systems of the WorkSpace application.</p>"
+        }
+      },
+      "documentation":"<p>Describes the WorkSpace application.</p>"
+    },
+    "WorkSpaceApplicationDeployment":{
+      "type":"structure",
+      "members":{
+        "Associations":{
+          "shape":"WorkspaceResourceAssociationList",
+          "documentation":"<p>The associations between the applications and the associated resources.</p>"
+        }
+      },
+      "documentation":"<p>Describes the WorkSpace application deployment.</p>"
+    },
+    "WorkSpaceApplicationId":{
+      "type":"string",
+      "pattern":"^wsa-[0-9a-z]{8,63}$"
+    },
+    "WorkSpaceApplicationIdList":{
+      "type":"list",
+      "member":{"shape":"WorkSpaceApplicationId"},
+      "max":25,
+      "min":1
+    },
+    "WorkSpaceApplicationLicenseType":{
+      "type":"string",
+      "enum":[
+        "LICENSED",
+        "UNLICENSED"
+      ]
+    },
+    "WorkSpaceApplicationList":{
+      "type":"list",
+      "member":{"shape":"WorkSpaceApplication"}
+    },
+    "WorkSpaceApplicationOwner":{
+      "type":"string",
+      "pattern":"^\\d{12}|AMAZON$"
+    },
+    "WorkSpaceApplicationState":{
+      "type":"string",
+      "enum":[
+        "PENDING",
+        "ERROR",
+        "AVAILABLE",
+        "UNINSTALL_ONLY"
+      ]
+    },
+    "WorkSpaceAssociatedResourceType":{
+      "type":"string",
+      "enum":["APPLICATION"]
+    },
+    "WorkSpaceAssociatedResourceTypeList":{
+      "type":"list",
+      "member":{"shape":"WorkSpaceAssociatedResourceType"}
+    },
     "Workspace":{
       "type":"structure",
       "members":{
@@ -3141,7 +4949,7 @@
         },
         "VolumeEncryptionKey":{
           "shape":"VolumeEncryptionKey",
-          "documentation":"<p>The symmetric KMS key used to encrypt data stored on your WorkSpace. Amazon WorkSpaces does not support asymmetric KMS keys.</p>"
+          "documentation":"<p>The ARN of the symmetric KMS key used to encrypt data stored on your WorkSpace. Amazon WorkSpaces does not support asymmetric KMS keys.</p>"
         },
         "UserVolumeEncryptionEnabled":{
           "shape":"BooleanObject",
@@ -3151,6 +4959,10 @@
           "shape":"BooleanObject",
           "documentation":"<p>Indicates whether the data stored on the root volume is encrypted.</p>"
         },
+        "WorkspaceName":{
+          "shape":"WorkspaceName",
+          "documentation":"<p>The name of the user-decoupled WorkSpace.</p>"
+        },
         "WorkspaceProperties":{
           "shape":"WorkspaceProperties",
           "documentation":"<p>The properties of the WorkSpace.</p>"
@@ -3158,6 +4970,18 @@
         "ModificationStates":{
           "shape":"ModificationStateList",
           "documentation":"<p>The modification states of the WorkSpace.</p>"
+        },
+        "RelatedWorkspaces":{
+          "shape":"RelatedWorkspaces",
+          "documentation":"<p>The standby WorkSpace or primary WorkSpace related to the specified WorkSpace.</p>"
+        },
+        "DataReplicationSettings":{
+          "shape":"DataReplicationSettings",
+          "documentation":"<p>Indicates the settings of the data replication.</p>"
+        },
+        "StandbyWorkspacesProperties":{
+          "shape":"StandbyWorkspacesPropertiesList",
+          "documentation":"<p>The properties of the standby WorkSpace</p>"
         }
       },
       "documentation":"<p>Describes a WorkSpace.</p>"
@@ -3242,6 +5066,14 @@
         "CreationTime":{
           "shape":"Timestamp",
           "documentation":"<p>The time when the bundle was created.</p>"
+        },
+        "State":{
+          "shape":"WorkspaceBundleState",
+          "documentation":"<p>The state of the WorkSpace bundle.</p>"
+        },
+        "BundleType":{
+          "shape":"BundleType",
+          "documentation":"<p>The type of WorkSpace bundle.</p>"
         }
       },
       "documentation":"<p>Describes a WorkSpace bundle.</p>"
@@ -3257,6 +5089,14 @@
       "max":64,
       "min":1,
       "pattern":"^[a-zA-Z0-9_./()\\\\-]+$"
+    },
+    "WorkspaceBundleState":{
+      "type":"string",
+      "enum":[
+        "AVAILABLE",
+        "PENDING",
+        "ERROR"
+      ]
     },
     "WorkspaceConnectionStatus":{
       "type":"structure",
@@ -3380,6 +5220,14 @@
         "SelfservicePermissions":{
           "shape":"SelfservicePermissions",
           "documentation":"<p>The default self-service permissions for WorkSpaces in the directory.</p>"
+        },
+        "SamlProperties":{
+          "shape":"SamlProperties",
+          "documentation":"<p>Describes the enablement status, user access URL, and relay state parameter name that are used for configuring federation with an SAML 2.0 identity provider.</p>"
+        },
+        "CertificateBasedAuthProperties":{
+          "shape":"CertificateBasedAuthProperties",
+          "documentation":"<p>The certificate-based authentication properties used to authenticate SAML 2.0 Identity Provider (IdP) user identities to Active Directory for WorkSpaces login.</p>"
         }
       },
       "documentation":"<p>Describes a directory that is used with Amazon WorkSpaces.</p>"
@@ -3458,6 +5306,10 @@
         "Updates":{
           "shape":"UpdateResult",
           "documentation":"<p>The updates (if any) that are available for the specified image.</p>"
+        },
+        "ErrorDetails":{
+          "shape":"ErrorDetailsList",
+          "documentation":"<p>Additional details of the error returned for the image, including the possible causes of the errors and troubleshooting information.</p>"
         }
       },
       "documentation":"<p>Describes a WorkSpace image.</p>"
@@ -3469,6 +5321,37 @@
       "pattern":"^[a-zA-Z0-9_./() -]+$"
     },
     "WorkspaceImageErrorCode":{"type":"string"},
+    "WorkspaceImageErrorDetailCode":{
+      "type":"string",
+      "enum":[
+        "OutdatedPowershellVersion",
+        "OfficeInstalled",
+        "PCoIPAgentInstalled",
+        "WindowsUpdatesEnabled",
+        "AutoMountDisabled",
+        "WorkspacesBYOLAccountNotFound",
+        "WorkspacesBYOLAccountDisabled",
+        "DHCPDisabled",
+        "DiskFreeSpace",
+        "AdditionalDrivesAttached",
+        "OSNotSupported",
+        "DomainJoined",
+        "AzureDomainJoined",
+        "FirewallEnabled",
+        "VMWareToolsInstalled",
+        "DiskSizeExceeded",
+        "IncompatiblePartitioning",
+        "PendingReboot",
+        "AutoLogonEnabled",
+        "RealTimeUniversalDisabled",
+        "MultipleBootPartition",
+        "Requires64BitOS",
+        "ZeroRearmCount",
+        "InPlaceUpgrade",
+        "AntiVirusInstalled",
+        "UEFINotSupported"
+      ]
+    },
     "WorkspaceImageId":{
       "type":"string",
       "pattern":"wsi-[0-9a-z]{9,63}$"
@@ -3485,7 +5368,10 @@
         "BYOL_REGULAR",
         "BYOL_GRAPHICS",
         "BYOL_GRAPHICSPRO",
-        "BYOL_REGULAR_WSP"
+        "BYOL_GRAPHICS_G4DN",
+        "BYOL_REGULAR_WSP",
+        "BYOL_REGULAR_BYOP",
+        "BYOL_GRAPHICS_G4DN_BYOP"
       ]
     },
     "WorkspaceImageList":{
@@ -3517,12 +5403,16 @@
       "type":"list",
       "member":{"shape":"Workspace"}
     },
+    "WorkspaceName":{
+      "type":"string",
+      "pattern":"^[a-zA-Z0-9_()][a-zA-Z0-9_.()-]{1,63}$"
+    },
     "WorkspaceProperties":{
       "type":"structure",
       "members":{
         "RunningMode":{
           "shape":"RunningMode",
-          "documentation":"<p>The running mode. For more information, see <a href=\"https://docs.aws.amazon.com/workspaces/latest/adminguide/running-mode.html\">Manage the WorkSpace Running Mode</a>.</p>"
+          "documentation":"<p>The running mode. For more information, see <a href=\"https://docs.aws.amazon.com/workspaces/latest/adminguide/running-mode.html\">Manage the WorkSpace Running Mode</a>.</p> <note> <p>The <code>MANUAL</code> value is only supported by Amazon WorkSpaces Core. Contact your account team to be allow-listed to use this value. For more information, see <a href=\"http://aws.amazon.com/workspaces/core/\">Amazon WorkSpaces Core</a>.</p> </note>"
         },
         "RunningModeAutoStopTimeoutInMinutes":{
           "shape":"RunningModeAutoStopTimeoutInMinutes",
@@ -3539,6 +5429,14 @@
         "ComputeTypeName":{
           "shape":"Compute",
           "documentation":"<p>The compute type. For more information, see <a href=\"http://aws.amazon.com/workspaces/details/#Amazon_WorkSpaces_Bundles\">Amazon WorkSpaces Bundles</a>.</p>"
+        },
+        "Protocols":{
+          "shape":"ProtocolList",
+          "documentation":"<p>The protocol. For more information, see <a href=\"https://docs.aws.amazon.com/workspaces/latest/adminguide/amazon-workspaces-protocols.html\"> Protocols for Amazon WorkSpaces</a>.</p> <note> <ul> <li> <p>Only available for WorkSpaces created with PCoIP bundles.</p> </li> <li> <p>The <code>Protocols</code> property is case sensitive. Ensure you use <code>PCOIP</code> or <code>WSP</code>.</p> </li> <li> <p>Unavailable for Windows 7 WorkSpaces and WorkSpaces using GPU-based bundles (Graphics, GraphicsPro, Graphics.g4dn, and GraphicsPro.g4dn).</p> </li> </ul> </note>"
+        },
+        "OperatingSystemName":{
+          "shape":"OperatingSystemName",
+          "documentation":"<p>The name of the operating system.</p>"
         }
       },
       "documentation":"<p>Describes a WorkSpace.</p>"
@@ -3557,7 +5455,7 @@
         },
         "UserName":{
           "shape":"UserName",
-          "documentation":"<p>The user name of the user for the WorkSpace. This user name must exist in the Directory Service directory for the WorkSpace.</p>"
+          "documentation":"<p>The user name of the user for the WorkSpace. This user name must exist in the Directory Service directory for the WorkSpace.</p> <p>The reserved keyword, <code>[UNDEFINED]</code>, is used when creating user-decoupled WorkSpaces.</p>"
         },
         "BundleId":{
           "shape":"BundleId",
@@ -3565,7 +5463,7 @@
         },
         "VolumeEncryptionKey":{
           "shape":"VolumeEncryptionKey",
-          "documentation":"<p>The symmetric KMS key used to encrypt data stored on your WorkSpace. Amazon WorkSpaces does not support asymmetric KMS keys.</p>"
+          "documentation":"<p>The ARN of the symmetric KMS key used to encrypt data stored on your WorkSpace. Amazon WorkSpaces does not support asymmetric KMS keys.</p>"
         },
         "UserVolumeEncryptionEnabled":{
           "shape":"BooleanObject",
@@ -3582,6 +5480,10 @@
         "Tags":{
           "shape":"TagList",
           "documentation":"<p>The tags for the WorkSpace.</p>"
+        },
+        "WorkspaceName":{
+          "shape":"WorkspaceName",
+          "documentation":"<p>The name of the user-decoupled WorkSpace.</p>"
         }
       },
       "documentation":"<p>Describes the information used to create a WorkSpace.</p>"
@@ -3591,6 +5493,44 @@
       "member":{"shape":"WorkspaceRequest"},
       "max":25,
       "min":1
+    },
+    "WorkspaceResourceAssociation":{
+      "type":"structure",
+      "members":{
+        "AssociatedResourceId":{
+          "shape":"NonEmptyString",
+          "documentation":"<p>The identifier of the associated resource.</p>"
+        },
+        "AssociatedResourceType":{
+          "shape":"WorkSpaceAssociatedResourceType",
+          "documentation":"<p>The resource types of the associated resource.</p>"
+        },
+        "Created":{
+          "shape":"Timestamp",
+          "documentation":"<p>The time the association is created.</p>"
+        },
+        "LastUpdatedTime":{
+          "shape":"Timestamp",
+          "documentation":"<p>The time the association status was last updated.</p>"
+        },
+        "State":{
+          "shape":"AssociationState",
+          "documentation":"<p>The status of the WorkSpace resource association.</p>"
+        },
+        "StateReason":{
+          "shape":"AssociationStateReason",
+          "documentation":"<p>The reason the association deployment failed.</p>"
+        },
+        "WorkspaceId":{
+          "shape":"WorkspaceId",
+          "documentation":"<p>The identifier of the WorkSpace.</p>"
+        }
+      },
+      "documentation":"<p>Describes the association between an application and a WorkSpace resource.</p>"
+    },
+    "WorkspaceResourceAssociationList":{
+      "type":"list",
+      "member":{"shape":"WorkspaceResourceAssociation"}
     },
     "WorkspaceState":{
       "type":"string",
@@ -3649,5 +5589,5 @@
       "member":{"shape":"WorkspacesIpGroup"}
     }
   },
-  "documentation":"<fullname>Amazon WorkSpaces Service</fullname> <p>Amazon WorkSpaces enables you to provision virtual, cloud-based Microsoft Windows and Amazon Linux desktops for your users.</p>"
+  "documentation":"<fullname>Amazon WorkSpaces Service</fullname> <p>Amazon WorkSpaces enables you to provision virtual, cloud-based Microsoft Windows or Amazon Linux desktops for your users, known as <i>WorkSpaces</i>. WorkSpaces eliminates the need to procure and deploy hardware or install complex software. You can quickly add or remove users as your needs change. Users can access their virtual desktops from multiple devices or web browsers.</p> <p>This API Reference provides detailed information about the actions, data types, parameters, and errors of the WorkSpaces service. For more information about the supported Amazon Web Services Regions, endpoints, and service quotas of the Amazon WorkSpaces service, see <a href=\"https://docs.aws.amazon.com/general/latest/gr/wsp.html\">WorkSpaces endpoints and quotas</a> in the <i>Amazon Web Services General Reference</i>.</p> <p>You can also manage your WorkSpaces resources using the WorkSpaces console, Command Line Interface (CLI), and SDKs. For more information about administering WorkSpaces, see the <a href=\"https://docs.aws.amazon.com/workspaces/latest/adminguide/\">Amazon WorkSpaces Administration Guide</a>. For more information about using the Amazon WorkSpaces client application or web browser to access provisioned WorkSpaces, see the <a href=\"https://docs.aws.amazon.com/workspaces/latest/userguide/\">Amazon WorkSpaces User Guide</a>. For more information about using the CLI to manage your WorkSpaces resources, see the <a href=\"https://docs.aws.amazon.com/cli/latest/reference/workspaces/index.html\">WorkSpaces section of the CLI Reference</a>.</p>"
 }

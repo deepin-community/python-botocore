@@ -19,30 +19,40 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-import os
 import contextlib
 import copy
+import os
 
 from botocore.exceptions import DataNotFoundError, UnknownServiceError
-from botocore.loaders import JSONFileLoader
-from botocore.loaders import Loader, create_loader
-from botocore.loaders import ExtrasProcessor
-
-from tests import mock
-from tests import BaseEnvVar
+from botocore.loaders import (
+    ExtrasProcessor,
+    JSONFileLoader,
+    Loader,
+    create_loader,
+)
+from tests import BaseEnvVar, mock
 
 
 class TestJSONFileLoader(BaseEnvVar):
     def setUp(self):
-        super(TestJSONFileLoader, self).setUp()
+        super().setUp()
         self.data_path = os.path.join(os.path.dirname(__file__), 'data')
         self.file_loader = JSONFileLoader()
         self.valid_file_path = os.path.join(self.data_path, 'foo')
+        self.compressed_file_path = os.path.join(self.data_path, 'compressed')
 
     def test_load_file(self):
         data = self.file_loader.load_file(self.valid_file_path)
         self.assertEqual(len(data), 3)
         self.assertTrue('test_key_1' in data)
+
+    def test_load_compressed_file(self):
+        data = self.file_loader.load_file(self.compressed_file_path)
+        self.assertEqual(len(data), 3)
+        self.assertTrue('test_key_1' in data)
+
+    def test_load_compressed_file_exists_check(self):
+        self.assertTrue(self.file_loader.exists(self.compressed_file_path))
 
     def test_load_json_file_does_not_exist_returns_none(self):
         # None is used to indicate that the loader could not find a
@@ -53,8 +63,11 @@ class TestJSONFileLoader(BaseEnvVar):
         self.assertTrue(self.file_loader.exists(self.valid_file_path))
 
     def test_file_does_not_exist_returns_false(self):
-        self.assertFalse(self.file_loader.exists(
-            os.path.join(self.data_path, 'does', 'not', 'exist')))
+        self.assertFalse(
+            self.file_loader.exists(
+                os.path.join(self.data_path, 'does', 'not', 'exist')
+            )
+        )
 
     def test_file_with_non_ascii(self):
         try:
@@ -65,7 +78,6 @@ class TestJSONFileLoader(BaseEnvVar):
 
 
 class TestLoader(BaseEnvVar):
-
     def test_default_search_paths(self):
         loader = Loader()
         self.assertEqual(len(loader.search_paths), 2)
@@ -75,8 +87,8 @@ class TestLoader(BaseEnvVar):
         # with .aws/models.
         home_dir_path = os.path.join('.aws', 'models')
         self.assertTrue(
-            any(p.endswith(home_dir_path) for p in
-                loader.search_paths))
+            any(p.endswith(home_dir_path) for p in loader.search_paths)
+        )
 
     def test_can_add_to_search_path(self):
         loader = Loader()
@@ -89,8 +101,13 @@ class TestLoader(BaseEnvVar):
         # the customer/builtin data paths.
         self.assertEqual(
             loader.search_paths,
-            ['foo', 'bar', loader.CUSTOMER_DATA_PATH,
-             loader.BUILTIN_DATA_PATH])
+            [
+                'foo',
+                'bar',
+                loader.CUSTOMER_DATA_PATH,
+                loader.BUILTIN_DATA_PATH,
+            ],
+        )
 
     # The file loader isn't consulted unless the current
     # search path exists, so we're patching isdir to always
@@ -99,44 +116,75 @@ class TestLoader(BaseEnvVar):
     def test_load_data_uses_loader(self):
         search_paths = ['foo', 'bar', 'baz']
 
-        class FakeLoader(object):
+        class FakeLoader:
             def load_file(self, name):
                 expected_ending = os.path.join('bar', 'baz')
                 if name.endswith(expected_ending):
                     return ['loaded data']
 
-        loader = Loader(extra_search_paths=search_paths,
-                        file_loader=FakeLoader())
+        loader = Loader(
+            extra_search_paths=search_paths, file_loader=FakeLoader()
+        )
         loaded = loader.load_data('baz')
         self.assertEqual(loaded, ['loaded data'])
 
+    @mock.patch('os.path.isdir', mock.Mock(return_value=True))
+    def test_load_data_with_path(self):
+        search_paths = ['foo', 'bar', 'baz']
+
+        class FakeLoader:
+            def load_file(self, name):
+                expected_ending = os.path.join('bar', 'abc')
+                if name.endswith(expected_ending):
+                    return ['loaded data']
+
+        loader = Loader(
+            extra_search_paths=search_paths, file_loader=FakeLoader()
+        )
+        loaded, path = loader.load_data_with_path('abc')
+        self.assertEqual(loaded, ['loaded data'])
+        self.assertEqual(path, os.path.join('bar', 'abc'))
+
     def test_data_not_found_raises_exception(self):
-        class FakeLoader(object):
+        class FakeLoader:
             def load_file(self, name):
                 # Returning None indicates that the
                 # loader couldn't find anything.
                 return None
+
         loader = Loader(file_loader=FakeLoader())
         with self.assertRaises(DataNotFoundError):
             loader.load_data('baz')
 
+    def test_data_not_found_raises_exception_load_data_with_path(self):
+        class FakeLoader:
+            def load_file(self, name):
+                return None
+
+        loader = Loader(file_loader=FakeLoader())
+        with self.assertRaises(DataNotFoundError):
+            loader.load_data_with_path('baz')
+
     @mock.patch('os.path.isdir', mock.Mock(return_value=True))
     def test_error_raised_if_service_does_not_exist(self):
-        loader = Loader(extra_search_paths=[],
-                        include_default_search_paths=False)
+        loader = Loader(
+            extra_search_paths=[], include_default_search_paths=False
+        )
         with self.assertRaises(DataNotFoundError):
             loader.determine_latest_version('unknownservice', 'service-2')
 
     @mock.patch('os.path.isdir', mock.Mock(return_value=True))
     def test_load_service_model(self):
-        class FakeLoader(object):
+        class FakeLoader:
             def load_file(self, name):
                 return ['loaded data']
 
-        loader = Loader(extra_search_paths=['foo'],
-                        file_loader=FakeLoader(),
-                        include_default_search_paths=False,
-                        include_default_extras=False)
+        loader = Loader(
+            extra_search_paths=['foo'],
+            file_loader=FakeLoader(),
+            include_default_search_paths=False,
+            include_default_extras=False,
+        )
         loader.determine_latest_version = mock.Mock(return_value='2015-03-01')
         loader.list_available_services = mock.Mock(return_value=['baz'])
         loaded = loader.load_service_model('baz', type_name='service-2')
@@ -144,35 +192,40 @@ class TestLoader(BaseEnvVar):
 
     @mock.patch('os.path.isdir', mock.Mock(return_value=True))
     def test_load_service_model_enforces_case(self):
-        class FakeLoader(object):
+        class FakeLoader:
             def load_file(self, name):
                 return ['loaded data']
 
-        loader = Loader(extra_search_paths=['foo'],
-                        file_loader=FakeLoader(),
-                        include_default_search_paths=False)
+        loader = Loader(
+            extra_search_paths=['foo'],
+            file_loader=FakeLoader(),
+            include_default_search_paths=False,
+        )
         loader.determine_latest_version = mock.Mock(return_value='2015-03-01')
         loader.list_available_services = mock.Mock(return_value=['baz'])
 
         # Should have a) the unknown service name and b) list of valid
         # service names.
-        with self.assertRaisesRegex(UnknownServiceError,
-                                    'Unknown service.*BAZ.*baz'):
+        with self.assertRaisesRegex(
+            UnknownServiceError, 'Unknown service.*BAZ.*baz'
+        ):
             loader.load_service_model('BAZ', type_name='service-2')
 
     def test_load_service_model_uses_provided_type_name(self):
-        loader = Loader(extra_search_paths=['foo'],
-                        file_loader=mock.Mock(),
-                        include_default_search_paths=False)
+        loader = Loader(
+            extra_search_paths=['foo'],
+            file_loader=mock.Mock(),
+            include_default_search_paths=False,
+        )
         loader.list_available_services = mock.Mock(return_value=['baz'])
 
         # Should have a) the unknown service name and b) list of valid
         # service names.
         provided_type_name = 'not-service-2'
-        with self.assertRaisesRegex(UnknownServiceError,
-                                    'Unknown service.*BAZ.*baz'):
-            loader.load_service_model(
-                'BAZ', type_name=provided_type_name)
+        with self.assertRaisesRegex(
+            UnknownServiceError, 'Unknown service.*BAZ.*baz'
+        ):
+            loader.load_service_model('BAZ', type_name=provided_type_name)
 
         loader.list_available_services.assert_called_with(provided_type_name)
 
@@ -183,25 +236,36 @@ class TestLoader(BaseEnvVar):
         self.assertIn('bar', loader.search_paths)
         self.assertIn('baz', loader.search_paths)
 
+    def test_is_builtin_path(self):
+        loader = Loader()
+        path_in_builtins = os.path.join(loader.BUILTIN_DATA_PATH, "foo.txt")
+        path_elsewhere = __file__
+        self.assertTrue(loader.is_builtin_path(path_in_builtins))
+        self.assertFalse(loader.is_builtin_path(path_elsewhere))
+
 
 class TestMergeExtras(BaseEnvVar):
     def setUp(self):
-        super(TestMergeExtras, self).setUp()
+        super().setUp()
         self.file_loader = mock.Mock()
         self.data_loader = Loader(
-            extra_search_paths=['datapath'], file_loader=self.file_loader,
-            include_default_search_paths=False)
+            extra_search_paths=['datapath'],
+            file_loader=self.file_loader,
+            include_default_search_paths=False,
+        )
         self.data_loader.determine_latest_version = mock.Mock(
-            return_value='2015-03-01')
+            return_value='2015-03-01'
+        )
         self.data_loader.list_available_services = mock.Mock(
-            return_value=['myservice'])
+            return_value=['myservice']
+        )
 
         isdir_mock = mock.Mock(return_value=True)
         self.isdir_patch = mock.patch('os.path.isdir', isdir_mock)
         self.isdir_patch.start()
 
     def tearDown(self):
-        super(TestMergeExtras, self).tearDown()
+        super().tearDown()
         self.isdir_patch.stop()
 
     def test_merge_extras(self):
@@ -218,7 +282,7 @@ class TestMergeExtras(BaseEnvVar):
         base_path = os.path.join('datapath', 'myservice', '2015-03-01')
         expected_call_args = [
             os.path.join(base_path, 'service-2'),
-            os.path.join(base_path, 'service-2.sdk-extras')
+            os.path.join(base_path, 'service-2.sdk-extras'),
         ]
         self.assertEqual(call_args, expected_call_args)
 
@@ -240,13 +304,17 @@ class TestMergeExtras(BaseEnvVar):
 
     def test_include_default_extras(self):
         self.data_loader = Loader(
-            extra_search_paths=['datapath'], file_loader=self.file_loader,
+            extra_search_paths=['datapath'],
+            file_loader=self.file_loader,
             include_default_search_paths=False,
-            include_default_extras=False)
+            include_default_extras=False,
+        )
         self.data_loader.determine_latest_version = mock.Mock(
-            return_value='2015-03-01')
+            return_value='2015-03-01'
+        )
         self.data_loader.list_available_services = mock.Mock(
-            return_value=['myservice'])
+            return_value=['myservice']
+        )
 
         service_data = {'foo': 'service', 'bar': 'service'}
         service_data_copy = copy.copy(service_data)
@@ -261,7 +329,10 @@ class TestMergeExtras(BaseEnvVar):
         sdk_extras = {'merge': {'foo': 'sdk'}}
         cli_extras = {'merge': {'cli': True}}
         self.file_loader.load_file.side_effect = [
-            service_data, sdk_extras, cli_extras]
+            service_data,
+            sdk_extras,
+            cli_extras,
+        ]
 
         self.data_loader.extras_types.append('cli')
 
@@ -275,7 +346,7 @@ class TestMergeExtras(BaseEnvVar):
         expected_call_args = [
             os.path.join(base_path, 'service-2'),
             os.path.join(base_path, 'service-2.sdk-extras'),
-            os.path.join(base_path, 'service-2.cli-extras')
+            os.path.join(base_path, 'service-2.cli-extras'),
         ]
         self.assertEqual(call_args, expected_call_args)
 
@@ -283,7 +354,10 @@ class TestMergeExtras(BaseEnvVar):
         service_data = {'foo': 'service', 'bar': 'service'}
         cli_extras = {'merge': {'foo': 'cli'}}
         self.file_loader.load_file.side_effect = [
-            service_data, None, cli_extras]
+            service_data,
+            None,
+            cli_extras,
+        ]
 
         self.data_loader.extras_types.append('cli')
 
@@ -294,7 +368,7 @@ class TestMergeExtras(BaseEnvVar):
 
 class TestExtrasProcessor(BaseEnvVar):
     def setUp(self):
-        super(TestExtrasProcessor, self).setUp()
+        super().setUp()
         self.processor = ExtrasProcessor()
         self.service_data = {
             'shapes': {
@@ -322,7 +396,7 @@ class TestExtrasProcessor(BaseEnvVar):
     def test_process_in_order(self):
         extras = [
             {'merge': {'shapes': {'BooleanShape': {'type': 'boolean'}}}},
-            {'merge': {'shapes': {'BooleanShape': {'type': 'string'}}}}
+            {'merge': {'shapes': {'BooleanShape': {'type': 'string'}}}},
         ]
         self.processor.process(self.service_data, extras)
         self.assertNotEqual(self.service_data, self.service_data_copy)
@@ -333,20 +407,22 @@ class TestExtrasProcessor(BaseEnvVar):
 
 class TestLoadersWithDirectorySearching(BaseEnvVar):
     def setUp(self):
-        super(TestLoadersWithDirectorySearching, self).setUp()
+        super().setUp()
         self.fake_directories = {}
 
     def tearDown(self):
-        super(TestLoadersWithDirectorySearching, self).tearDown()
+        super().tearDown()
 
     @contextlib.contextmanager
     def loader_with_fake_dirs(self):
         mock_file_loader = mock.Mock()
         mock_file_loader.exists = self.fake_exists
         search_paths = list(self.fake_directories)
-        loader = Loader(extra_search_paths=search_paths,
-                        include_default_search_paths=False,
-                        file_loader=mock_file_loader)
+        loader = Loader(
+            extra_search_paths=search_paths,
+            include_default_search_paths=False,
+            file_loader=mock_file_loader,
+        )
         with mock.patch('os.listdir', self.fake_listdir):
             with mock.patch('os.path.isdir', mock.Mock(return_value=True)):
                 yield loader
@@ -394,10 +470,11 @@ class TestLoadersWithDirectorySearching(BaseEnvVar):
         with self.loader_with_fake_dirs() as loader:
             self.assertEqual(
                 loader.list_available_services(type_name='service-2'),
-                ['dynamodb', 'ec2'])
+                ['dynamodb', 'ec2'],
+            )
             self.assertEqual(
-                loader.list_available_services(type_name='resource-1'),
-                ['rds'])
+                loader.list_available_services(type_name='resource-1'), ['rds']
+            )
 
     def test_determine_latest(self):
         # Fake mapping of directories to subdirectories.
@@ -426,7 +503,11 @@ class TestLoadersWithDirectorySearching(BaseEnvVar):
         }
         with self.loader_with_fake_dirs() as loader:
             loader.determine_latest_version('ec2', 'service-2')
-            self.assertEqual(loader.determine_latest_version('ec2', 'service-2'),
-                             '2014-10-01')
-            self.assertEqual(loader.determine_latest_version('ec2', 'service-1'),
-                             '2015-03-01')
+            self.assertEqual(
+                loader.determine_latest_version('ec2', 'service-2'),
+                '2014-10-01',
+            )
+            self.assertEqual(
+                loader.determine_latest_version('ec2', 'service-1'),
+                '2015-03-01',
+            )
