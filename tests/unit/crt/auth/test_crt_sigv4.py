@@ -1,17 +1,16 @@
 import pytest
 
-from tests import requires_crt, FreezeTime
+import botocore
+from tests import FreezeTime, requires_crt
 from tests.unit.auth.test_sigv4 import (
     DATE,
-    SERVICE,
     REGION,
+    SERVICE,
     SignatureTestCase,
     assert_equal,
     create_request_from_raw_request,
     generate_test_cases,
 )
-
-import botocore
 
 
 def _test_crt_signature_version_4(test_case):
@@ -21,7 +20,9 @@ def _test_crt_signature_version_4(test_case):
     # Use CRT logging to diagnose interim steps (canonical request, etc)
     # import awscrt.io
     # awscrt.io.init_logging(awscrt.io.LogLevel.Trace, 'stdout')
-    auth = botocore.crt.auth.CrtSigV4Auth(test_case.credentials, SERVICE, REGION)
+    auth = botocore.crt.auth.CrtSigV4Auth(
+        test_case.credentials, SERVICE, REGION
+    )
     auth.add_auth(request)
     actual_auth_header = request.headers["Authorization"]
     assert_equal(

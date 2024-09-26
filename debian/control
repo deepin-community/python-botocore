@@ -9,14 +9,17 @@ Build-Depends: debhelper-compat (= 12)
 	, python3-setuptools
 	, python3-mock
 	, dh-python
-Standards-Version: 4.6.0
+Standards-Version: 4.6.2
 Homepage: https://github.com/boto/botocore
 Vcs-Git: https://salsa.debian.org/cloud-team/python-botocore.git
 Vcs-Browser: https://salsa.debian.org/cloud-team/python-botocore
 
 Package: python3-botocore
 Architecture: all
-Depends: ${python3:Depends}, python3-requests, ${misc:Depends}
+Depends: ${python3:Depends},
+ python3-requests,
+ python3-six,
+ ${misc:Depends}
 Breaks: awscli (<< 1.18.140)
 Description: Low-level, data-driven core of boto 3 (Python 3)
  A low-level interface to a growing number of Amazon Web Services.

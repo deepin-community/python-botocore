@@ -13,70 +13,7 @@
 import pytest
 
 from botocore.session import get_session
-
-
-SERVICE_RENAMES = {
-    # Actual service name we use -> Allowed computed service name.
-    'alexaforbusiness': 'alexa-for-business',
-    'apigateway': 'api-gateway',
-    'application-autoscaling': 'application-auto-scaling',
-    'appmesh': 'app-mesh',
-    'autoscaling': 'auto-scaling',
-    'autoscaling-plans': 'auto-scaling-plans',
-    'ce': 'cost-explorer',
-    'cloudhsmv2': 'cloudhsm-v2',
-    'cloudsearchdomain': 'cloudsearch-domain',
-    'cognito-idp': 'cognito-identity-provider',
-    'config': 'config-service',
-    'cur': 'cost-and-usage-report-service',
-    'datapipeline': 'data-pipeline',
-    'directconnect': 'direct-connect',
-    'devicefarm': 'device-farm',
-    'discovery': 'application-discovery-service',
-    'dms': 'database-migration-service',
-    'ds': 'directory-service',
-    'dynamodbstreams': 'dynamodb-streams',
-    'elasticbeanstalk': 'elastic-beanstalk',
-    'elastictranscoder': 'elastic-transcoder',
-    'elb': 'elastic-load-balancing',
-    'elbv2': 'elastic-load-balancing-v2',
-    'es': 'elasticsearch-service',
-    'events': 'eventbridge',
-    'globalaccelerator': 'global-accelerator',
-    'iot-data': 'iot-data-plane',
-    'iot-jobs-data': 'iot-jobs-data-plane',
-    'iot1click-devices': 'iot-1click-devices-service',
-    'iot1click-projects': 'iot-1click-projects',
-    'iotevents-data': 'iot-events-data',
-    'iotevents': 'iot-events',
-    'iotwireless': 'iot-wireless',
-    'kinesisanalytics': 'kinesis-analytics',
-    'kinesisanalyticsv2': 'kinesis-analytics-v2',
-    'kinesisvideo': 'kinesis-video',
-    'lex-models': 'lex-model-building-service',
-    'lexv2-models': 'lex-models-v2',
-    'lex-runtime': 'lex-runtime-service',
-    'lexv2-runtime': 'lex-runtime-v2',
-    'logs': 'cloudwatch-logs',
-    'machinelearning': 'machine-learning',
-    'marketplacecommerceanalytics': 'marketplace-commerce-analytics',
-    'marketplace-entitlement': 'marketplace-entitlement-service',
-    'meteringmarketplace': 'marketplace-metering',
-    'mgh': 'migration-hub',
-    'sms-voice': 'pinpoint-sms-voice',
-    'resourcegroupstaggingapi': 'resource-groups-tagging-api',
-    'route53': 'route-53',
-    'route53domains': 'route-53-domains',
-    's3control': 's3-control',
-    'sdb': 'simpledb',
-    'secretsmanager': 'secrets-manager',
-    'serverlessrepo': 'serverlessapplicationrepository',
-    'servicecatalog': 'service-catalog',
-    'servicecatalog-appregistry': 'service-catalog-appregistry',
-    'stepfunctions': 'sfn',
-    'storagegateway': 'storage-gateway',
-}
-
+from botocore.utils import CLIENT_NAME_TO_HYPHENIZED_SERVICE_ID_OVERRIDES
 
 ENDPOINT_PREFIX_OVERRIDE = {
     # entry in endpoints.json -> actual endpoint prefix.
@@ -92,6 +29,7 @@ ENDPOINT_PREFIX_OVERRIDE = {
     'ioteventsdata': 'data.iotevents',
     'iotsecuredtunneling': 'api.tunneling.iot',
     'iotwireless': 'api.iotwireless',
+    'data.iot': 'data-ats.iot',
 }
 
 NOT_SUPPORTED_IN_SDK = [
@@ -110,10 +48,10 @@ def _known_endpoint_prefixes():
     # prefix.  We don't directly have that data, so we have to load
     # every service model and look up its endpoint prefix in its
     # ``metadata`` section.
-    return set([
+    return {
         SESSION.get_service_model(service_name).endpoint_prefix
         for service_name in AVAILABLE_SERVICES
-    ])
+    }
 
 
 def _computed_endpoint_prefixes():
@@ -126,7 +64,7 @@ def _computed_endpoint_prefixes():
     endpoints = LOADER.load_data('endpoints')
     # A service can be in multiple partitions so we're using
     # a set here to remove dupes.
-    services_in_endpoints_file = set([])
+    services_in_endpoints_file = set()
     for partition in endpoints['partitions']:
         for service in partition['services']:
             # There are some services we don't support in the SDK
@@ -143,8 +81,9 @@ def _computed_endpoint_prefixes():
         # Check for an override where we know that an entry
         # in the endpoints.json actually maps to a different endpoint
         # prefix.
-        endpoint_prefix = ENDPOINT_PREFIX_OVERRIDE.get(endpoint_prefix,
-                                                       endpoint_prefix)
+        endpoint_prefix = ENDPOINT_PREFIX_OVERRIDE.get(
+            endpoint_prefix, endpoint_prefix
+        )
         endpoint_prefixes.append(endpoint_prefix)
     return sorted(endpoint_prefixes)
 
@@ -162,7 +101,7 @@ def test_endpoint_matches_service(endpoint_prefix):
 
 
 @pytest.mark.parametrize("service_name", AVAILABLE_SERVICES)
-def test_service_name_matches_endpoint_prefix(service_name):
+def test_client_name_matches_hyphenized_service_id(service_name):
     """Generates tests for each service to verify that the computed service
     named based on the service id matches the service name used to
     create a client (i.e the directory name in botocore/data)
@@ -173,54 +112,12 @@ def test_service_name_matches_endpoint_prefix(service_name):
 
     # Handle known exceptions where we have renamed the service directory
     # for one reason or another.
-    actual_service_name = SERVICE_RENAMES.get(service_name, service_name)
+    actual_service_name = CLIENT_NAME_TO_HYPHENIZED_SERVICE_ID_OVERRIDES.get(
+        service_name, service_name
+    )
 
     err_msg = (
         f"Actual service name `{actual_service_name}` does not match "
         f"expected service name we computed: `{computed_name}`"
     )
     assert computed_name == actual_service_name, err_msg
-
-
-_S3_ALLOWED_PSEUDO_FIPS_REGIONS = [
-    'fips-accesspoint-ca-central-1',
-    'fips-accesspoint-us-east-1',
-    'fips-accesspoint-us-east-2',
-    'fips-accesspoint-us-west-1',
-    'fips-accesspoint-us-west-2',
-    'fips-accesspoint-us-gov-east-1',
-    'fips-accesspoint-us-gov-west-1',
-    'fips-us-gov-west-1',
-    'fips-us-gov-east-1',
-    'fips-ca-central-1',
-    'fips-us-east-1',
-    'fips-us-east-2',
-    'fips-us-west-1',
-    'fips-us-west-2',
-]
-
-
-def _s3_region_names():
-    endpoints = LOADER.load_data('endpoints')
-
-    for partition in endpoints['partitions']:
-        s3_service = partition['services'].get('s3', {})
-        for region_name in s3_service['endpoints']:
-            yield region_name.lower()
-
-
-@pytest.mark.parametrize("region_name", _s3_region_names())
-def test_no_s3_fips_regions(region_name):
-    # Fail if additional FIPS pseudo-regions are added to S3.
-    # This may be removed once proper support is implemented for FIPS in S3.
-    if region_name in _S3_ALLOWED_PSEUDO_FIPS_REGIONS:
-        return
-
-    err_msg = (
-        'New S3 FIPS pseudo-region added: "{region_name}". '
-        'FIPS has compliancy requirements that may not be met in all cases '
-        'for S3 clients due to the custom endpoint resolution and '
-        'construction logic.'
-    )
-
-    assert 'fips' not in region_name, err_msg

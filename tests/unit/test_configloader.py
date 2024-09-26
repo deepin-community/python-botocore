@@ -12,25 +12,27 @@
 # distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
-from tests import mock, unittest, BaseEnvVar
 import os
-import tempfile
 import shutil
+import tempfile
 
 import botocore.exceptions
-from botocore.configloader import raw_config_parse, load_config, \
-    multi_file_load_config
-from botocore.compat import six
+from botocore.configloader import (
+    load_config,
+    multi_file_load_config,
+    raw_config_parse,
+)
+from tests import mock, unittest
 
 
 def path(filename):
     directory = os.path.join(os.path.dirname(__file__), 'cfg')
-    if isinstance(filename, six.binary_type):
-        directory = six.b(directory)
+    if isinstance(filename, bytes):
+        directory = directory.encode('latin-1')
     return os.path.join(directory, filename)
 
 
-class TestConfigLoader(BaseEnvVar):
+class TestConfigLoader(unittest.TestCase):
     def setUp(self):
         self.tempdir = tempfile.mkdtemp()
 
@@ -49,8 +51,8 @@ class TestConfigLoader(BaseEnvVar):
         )
 
         directory = self.tempdir
-        if isinstance(filename, six.binary_type):
-            directory = six.b(directory)
+        if isinstance(filename, bytes):
+            directory = directory.encode('latin-1')
         full_path = os.path.join(directory, filename)
 
         with open(full_path, 'w') as f:
@@ -86,8 +88,9 @@ class TestConfigLoader(BaseEnvVar):
     def test_profile_map_conversion(self):
         loaded_config = load_config(path('aws_config'))
         self.assertIn('profiles', loaded_config)
-        self.assertEqual(sorted(loaded_config['profiles'].keys()),
-                         ['default', 'personal'])
+        self.assertEqual(
+            sorted(loaded_config['profiles'].keys()), ['default', 'personal']
+        )
 
     def test_bad_profiles_are_ignored(self):
         filename = path('aws_bad_profile')
@@ -116,12 +119,10 @@ class TestConfigLoader(BaseEnvVar):
         # will make sure that indented sections such as singature_version
         # will not be treated as another subsection but rather
         # its literal value.
-        self.assertEqual(
-            raw_config['cloudwatch'], '\nsignature_version = v4')
+        self.assertEqual(raw_config['cloudwatch'], '\nsignature_version = v4')
         self.assertEqual(
             raw_config['s3'],
-            '\nsignature_version = s3v4'
-            '\naddressing_style = path'
+            '\nsignature_version = s3v4' '\naddressing_style = path',
         )
 
     def test_nested_bad_config(self):
@@ -137,10 +138,12 @@ class TestConfigLoader(BaseEnvVar):
                 load_config(filename)
 
     def test_multi_file_load(self):
-        filenames = [path('aws_config_other'),
-                     path('aws_config'),
-                     path('aws_third_config'),
-                     path('aws_config_notfound')]
+        filenames = [
+            path('aws_config_other'),
+            path('aws_config'),
+            path('aws_third_config'),
+            path('aws_config_notfound'),
+        ]
         loaded_config = multi_file_load_config(*filenames)
         config = loaded_config['profiles']['default']
         self.assertEqual(config['aws_access_key_id'], 'other_foo')
@@ -173,6 +176,35 @@ class TestConfigLoader(BaseEnvVar):
             loaded_config = load_config(filename)
         self.assertIn('default', loaded_config['profiles'])
         self.assertIn('personal', loaded_config['profiles'])
+
+    def test_sso_session_config(self):
+        filename = path('aws_sso_session_config')
+        loaded_config = load_config(filename)
+        self.assertIn('profiles', loaded_config)
+        self.assertIn('default', loaded_config['profiles'])
+        self.assertIn('sso_sessions', loaded_config)
+        self.assertIn('sso', loaded_config['sso_sessions'])
+        sso_config = loaded_config['sso_sessions']['sso']
+        self.assertEqual(sso_config['sso_region'], 'us-east-1')
+        self.assertEqual(sso_config['sso_start_url'], 'https://example.com')
+
+    def test_services_config(self):
+        filename = path('aws_services_config')
+        loaded_config = load_config(filename)
+        self.assertIn('profiles', loaded_config)
+        self.assertIn('default', loaded_config['profiles'])
+        self.assertIn('services', loaded_config)
+        self.assertIn('my-services', loaded_config['services'])
+        services_config = loaded_config['services']['my-services']
+        self.assertIn('s3', services_config)
+        self.assertIn('dynamodb', services_config)
+        self.assertEqual(
+            services_config['s3']['endpoint_url'], 'https://localhost:5678/'
+        )
+        self.assertEqual(
+            services_config['dynamodb']['endpoint_url'],
+            'https://localhost:8888/',
+        )
 
 
 if __name__ == "__main__":
